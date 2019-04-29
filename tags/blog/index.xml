@@ -1,21 +1,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>blog on Peter&#39;s Blog</title>
-    <link>http://localhost:1313/tags/blog/</link>
+    <link>https://peterloleungyau.github.io/tags/blog/</link>
     <description>Recent content in blog on Peter&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0800</lastBuildDate>
     
-        <atom:link href="http://localhost:1313/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://peterloleungyau.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>First Post</title>
-      <link>http://localhost:1313/post/first-post/</link>
+      <link>https://peterloleungyau.github.io/post/first-post/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/first-post/</guid>
+      <guid>https://peterloleungyau.github.io/post/first-post/</guid>
       <description>Hello, this is a first post for testing the various parts of this blog.</description>
     </item>
     
