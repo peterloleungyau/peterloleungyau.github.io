@@ -1,0 +1,25 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>statistics on Peter&#39;s Blog</title>
+    <link>http://localhost:1313/categories/statistics/</link>
+    <description>Recent content in statistics on Peter&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0800</lastBuildDate>
+    
+        <atom:link href="http://localhost:1313/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>First Post</title>
+      <link>http://localhost:1313/post/first-post/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/first-post/</guid>
+      <description> Test post Hello, this is a test post.
+Try math: \(\sum_{i=1}^n {\frac{1}{i}}\)
+1  (+ 1 2)  </description>
+    </item>
+    
+  </channel>
+</rss>
