@@ -11,16 +11,6 @@
     
     
     <item>
-      <title>About</title>
-      <link>https://peterloleungyau.github.io/about/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0800</pubDate>
-      
-      <guid>https://peterloleungyau.github.io/about/</guid>
-      <description>Hello, I am Peter Lo. I received my B.Sc. in Risk Management Science, and my Ph.D. in Computer Science and Engineering, both from The Chinese University of Hong Kong. During my Ph.D. study, I worked in Bioinformatics, focusing on inferring gene regulatory network from gene expression data. After graduation, I worked as a Postdoc at The Chinese University of Hong Kong, where I worked on Chinese NLP.
-I am interested in Artificial Intelligence, including Symbolic AI, Machine Learning and Natural Computing techniques.</description>
-    </item>
-    
-    <item>
       <title>First Post</title>
       <link>https://peterloleungyau.github.io/post/first-post/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0800</pubDate>

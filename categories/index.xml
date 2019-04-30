@@ -11,12 +11,12 @@
     
     
     <item>
-      <title>blog</title>
-      <link>https://peterloleungyau.github.io/categories/blog/</link>
+      <title>First Post</title>
+      <link>https://peterloleungyau.github.io/post/first-post/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0800</pubDate>
       
-      <guid>https://peterloleungyau.github.io/categories/blog/</guid>
-      <description></description>
+      <guid>https://peterloleungyau.github.io/post/first-post/</guid>
+      <description>Hello, this is a first post for testing the various parts of this blog.</description>
     </item>
     
   </channel>
