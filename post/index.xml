@@ -5,10 +5,19 @@
     <description>Recent content in Posts on Peter&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 13 May 2019 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 May 2019 00:00:00 +0800</lastBuildDate>
     
         <atom:link href="https://peterloleungyau.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Discrete Distributions - Part 1</title>
+      <link>https://peterloleungyau.github.io/post/discrete-distributions1/</link>
+      <pubDate>Mon, 27 May 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://peterloleungyau.github.io/post/discrete-distributions1/</guid>
+      <description>A probability distribution of a random variable refers to the probabilities that the random variable takes various values. In the case that the random variable can take only countably many different values, it is called a discrete random variable. In this case, we can summarize the distribution by simply specifying the probabilities of the different values. In this post, we first look at a simple example to get an intuitive idea of distribution of discrete random variable, then talk about some related concepts such as conditional probability, independence of events and random variables, expected value and variance.</description>
+    </item>
     
     <item>
       <title>Basics of Probability and Random Variable</title>
