@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Discrete Distributions - Part 2 - Peter&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Peter Lo" /><meta name="description" content="In the previous post, we have looked at some basic concepts of distributions of discrete random variable. In this post we look at some examples of common discrete random variables, including discrete uniform distribution, Bernoulli distribution, Binomial distribution, Geometric distribution, Negative binomial distribution and Poisson distribution.
+Common Discrete Distributions Discrete Uniform Distribution When a discrete random variable has \(k\) different possible values, and we think that the different possibilities are equally likely, what should the distribution be?" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.4 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://peterloleungyau.github.io/post/discrete-distributions2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Discrete Distributions - Part 2" />
+<meta property="og:description" content="In the previous post, we have looked at some basic concepts of distributions of discrete random variable. In this post we look at some examples of common discrete random variables, including discrete uniform distribution, Bernoulli distribution, Binomial distribution, Geometric distribution, Negative binomial distribution and Poisson distribution.
+Common Discrete Distributions Discrete Uniform Distribution When a discrete random variable has \(k\) different possible values, and we think that the different possibilities are equally likely, what should the distribution be?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://peterloleungyau.github.io/post/discrete-distributions2/" />
+<meta property="article:published_time" content="2019-06-16T00:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-16T00:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Discrete Distributions - Part 2">
+<meta itemprop="description" content="In the previous post, we have looked at some basic concepts of distributions of discrete random variable. In this post we look at some examples of common discrete random variables, including discrete uniform distribution, Bernoulli distribution, Binomial distribution, Geometric distribution, Negative binomial distribution and Poisson distribution.
+Common Discrete Distributions Discrete Uniform Distribution When a discrete random variable has \(k\) different possible values, and we think that the different possibilities are equally likely, what should the distribution be?">
+
+
+<meta itemprop="datePublished" content="2019-06-16T00:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-16T00:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="6705">
+
+
+
+<meta itemprop="keywords" content="probability distribution,discrete distribution," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Discrete Distributions - Part 2"/>
+<meta name="twitter:description" content="In the previous post, we have looked at some basic concepts of distributions of discrete random variable. In this post we look at some examples of common discrete random variables, including discrete uniform distribution, Bernoulli distribution, Binomial distribution, Geometric distribution, Negative binomial distribution and Poisson distribution.
+Common Discrete Distributions Discrete Uniform Distribution When a discrete random variable has \(k\) different possible values, and we think that the different possibilities are equally likely, what should the distribution be?"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Peter&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Peter&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Discrete Distributions - Part 2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-06-16 </span>
+        <div class="post-category">
+            <a href="/categories/statistics/"> statistics </a>
+            <a href="/categories/probability/"> probability </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#common-discrete-distributions">Common Discrete Distributions</a>
+<ul>
+<li><a href="#discrete-uniform-distribution">Discrete Uniform Distribution</a>
+<ul>
+<li><a href="#fair-coin-and-dice">Fair coin and dice</a></li>
+<li><a href="#random-ordering">Random ordering</a></li>
+<li><a href="#expected-value">Expected value</a></li>
+</ul></li>
+<li><a href="#bernoulli-distribution">Bernoulli Distribution</a>
+<ul>
+<li><a href="#expected-value-and-variance">Expected value and variance</a></li>
+</ul></li>
+<li><a href="#binomial-distribution">Binomial Distribution</a>
+<ul>
+<li><a href="#probability-mass-function-for-binomial-distribution">Probability mass function for Binomial distribution</a></li>
+<li><a href="#formula-of-n-choose-r">Formula of n choose r</a></li>
+<li><a href="#example-number-of-insurance-claims-in-the-next-year">Example: number of insurance claims in the next year</a></li>
+<li><a href="#expected-value-and-variance-1">Expected value and variance</a></li>
+</ul></li>
+<li><a href="#geometric-distribution">Geometric Distribution</a>
+<ul>
+<li><a href="#probability-mass-function-for-geometric-distribution">Probability mass function for Geometric distribution</a></li>
+<li><a href="#expected-value-and-variance-2">Expected value and variance</a></li>
+</ul></li>
+<li><a href="#negative-binomial-distribution">Negative Binomial Distribution</a>
+<ul>
+<li><a href="#probability-mass-function-for-negative-binomial-distribution">Probability mass function for Negative binomial distribution</a></li>
+<li><a href="#expected-value-and-variance-3">Expected value and variance</a></li>
+</ul></li>
+<li><a href="#poisson-distribution">Poisson Distribution</a>
+<ul>
+<li><a href="#law-of-rare-events">Law of rare events</a></li>
+<li><a href="#probability-mass-function-for-poisson-distribution">Probability mass function for Poisson distribution</a></li>
+<li><a href="#expected-value-and-variance-4">Expected value and variance</a></li>
+<li><a href="#example-number-of-defects-in-undersea-cable">Example: Number of defects in undersea cable</a></li>
+<li><a href="#example-hospital-benefit-claims-over-a-year">Example: Hospital benefit claims over a year</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#summary">Summary</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>In the previous post, we have looked at some basic concepts of
+distributions of discrete random variable. In this post we look at
+some examples of common discrete random variables, including discrete
+uniform distribution, Bernoulli distribution, Binomial distribution,
+Geometric distribution, Negative binomial distribution and Poisson
+distribution.</p>
+
+<h2 id="common-discrete-distributions">Common Discrete Distributions</h2>
+
+<h3 id="discrete-uniform-distribution">Discrete Uniform Distribution</h3>
+
+<p>When a discrete random variable has \(k\) different possible values, and
+we think that the different possibilities are equally likely, what
+should the distribution be? Since the \(k\) equal probabilities should
+sum to 1, it follows that each probability should be
+\(\frac{1}{k}\). This is the discrete uniform distribution, with the
+parameter \(k\), the number of possibilities. This distribution is often
+used to model situations where either we believe that the
+possibilities are equally likely, e.g. due to symmetry; or we lack
+more specific information to believe that they should be different, so
+can only assume that they are equally likely.</p>
+
+<p>Note that we cannot have discrete uniform distribution with
+<em>infinitely</em> many possible values, because the probabilities have to
+be equal in a uniform distribution, but also need to sum to 1. We just
+briefly mention that it is possible to have continuous uniform
+distribution with infinitely many different possible values, but its
+range still has to be bounded.</p>
+
+<h4 id="fair-coin-and-dice">Fair coin and dice</h4>
+
+<p>For example, for a coin that we know little about, we only know that
+it is <em>fairly</em> symmetric, so we have no reason to think that one side
+is more likely to come up than the other side. Even if we suspect that
+the coin is biased, how do we know which side would come up more
+often, without observing at least some trials? In such case, it is
+quite reasonable to assume the probabilities of both sides to be at
+top when flipped to be \(\frac{1}{2}\), ignoring the possibility that
+it may land on the edge.</p>
+
+<p>As another example, for a regular dice with 6 faces, since it is
+mostly symmetric, it is reasonable to assume uniform distribution,
+i.e. a probability of \(\frac{1}{6}\) for each face.</p>
+
+<h4 id="random-ordering">Random ordering</h4>
+
+<p>Yet another example is <em>random ordering</em> or <em>random permutation</em>. For
+\(n\) objects, there are \(n! = n \times (n-1) \times \ldots \times 2
+\times 1\) different ordering (permutation). For example, for 3 objects
+\(\{A, B, C\}\), there are \(3!  = 3 \times 2 \times 1 = 6\) different
+orderings:</p>
+
+<table>
+<thead>
+<tr>
+<th>1st</th>
+<th>2nd</th>
+<th>3rd</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+</tr>
+
+<tr>
+<td>A</td>
+<td>C</td>
+<td>B</td>
+</tr>
+
+<tr>
+<td>B</td>
+<td>A</td>
+<td>C</td>
+</tr>
+
+<tr>
+<td>B</td>
+<td>C</td>
+<td>A</td>
+</tr>
+
+<tr>
+<td>C</td>
+<td>A</td>
+<td>B</td>
+</tr>
+
+<tr>
+<td>C</td>
+<td>B</td>
+<td>A</td>
+</tr>
+</tbody>
+</table>
+
+<p>Because in the first position, we have 3 choices, then once that is
+selected, for the second position, we have 2 choices remaining, and
+once that is also selected, we have only one choice for the third
+position. In general, for \(n\) objects, we have \(n\) choices for the
+first position, then once it is selected, we have \(n-1\) choices for
+the second position, then \(n-2\) for the third, and so on, until we get
+down to only one choice for the last position; therefore the number of
+different orderings for \(n\) objects is the formula above, denoted by
+\(n!\) (pronounced as &ldquo;n factorial&rdquo;). For a deck of 52 cards, the number
+of ordering is \(52!\), which is a <em>huge</em>
+number: 80658175170943878571660636856403766975289505440883277824000000000000.</p>
+
+<p>What should be the probability of each of the \(n!\) possible orderings,
+if we want a <em>uniform</em> distribution? From our previous discussion, the
+answer is obvious: each should have probability \(\frac{1}{n!}\). As a
+digression, sometimes we have some bias against some &ldquo;patterns&rdquo;, even
+though we meant to have a uniformly random ordering. For example, if
+we were to get a random ordering of the integers 1 to 5 (by a
+supposedly uniform method), and the ordering turn out to be (1, 2, 3,
+4, 5) or (5, 4, 3, 2, 1), some people may suggest that this is not
+<em>random</em> enough, and therefore should be re-shuffled to get a more
+<em>random</em> ordering, such as (2, 1, 4, 3, 5). But if we think about it,
+by biasing against some &ldquo;patterns&rdquo; and re-shuffle when they occur,
+even if the original random ordering process is uniform, the ordering
+(1, 2, 3, 4, 5) has a lower chance of being selected and therefore the
+distribution would be non-uniform! To get a uniformly random ordering,
+we need a uniformly random selection process, not look at the selected
+ordering. And as an interesting thought experiment, imagine switching
+the integers 1 to 5 to five distinct symbols unfamiliar to us, would
+we still bias against some &ldquo;patterns&rdquo;?</p>
+
+<h4 id="expected-value">Expected value</h4>
+
+<p>If the discrete uniformly distributed random variable is real-valued,
+we can calculate its expected value and variance. For example, if the
+possible values are the integers 1, 2, 3, 4, 5 and 6, then the
+expected value is</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="p">(</span><span class="m">1</span> <span class="o">+</span> <span class="m">2</span> <span class="o">+</span> <span class="m">3</span> <span class="o">+</span> <span class="m">4</span> <span class="o">+</span> <span class="m">5</span> <span class="o">+</span> <span class="m">6</span><span class="p">)</span><span class="o">/</span><span class="m">6</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">3.5</code></pre></td></tr></table>
+</div>
+</div>
+<p>And the variance would be</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="p">(</span><span class="m">1</span><span class="o">^</span><span class="m">2</span> <span class="o">+</span> <span class="m">2</span><span class="o">^</span><span class="m">2</span> <span class="o">+</span> <span class="m">3</span><span class="o">^</span><span class="m">2</span> <span class="o">+</span> <span class="m">4</span><span class="o">^</span><span class="m">2</span> <span class="o">+</span> <span class="m">5</span><span class="o">^</span><span class="m">2</span> <span class="o">+</span> <span class="m">6</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">/</span><span class="m">6</span> <span class="o">-</span> <span class="m">3.5</span><span class="o">^</span><span class="m">2</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">2.91666666666667</code></pre></td></tr></table>
+</div>
+</div>
+<p>If the possible values are 1, 236 and 12, then the expected value
+would be</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="p">(</span><span class="m">1</span> <span class="o">+</span> <span class="m">236</span> <span class="o">+</span> <span class="m">12</span><span class="p">)</span><span class="o">/</span><span class="m">3</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">83</code></pre></td></tr></table>
+</div>
+</div>
+<p>And the variance would be</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="p">(</span><span class="m">1</span><span class="o">^</span><span class="m">2</span> <span class="o">+</span> <span class="m">236</span><span class="o">^</span><span class="m">2</span> <span class="o">+</span> <span class="m">12</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">/</span><span class="m">3</span> <span class="o">-</span> <span class="m">83</span><span class="o">^</span><span class="m">2</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">11724.6666666667</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="bernoulli-distribution">Bernoulli Distribution</h3>
+
+<p>One particularly simple discrete distribution is that of an <em>indicator
+variable</em> which can only take the values 0 or 1. The distribution is
+called the <em>Bernoulli</em> distribution, where the probability of 1 is
+\(p\), and the probability of 0 is \(1-p\), and \(0 \leq p \leq 1\) is the
+parameter of the distribution. Note that the case of \(p=0\) or \(p=1\) is
+degenerate case, because then the random variable is really just a
+constant. That a random variable \(X\) follows a Bernoulli distribution
+with parameter \(p\) is sometimes written as \(X \sim
+\text{Bernoulli}(p)\). It should be emphasized that different values of
+the parameter \(p\) give different Bernoulli distributions, although
+they have similar form. So <em>Bernoulli distribution</em> is really a family
+of distributions with similar form, and the parameter identifies a
+particular member of the family.</p>
+
+<p>The Bernoulli distribution is used to model whether an event has
+occurred, e.g. &ldquo;the coin lands on head&rdquo;, &ldquo;the dice has the value 6&rdquo;,
+or binary outcomes such as &ldquo;yes/no&rdquo;, &ldquo;success/failure&rdquo;, &ldquo;has
+disease/no disease&rdquo; cases. The interpretation of the Bernoulli
+distribution is the count of occurrence of event, but with just one
+trial.</p>
+
+<p>Although we would often assign the value 1 to &ldquo;yes&rdquo; in &ldquo;yes/no&rdquo;, to
+&ldquo;success&rdquo; in &ldquo;success/failure&rdquo; situation, we emphasize that it is
+important to define clearly the event for which the random variable
+takes the value 1, because in binary outcomes, there may not be a
+&ldquo;natural&rdquo; choice, or that choice may depend on context. For example,
+we may define &ldquo;has disease&rdquo; as the event, thus takes value 1, but we
+may also think that &ldquo;no disease&rdquo; is a success, thus should take the
+value 1. Therefore it is a better idea to be explicit.</p>
+
+<p>Note that if a random variable \(X\) has Bernoulli distribution with
+parameter \(p\), \(1-X\) (clearly \(X\) and \(1-X\) are dependent) is also a
+random variable with Bernoulli distribution, but with parameter
+\(1-p\). When the parameter \(p\) is \(0.5\), the outcomes 0 and 1 are
+equally likely, and the distribution is uniform.</p>
+
+<h4 id="expected-value-and-variance">Expected value and variance</h4>
+
+<p>With only two possible outcomes, it is easy to calculate the expected
+value of a random variable \(X\) having Bernoulli distribution with
+parameter \(p\):</p>
+
+<p>\begin{equation}
+E(X) = 1 \times p + 0 \times (1 - p) = p
+\end{equation}</p>
+
+<p>Calculating the variance is equally straightforward:</p>
+
+<p>\begin{align}
+Var(X) &amp; = E[(X - [E(X)])^2] \\<br />
+&amp; = (1 - p)^2 \times p + (0 - p)^2 \times (1 - p) \\<br />
+&amp; = p(1 - p)^2 + p^2(1-p) \\<br />
+&amp; = p(1 - p)[1 - p + p] \\<br />
+&amp; = p(1 - p)
+\end{align}</p>
+
+<p>Note that since \(0 \leq p \leq 1\), we can plot the variance with
+different values of \(p\):</p>
+
+<figure>
+    <img src="/ox-hugo/bernoulli_variance.png"/> 
+</figure>
+
+
+<p>We can see that the variance is 0 at the two ends \(p=0\) and \(p=1\),
+because for these two degenerate cases, the random variable becomes a
+constant, and therefore has no &ldquo;variation&rdquo;. As the parameter \(p\) is
+further from the two ends, the variance increases, but is
+bounded. From the plot and the symmetry of \(p(1-p)\), we can easily
+reason that the maximum occurs at the middle, i.e. at \(p=0.5\).  We can
+also use either calculus or a little algebra, to determine that the
+variance is maximum at \(p=0.5\). Therefore, the maximum possible
+variance of Bernoulli distribution is 0.25.</p>
+
+<h3 id="binomial-distribution">Binomial Distribution</h3>
+
+<p>While the Bernoulli distribution counts the number of events in one
+trial, how about more trials? For example, if I flip a coin 10 times,
+and count the number of heads, what should the distribution of the
+count be? Let&rsquo;s say \(X_1 \sim \text{Bernoulli}(p)\) is the indicator for
+&ldquo;head&rdquo; in the first flip. Since we are considering repeatedly flipping
+the same coin 10 times, so let \(X_i \sim \text{Bernoulli}(p)\) be the
+indicator for &ldquo;head&rdquo; in the \(i\) th flip, i.e. the 10 random variables
+\(\{X_i: 1 \leq i \leq 10\}\) are <em>identically distributed</em> (have the
+same distribution). Moreover, it is reasonable to assume that the
+different flips are <em>independent</em>. In this case, we say the 10 random
+variables \(\{X_i: 1 \leq i \leq 10\}\) are <em>independent identically
+distributed</em>, or i.i.d. for short. Then what we are interested in is
+the distribution of the random variable \(X = X_1 + X_2 + \ldots +
+X_{10}\). The distribution of a sum of \(n\) i.i.d. random variables with
+Bernoulli distribution (with parameter \(p\)) is called the <em>Binomial
+distribution</em>, written as \(B(n, p)\). When \(n=1\), it reduces to a
+Bernoulli distribution. It is obvious that if \(X \sim B(n,p)\), then \(0
+\leq X \leq n\), i.e. the smallest possible count is 0, and the largest
+possible count is \(n\).</p>
+
+<h4 id="probability-mass-function-for-binomial-distribution">Probability mass function for Binomial distribution</h4>
+
+<p>If \(X \sim B(n,p)\), since the only way to get \(X=n\) is to have all the
+\(X_i=1\), we quickly see that:</p>
+
+<p>\begin{align}
+P(X=n) &amp; = P(X_1=1, X_2=1, \ldots, X_n=1) \\<br />
+&amp; = P(X_1=1)P(X_2=1)\ldots P(X_n=1) \\<br />
+&amp; = p^n
+\end{align}</p>
+
+<p>Similarly, we have \(P(X=0) = (1-p)^n\) because the only way to get
+\(X=0\) is to have all the \(X_i=0\). Let&rsquo;s see more examples before
+figuring out the general formula of the probability mass function of
+Binomial distribution.</p>
+
+<p>Consider \(Y \sim B(5, p)\), to find \(P(Y = 1)\), we want the probability of
+1 success and thus (5-1=4) failures. We list out the possible ways of
+getting one success:</p>
+
+<table>
+<thead>
+<tr>
+<th>Trial 1</th>
+<th>Trial 2</th>
+<th>Trial 3</th>
+<th>Trial 4</th>
+<th>Trial 5</th>
+<th>Probability</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>\(p(1-p)(1-p)(1-p)(1-p) = p(1-p)^4\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>\((1-p)p(1-p)(1-p)(1-p) = p(1-p)^4\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>\((1-p)(1-p)p(1-p)(1-p) = p(1-p)^4\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>\((1-p)(1-p)(1-p)p(1-p) = p(1-p)^4\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>\((1-p)(1-p)(1-p)(1-p)p = p(1-p)^4\)</td>
+</tr>
+</tbody>
+</table>
+
+<p>We first notice that for each combination of 1 success and 4 failures,
+the probability is the same: \(p(1-p)^4\), so it suffices to count the
+number of combinations to get the proper sum. We see that there are 5
+possible positions where the 1 success may come from, and there are
+exactly 5 combinations. Therefore \(P(Y=1) = 5p(1-p)^4\).</p>
+
+<p>Let&rsquo;s also figure out \(P(Y = 2)\), we want the probability of 2
+successes and thus (5-2=3) failures. But the 2 successes may be from
+the different trials, as illustrated below:</p>
+
+<table>
+<thead>
+<tr>
+<th>Trial 1</th>
+<th>Trial 2</th>
+<th>Trial 3</th>
+<th>Trial 4</th>
+<th>Trial 5</th>
+<th>Probability</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>\(pp(1-p)(1-p)(1-p) = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>\(p(1-p)p(1-p)(1-p) = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>\(p(1-p)(1-p)p(1-p) = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>\(p(1-p)(1-p)(1-p)p = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>\((1-p)pp(1-p)(1-p) = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>\((1-p)p(1-p)p(1-p) = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>\((1-p)p(1-p)(1-p)p = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>\((1-p)(1-p)pp(1-p) = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>\((1-p)(1-p)p(1-p)p = p^2(1-p)^3\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>\((1-p)(1-p)(1-p)pp = p^2(1-p)^3\)</td>
+</tr>
+</tbody>
+</table>
+
+<p>Again we see that for each combination of 2 successes and 3 failures,
+the probability is the same value \(p^2(1-p)^3\), so it suffices to
+count the number of combinations to get the proper sum. As there are 5
+possible positions where the 2 successes may come from, and there are
+10 combinations. Therefore \(P(X_1 = 2) = 10{p^2(1-p)^3}\).</p>
+
+<p>It is easy to see that we can use the same reasoning to derive the
+probability of \(P(X=r)\), where \(X \sim B(n,p)\): we want the probability
+of \(r\) successes (i.e. \(n-r\) failures), but the \(r\) successes may come
+from the \(n\) different trials, each combination has the same
+probability of \(p^r(1-p)^{n-r}\) for \(r\) successes and \(n-r\)
+failures. We only need to figure out the number of combinations that
+\(r\) successes can appear in \(n\) trials. The number of combinations of
+choosing \(r\) distinct objects from \(n\) distinct objects, disregarding
+the order, is called the Binomial coefficient, denoted by \(C_r^n\)
+(note that some people would write \(_n C_r\) or \(C_n^r\) for what we
+write \(C_r^n\)) or \({n \choose r}\), pronounced as &ldquo;\(n\) choose \(r\)&ldquo;.</p>
+
+<p>Therefore the probability mass function for \(X \sim B(n,p)\) is</p>
+
+<p>\begin{equation}
+P(X=r) = C_r^n p^r (1-p)^{n-r}
+\end{equation}</p>
+
+<h4 id="formula-of-n-choose-r">Formula of n choose r</h4>
+
+<p>The formula for \(C_r^n\) is</p>
+
+<p>\begin{equation}
+C_r^n = \frac{n!}{r!(n-r)!}
+\end{equation}</p>
+
+<p>where \(n! = n \times (n-1) \times (n-2) \times \ldots \times 1\) is \(n\)
+factorial (recall that it is the number of permutations of n objects).</p>
+
+<p>To get an idea of the formula of \(C_r^n\), consider \(C_2^5\),
+i.e. how many ways of choosing 2 distinct objects from 5 distinct
+objects (say {A, B, C, D, E}), disregarding the order. From the
+formula, we have \(C_2^5 = \frac{5!}{2!3!} = 10\), the same number we
+have determined above.  Well, let&rsquo;s follow a similar line of thought
+in deriving the number of permutations: there are 5 choices for the
+first one, then 4 choices for the second one, so it would seem the
+answer is \(5 \times 4 = 20\)? No, this over-counts, because this way of
+counting treats different ordering as distinct! With this way of
+counting, the counted combinations are:</p>
+
+<table>
+<thead>
+<tr>
+<th>first object</th>
+<th>combinations</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>A</td>
+<td>{(A, B), (A, C), (A, D), (A, E)}</td>
+</tr>
+
+<tr>
+<td>B</td>
+<td>{(B, A), (B, C), (B, D), (B, E)}</td>
+</tr>
+
+<tr>
+<td>C</td>
+<td>{(C, A), (C, B), (C, D), (C, E)}</td>
+</tr>
+
+<tr>
+<td>D</td>
+<td>{(D, A), (D, B), (D, C), (D, E)}</td>
+</tr>
+
+<tr>
+<td>E</td>
+<td>{(E, A), (E, B), (E, C), (E, D)}</td>
+</tr>
+</tbody>
+</table>
+
+<p>The problem is that for <em>every</em> set of 2 objects, we counted twice:
+e.g. (A, B) and (B, A). Therefore, to get the correct number of
+\(C_2^5\), we need only account for the over-counting by dividing \(5
+\times 4\) by 2, to get \(C_2^5 = \frac{5 \times 4}{2} = 10\). Note that
+we can also write</p>
+
+<p>\begin{align}
+C_2^5 &amp; = \frac{5 \times 4}{2} \\<br />
+&amp; = \frac{5 \times 4 \times 3 \times 2 \times 1}{(2 \times 1)(3 \times 2 \times 1)} \\<br />
+&amp; = \frac{5!}{2!3!}
+\end{align}</p>
+
+<p>In general, to count \(C_r^n\), there are \(n\) choices for the first
+object, \(n-1\) for the second, \(n-2\) for the third, and so on, up to
+\(n-r+1\) for the \(r\) th object, with \(n \times (n-1) \times (n-2)
+\times \ldots \times (n-r+1)\) combinations. But again, this
+over-counts: for each subset of \(r\) objects, all the \(r!\) of its
+permutations are counted. So we divide by \(r!\) to get</p>
+
+<p>\begin{align}
+C_r^n &amp; = \frac{n \times (n-1) \times (n-2) \times \ldots \times (n-r+1)}{r!} \\<br />
+&amp; = \frac{n \times (n-1) \times (n-2) \times \ldots \times (n-r+1) \times (n-r)!}{(n-r)!r!} \\<br />
+&amp; = \frac{n!}{(n-r)!r!}
+\end{align}</p>
+
+<p>One interesting property of \(C_r^n\) is that</p>
+
+<p>\begin{equation}
+C_r^n = C_{n-r}^n
+\end{equation}</p>
+
+<p>E.g. \(C_2^5 = C_3^5\). This can be understood as: specifying which \(r\)
+objects to take from \(n\), is the same as specifying which \(n-r\)
+objects not to take, and therefore the counts are the same.</p>
+
+<p>We can plot the pmf of \(B(10, p)\) for a few values of \(p\) to get a
+better intuitive idea of the Binomial distribution:</p>
+
+<figure>
+    <img src="/ox-hugo/binomial_pmf_eg1.png"/> 
+</figure>
+
+
+<h4 id="example-number-of-insurance-claims-in-the-next-year">Example: number of insurance claims in the next year</h4>
+
+<p>As a simple example, suppose we (as an insurance company) have sold
+\(n\) policies with coverage for the next year. If we assume whether the
+policies would have claims are reasonably independent, and have the
+same probability \(p\), then the total number of claims for the coming
+year would follow a Binomial distribution \(B(n,p)\). Of course, the
+assumptions of this simple model are quite strong, and it models only
+the total claims, so would be appropriate in case each policy could
+make at most one claim in the coming year, and that the payment for
+each claim is a fixed amount.</p>
+
+<h4 id="expected-value-and-variance-1">Expected value and variance</h4>
+
+<p>In order to calculate the expected value of \(X \sim B(n,p)\), we could
+have used the definition \(E(X) = \sum_{r=0}^n{r P(X=r)}\), but the
+algebra is more involved.</p>
+
+<p>Instead, we use the fact that \(X\) is the same as a sum of \(n\)
+i.i.d. random variables following Bernoulli distribution, i.e. \(X =
+\sum_{i=1}^n{X_i}\), where \(X_i \sim Bernoulli(p)\). Then using the
+linearity of expected value, we have:</p>
+
+<p>\begin{align}
+E(X) &amp; = E(\sum_{i=1}^n{X_i}) \\<br />
+&amp; = \sum_{i=1}^n{E(X_i)}  \\<br />
+&amp; = \sum_{i=1}^n{p} \\<br />
+&amp; = np
+\end{align}</p>
+
+<p>The expected value is very intuitive, since each of the \(n\) trials has a
+success probability of \(p\), the expected number of successes is
+simply \(n \times p\).</p>
+
+<p>For the variance, we first derive the rule that the variance of sum of
+independent random variables is the sum of the variances. For a sum of
+\(n\) random variables \(\{X_i\}\), with \(E(X_i) = \mu_i\), we have:</p>
+
+<p>\begin{align}
+Var(\sum_{i=1}^n X_i) &amp; = E\{(\sum_{i=1}^n X_i - E(\sum_{i=1}^n X_i))^2\} \\<br />
+&amp; = E\{(\sum_{i=1}^n X_i - \sum_{i=1}^n \mu_i)^2\} \\<br />
+&amp; = E\{(\sum_{i=1}^n (X_i - \mu_i))^2\} \\<br />
+&amp; = E\{\sum_{i=1}^n \sum_{j=1}^n {(X_i - \mu_i)(X_j - \mu_j)} \} \\<br />
+&amp; = E\{\sum_{i=1}^n (X_i - \mu_i)^2 + \sum_{i=1}^n \sum_{j=1, j \neq i}^n {(X_i - \mu_i)(X_j - \mu_j)} \} \\<br />
+&amp; = \sum_{i=1}^n E\{(X_i - \mu_i)^2\} + \sum_{i=1}^n \sum_{j=1, j \neq i}^n E[(X_i - \mu_i)(X_j - \mu_j)] \\<br />
+&amp; = \sum_{i=1}^n Var(X_i) + \sum_{i=1}^n \sum_{j=1, j \neq i}^n Cov(X_i, X_j)
+\end{align}</p>
+
+<p>where \(Cov(X_i, X_j) = E[(X_i - \mu_i)(X_j - \mu_j)]\) is called the
+<em>covariance</em> of \(X_i\) and \(X_j\) (whether \(X_i\) and \(X_j\) are
+independent or not).</p>
+
+<p>Note that for two independent random variables, we have</p>
+
+<p>\begin{align}
+Cov(X_i, X_j) &amp; = E[(X_i - \mu_i)(X_j - \mu_j)] \\<br />
+&amp; = E(X_i - \mu_i) E(X_j - \mu_j) \\<br />
+&amp; = (E(X_i) - \mu_i) (E(X_j) - \mu_j) \\<br />
+&amp; = (\mu_i - \mu_i) (\mu_j - \mu_j) \\<br />
+&amp; = 0
+\end{align}</p>
+
+<p>where we use the fact that if \(X_i\) and \(X_j\) are pairwise independent
+(when \(i \neq j\)), we have \(E(X_i - \mu_i)(X_j - \mu_j) = E(X_i -
+\mu_i) E(X_j - \mu_j)\), and that both factors would be 0.  Therefore
+the covariance of two independent random variables is 0.</p>
+
+<p>Hence if the random variables \(\{X_i\}\) are pairwise independent, we have:</p>
+
+<p>\begin{equation}
+Var(\sum_{i=1}^n X_i) = \sum_{i=1}^n Var(X_i)
+\end{equation}</p>
+
+<p>With this rule of variance for sum of pairwise independent random
+variables, for \(X \sim B(n,p)\), the variance is</p>
+
+<p>\begin{align}
+Var(X) &amp; = Var(\sum_{i=1}^n{X_i}) \\<br />
+&amp; = \sum_{i=1}^n{Var(X_i)}  \\<br />
+&amp; = \sum_{i=1}^n{p(1-p)} \\<br />
+&amp; = np(1-p)
+\end{align}</p>
+
+<p>Since the variance of the Binomial distribution is essentially just
+scaled version of the variance of the Bernoulli distribution, the
+variance is the highest when \(p=0.5\).</p>
+
+<h3 id="geometric-distribution">Geometric Distribution</h3>
+
+<p>If we repeatedly flip a (possibly biased) coin, and we are interested
+in counting the number of &ldquo;tails&rdquo; \(X\) before seeing the first &ldquo;head&rdquo;
+(not including that flip). It is clear that this is a random variable
+that takes values on non-negative integers, the smallest possible
+value is 0, but it does not have a theoretical upper bound, i.e. it is
+conceivable that we are really unlucky that we do not see a &ldquo;head&rdquo; in
+even 1 million flips, although the probability would be exceedingly
+small (unless the coin is so biased such that it will never land on
+head). Assuming that each flip giving a &ldquo;head&rdquo; follows \(Bernoulli(p)\)
+with \(0 &lt; p &lt; 1\), and the flips are independent, then this \(X\) follows
+a <em>Geometric distribution</em> with parameter \(p\). There is an alternative
+convention that counts the number of trials (instead of the failures)
+before seeing the first success (having a &ldquo;head&rdquo; in this example),
+i.e. the smallest value is 1 if the first flip is a success, and call
+that the Geometric distribution. We will stick with the convention of
+counting failures.</p>
+
+<h4 id="probability-mass-function-for-geometric-distribution">Probability mass function for Geometric distribution</h4>
+
+<p>We can determine the pmf of the Geometric distribution directly. \(X=r\)
+means we have \(r\) Bernoulli failures followed by exactly 1 success,
+and all the trials are independent, i.e. we have</p>
+
+<p>\begin{equation}
+P(X=r) = (1-p)^{r}p
+\end{equation}</p>
+
+<p>We note if \(0 &lt; p &lt; 1\), then \(P(X=r) &gt; 0\) for each \(r \geq 0\),
+i.e. \(X\) has no upper bound, but the probability of larger \(r\)
+decreases exponentially close to 0. Recall that for a proper
+probability distribution, the probabilities of different values should
+be non-negative and sum to 1. The probabilities of \(P(X=r)\) form a
+geometric sequence, and indeed sum to 1, even though it is an
+infinite sum:</p>
+
+<p>\begin{align}
+\sum_{r \geq 0} {P(X=r)} &amp; = \sum_{r \geq 0} {(1-p)^{r}p} \\<br />
+&amp; = p \sum_{r \geq 0} {(1-p)^{r}} \\<br />
+&amp; = \frac{p}{1 - (1-p)} \\<br />
+&amp; = 1
+\end{align}</p>
+
+<p>by the formula</p>
+
+<p>\begin{equation}
+\sum_{i \geq 0} {x^i} = \frac{1}{1 - x} \text{ for } -1&lt;x&lt;1
+\end{equation}</p>
+
+<p>Another interesting property of Geometric distribution is the
+<em>memoryless property</em>. Note that the trials are assumed to be
+independent, and Geometric distribution is counting the number of
+failures until the first success. Suppose that I flip the coin, and it
+does not land on &ldquo;head&rdquo;, then a while later, I forget about the
+previous flip, and <em>now</em> want to count the number of &ldquo;tails&rdquo; until I
+see the first head (not counting the previous failed trial)? If we
+think about it, this count depends only on the future independent
+Bernoulli trials, the <em>exact same</em> situation as a Geometric
+distribution. It should be clear that (you may also try to determine
+the pmf) this count also follows the Geometric distribution. In fact,
+conditioning on however many failures, if we only look at future
+trials, the count still follows Geometric distribution with the same
+parameter as the Bernoulli trial.</p>
+
+<p>We plot the first few values of pmf of Geometric distribution for a
+few values of \(p\):</p>
+
+<figure>
+    <img src="/ox-hugo/geometric_pmf_eg1.png"/> 
+</figure>
+
+
+<p>It is intuitively clear that with larger \(p\), i.e. higher probability
+of success, we would expect to get the first success earlier.</p>
+
+<p>We remark that the Geometric distribution would be appropriate only if
+the independence assumption is plausible, i.e. a failure does not
+affect the probability of future success or failure; and that the
+Bernoulli trials are identically distributed, i.e. the probability of
+success does not change from trial to trial.</p>
+
+<h4 id="expected-value-and-variance-2">Expected value and variance</h4>
+
+<p>For calculating the expected value of \(X\) following Geometric
+distribution with parameter \(0 &lt; p &lt; 1\), we could have used the
+definition, i.e. \(E(X) = \sum_{r=1}^{\infty} {r P(X=r)}\), but the
+derivation needs differential calculus, so we just list it for
+completeness, and will not go through it in details.</p>
+
+<p>\begin{align}
+E(X) &amp; = \sum_{r=0}^{\infty} {r P(X=r)} \\<br />
+&amp; = \sum_{r=1}^{\infty} {r (1-p)^{r}p} \\<br />
+&amp; = p(1-p) \sum_{r=1}^{\infty} {r (1-p)^{r-1}} \\<br />
+&amp; = p(1-p) \sum_{r=1}^{\infty} \left\{-\frac{d}{dp} {(1-p)^r} \right\} \\<br />
+&amp; = p(1-p) \frac{d}{dp} \left\{\sum_{r=1}^{\infty} {- {(1-p)^r}} \right\} \\<br />
+&amp; = p(1-p) \frac{d}{dp} \left\{1 - \frac{1}{1 - (1-p)} \right\} \\<br />
+&amp; = p(1-p) \frac{d}{dp} \left\{1 - \frac{1}{p} \right\} \\<br />
+&amp; = p(1-p) {\frac{1}{p^2}} \\<br />
+&amp; = \frac{1-p}{p}
+\end{align}</p>
+
+<p>Alternatively, we can use the memoryless property mentioned above to
+see what the expected value should be.</p>
+
+<ul>
+<li><p>Calculating expected value using memoryless property</p>
+
+<p>By the memoryless property, if the first trial is a success, then
+\(X=0\); if the first trial is a failure, then disregarding it, the
+count to the first success still follows a Geometric distribution with
+the same distribution. We therefore have</p>
+
+<p>\begin{align}
+X &amp; = I\{\text{success at first trial}\}(0) + I\{\text{failure at first trial}\}(1 + X&rsquo;) \\<br />
+&amp; = I\{\text{failure at first trial}\}(1 + X&rsquo;)
+\end{align}</p>
+
+<p>where \(I\{.\}\) is the indicator random variable, and \(X&rsquo;\) is a random
+variable that follows the same Geometric distribution as \(X\). Note
+that since \(1+X&rsquo;\) depends only on second and future trials,
+\(I\{\text{failure at first trial}\}\) and \((1 + X&rsquo;)\) are independent.</p>
+
+<p>Then by expected value of independent random variables, we must have</p>
+
+<p>\begin{align}
+E(X) &amp; = E[I\{\text{failure at first trial}\}(1 + X&rsquo;)] \\<br />
+&amp; = E[I\{\text{failure at first trial}\}] E[(1 + X&rsquo;)] \\<br />
+&amp; = (1-p)(1 + E(X&rsquo;)) \\<br />
+&amp; = (1-p)(1 + E(X))
+\end{align}</p>
+
+<p>where the expected value of an indicator variable is the probability
+of its event, and that \(E(X&rsquo;) = E(X)\) because \(X\) and \(X&rsquo;\) have the
+same distribution.</p>
+
+<p>Then we rearrange the terms to put \(E(X)\) on the left side, we have:</p>
+
+<p>\begin{align}
+E(X) &amp; = (1-p)(1 + E(X)) \\<br />
+E(X) - (1-p)E(X) &amp; = (1-p) \\<br />
+p E(X) &amp; = 1 - p \\<br />
+E(X) &amp; = \frac{1-p}{p}
+\end{align}</p>
+
+<p>We therefore see that if \(E(X)\) exists, it must be \(\frac{1-p}{p}\).</p>
+
+<p>The interpretation of the expected value is simple, if the success
+probability of each trial is \(p\), then we expect to need
+\(\frac{1-p}{p} = \frac{1}{p}-1\) failures to get a success, so with a
+higher probability of success, we expect smaller number of failures
+until a success. E.g. if \(p=0.1\), the expected number of failures is
+\(\frac{1-0.1}{0.1} = 9\) until a success.</p>
+
+<p>We emphasize one interesting aspect of the expected value related to
+the memoryless property. Before seeing any trials, we expect to need
+\(\frac{1-p}{p}\) failures until the first success. But given that we
+have just observed a failure, we still expect to need \(\frac{1-p}{p}\)
+future failures until the first success. That is, for the \(p=0.1\)
+example, if we observed a failure, we would still expect to need 9
+future trials until a success, not 8, due to the memoryless property!</p></li>
+
+<li><p>Calculating the variance</p>
+
+<p>For the variance, we again try to use the memoryless property, and the
+formula \(Var(X) = E(X^2) - [E(X)]^2\). We note that \(X^2 =
+I\{\text{failure at first trial}\}(1 + X&rsquo;)^2\), then we first calculate
+\(E(X^2)\) as:</p>
+
+<p>\begin{align}
+E(X^2) &amp; = E[I\{\text{failure at first trial}\}(1 + X&rsquo;)^2] \\<br />
+&amp; = E[I\{\text{failure at first trial}\}] E[1 + 2X&rsquo; + X&rsquo;^2] \\<br />
+&amp; = (1-p)(1 + 2 E(X&rsquo;) + E(X&rsquo;^2)) \\<br />
+&amp; = (1-p)(1 + \frac{2(1-p)}{p} + E(X^2)) \\<br />
+&amp; = (1-p) + \frac{2(1-p)^2}{p} + (1-p)E(X^2)
+\end{align}</p>
+
+<p>Then rearrange the terms, we have</p>
+
+<p>\begin{align}
+(1 - (1-p))E(X^2) &amp; = (1-p) + \frac{2(1-p)^2}{p} \\<br />
+         p E(X^2) &amp; = (1-p) + \frac{2(1-p)^2}{p} \\<br />
+           E(X^2) &amp; = \frac{1-p}{p} + \frac{2(1-p)^2}{p^2} \\<br />
+\end{align}</p>
+
+<p>Then we calculate \(Var(X)\) as:</p>
+
+<p>\begin{align}
+Var(X) &amp; = E(X^2) - [E(X)]^2 \\<br />
+&amp; = \frac{1-p}{p} + \frac{2(1-p)^2}{p^2} - \left[\frac{1-p}{p} \right]^2 \\<br />
+&amp; = \frac{1-p}{p} + \frac{(1-p)^2}{p^2} \\<br />
+&amp; = \frac{p(1-p) + (1-p)^2}{p^2} \\<br />
+&amp; = \frac{1-p}{p^2} \\<br />
+\end{align}</p>
+
+<p>So a higher probability of success results in a lower variance.</p></li>
+</ul>
+
+<h3 id="negative-binomial-distribution">Negative Binomial Distribution</h3>
+
+<p>We are still using the framework of independent Bernoulli trials with
+parameter \(0 &lt; p &lt; 1\), while in Geometric distribution we count the
+number of failures to get the first success, what if we consider the
+number of failures \(X\) to get \(k\) successes, for \(k &gt; 0\)?. For example,
+if we count the number of &ldquo;tails&rdquo; before we get 3 heads, what is the
+distribution of the count? Such an \(X\) is said to follow the <em>Negative
+binomial distribution</em>, with parameters \(k &gt; 0\) and \(0 &lt; p &lt; 1\), and
+we would write \(X \sim NB(k, p)\). Again we remark that there are
+alternative definitions of the Negative binomial distribution:</p>
+
+<ul>
+<li>some may count the number of trials until \(k\) successes.</li>
+<li>some may interchange the role of success and failure, i.e. count the number of successes until \(k\) failures, or count the number of trials until \(k\) failures.</li>
+</ul>
+
+<p>Therefore, when you encounter the term &ldquo;Negative binomial
+distribution&rdquo;, it is important to know the exact definition used, to
+avoid confusion. To be consistent with the convention for Geometric
+distribution, we would stick to the definition of counting the number
+of failures until \(k\) successes.</p>
+
+<p>We immediately see that \(X \geq 0\), i.e. we may get 0 failures if the
+first \(k\) trials are all successes, and again \(X\) has no upper bound.
+It is also intuitively clear that \(X\) can be written as the sum of \(k\)
+mutually independent random variables following Geometric distribution
+with parameter \(p\), i.e. \(X = X_1 + X_2 + \ldots + X_k\), where the
+\(\{X_i\}\) are mutually independent and all follow the same Geometric
+distribution: to count the failures to get \(k\) successes, we count the
+failures to get the first success, then the second, and so on, until
+the \(k\) th success, then add the counts together.  Moreover, the
+Geometric distribution is a special case of the Negative binomial
+distribution where \(k=1\).</p>
+
+<h4 id="probability-mass-function-for-negative-binomial-distribution">Probability mass function for Negative binomial distribution</h4>
+
+<p>What should be \(P(X=r)\) for \(X \sim NB(k,p)\)? Before we figure out the
+general formula, let&rsquo;s first consider a small concrete example of
+\(P(X&rsquo;=2)\) for \(X&rsquo; \sim NB(3,p)\), to get an intuitive idea.</p>
+
+<p>We list out the possibilities of needing 2 failures to get 3 successes
+(written as 1 below), since there are 2 failures and 3 successes, there
+are 5 trials:</p>
+
+<table>
+<thead>
+<tr>
+<th>Trial 1</th>
+<th>Trial 2</th>
+<th>Trial 3</th>
+<th>Trial 4</th>
+<th>Trial 5</th>
+<th>Probability</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>\(pp(1-p)(1-p)p = p^3(1-p)^2\)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>\(p(1-p)p(1-p)p = p^3(1-p)^2\)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>\(p(1-p)(1-p)pp = p^3(1-p)^2\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>\((1-p)pp(1-p)p = p^3(1-p)^2\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>\((1-p)p(1-p)pp = p^3(1-p)^2\)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>\((1-p)(1-p)ppp = p^3(1-p)^2\)</td>
+</tr>
+</tbody>
+</table>
+
+<p>We note a few things:</p>
+
+<ul>
+<li>trial 5 is always a success, since we stop counting as soon as we get 3 successes.</li>
+<li>in each combination, there are 3 successes and 2 failures, so the probability is the same: \(p^3(1-p)^2\).</li>
+<li>this is similar to the Binomial distribution we considered above, since each combination has the same probability, we need only figure out the number of combinations to get the desired probability.</li>
+</ul>
+
+<p>Since trial 5 is always a success, the 2 failures can appear in
+any two of trial 1 to 4, so there are \(C_2^4 = \frac{4!}{2!2!} = 6\)
+possible combinations. Therefore, \(P(X&rsquo;=2) = C_2^4 {p^3(1-p)^2}\).</p>
+
+<p>We can use the same idea for the general case. To determine \(P(X=r)\)
+for \(X \sim NB(k,p)\), since we stopped counting at trial \(r+k\), it must
+be the \(k\) th success, and the \(r\) failures can appear in any of the
+previous \(r+k-1\) trials, so there are \(C_{r}^{r+k-1}\) combinations,
+and each has the same probability of \(p^k(1-p)^{r}\) because there are
+\(k\) successes and \(r\) failures. We therefore have figured out the pmf
+of the Negative binomial distribution as:</p>
+
+<p>\begin{equation}
+P(X=r) = C_{r}^{r+k-1} {p^{k}(1-p)^{r}}
+\end{equation}</p>
+
+<p>We plot the first few values of the pmf of the Negative binomial
+distribution for some values of \(k\) and \(p\):</p>
+
+<figure>
+    <img src="/ox-hugo/negative_binomial_pmf_eg1.png"/> 
+</figure>
+
+
+<p>We see that for larger success probability \(p\), the probability is
+more concentrated on the smaller values of \(X\), because it would be
+easier to get the first \(k\) successes. Also for smaller \(p\), the
+distribution is more spread out. For larger number of successes \(k\),
+the distribution will move more to the right, because intuitively more
+failures would be encountered to accumulate a larger number of
+successes, and the effect is greater for smaller \(p\).</p>
+
+<p>We briefly note that in R, the &ldquo;negative binomial distribution&rdquo;
+(dnbinom) allows \(k\) to take non-integer value, because it is in fact
+a more general distribution, where the Geometric distribution, the
+Negative binomial distribution we introduced above, and the Poisson
+distribution to be introduced below are special cases.</p>
+
+<h4 id="expected-value-and-variance-3">Expected value and variance</h4>
+
+<p>Recall that \(X \sim NB(k,p)\) could be written as a sum of \(k\)
+i.i.d. random variables following Geometric distribution, i.e. \(X =
+\sum_{i=1}^k {X_i}\), where \(\{X_i\}\) are mutually independent, and
+each has the same Geometric distribution with parameter \(p\). By the
+linearity of expected value, and the independence of the random
+variables, it is easy to figure out the expected value and variance of
+\(X\), as follows:</p>
+
+<p>\begin{align}
+E(X) &amp; = E \left(\sum_{i=1}^k {X_i} \right) \\<br />
+&amp; = \sum_{i=1}^k {E(X_i)} \\<br />
+&amp; = \sum_{i=1}^k {\frac{1-p}{p}} \\<br />
+&amp; = \frac{k(1-p)}{p}
+\end{align}</p>
+
+<p>and</p>
+
+<p>\begin{align}
+Var(X) &amp; = Var \left(\sum_{i=1}^k {X_i} \right) \\<br />
+&amp; = \sum_{i=1}^k {Var(X_i)} \\<br />
+&amp; = \sum_{i=1}^k {\frac{1-p}{p^2}} \\<br />
+&amp; = \frac{k(1-p)}{p^2}
+\end{align}</p>
+
+<h3 id="poisson-distribution">Poisson Distribution</h3>
+
+<h4 id="law-of-rare-events">Law of rare events</h4>
+
+<p>Poisson is a distribution that models the count of events over &ldquo;an
+interval&rdquo; (an &ldquo;exposure&rdquo;), which could be a length (e.g. a segment of
+an undersea cable), an area, a volume, a time duration (e.g. a year).</p>
+
+<p>Poisson distribution is used to model the counts of events satisfying
+the <em>law of rare events</em>, where the assumptions are:</p>
+
+<ul>
+<li>the count is the number of events in &ldquo;an interval&rdquo;</li>
+<li>the occurrences of the events in non-overlapping sub-intervals are independent</li>
+<li>the average rate of events is constant</li>
+<li>two events do not occur at the exact same point in the interval, at an infinitely small sub-interval, either exactly one event occurs, or no event occurs</li>
+</ul>
+
+<h4 id="probability-mass-function-for-poisson-distribution">Probability mass function for Poisson distribution</h4>
+
+<p>With the assumptions of law of rare events, we outline the derivation
+of the pmf of Poisson distribution. Let \(X\) be the counts of events
+over an interval, with the constant event rate being
+\(\lambda\). Suppose we divide the interval into \(N\) non-overlapping
+sub-intervals (with equal lengths). By assumption, with sufficiently
+fine sub-intervals, the counts of event in sub-intervals are
+independent, and each is either 0 or 1, so the total counts over the
+sub-intervals follows \(B(N,p)\) for some probability \(p\) (which depends
+on \(N\)). Also, by the assumption of constant event rate, we have
+\(\lim_{N \to \infty} {Np} = \lambda\).</p>
+
+<p>Then we have</p>
+
+<p>\begin{align}
+P(X=r) &amp; = C_r^N {p^r (1-p)^{N-r}} \\<br />
+&amp; = \frac{N!}{r!(N-r)!} {p^r (1-p)^{N-r}} \\<br />
+&amp; = \frac{N!}{r!(N-r)!} {{\left(\frac{Np}{N}\right)}^r {\left( 1- \frac{Np}{N} \right)}^{N-r}} \\<br />
+&amp; = \frac{N!}{(N-r)! N^r} {\frac{(Np)^r}{r!} {\left( 1- \frac{Np}{N} \right)}^N  {\left( 1- \frac{Np}{N} \right)}^{-r}} \\<br />
+\end{align}</p>
+
+<p>Now as \(N \to \infty\), we check what each of the terms converge to:</p>
+
+<p>First for \(\frac{N!}{(N-r)! N^r}\)</p>
+
+<p>\begin{align}
+\frac{N!}{(N-r)! N^r} &amp; = \frac{N(N-1)(N-2)\ldots (N-r+1)}{N^r} \\<br />
+&amp; = \frac{N}{N} \frac{N-1}{N} \frac{N-2}{N} \ldots \frac{N-r+1}{N} \\<br />
+&amp; = \left(1 \right) \left(1-\frac{1}{N} \right) \left(1-\frac{2}{N} \right) \ldots \left(1-\frac{r-1}{N} \right) \\<br />
+&amp; \to 1 \text{ as } r \text{ is fixed}
+\end{align}</p>
+
+<p>Then for \(\frac{(Np)^r}{r!}\)</p>
+
+<p>\begin{align}
+\frac{(Np)^r}{r!} \to \frac{\lambda^r}{r!}
+\end{align}</p>
+
+<p>Then for \({\left( 1- \frac{Np}{N} \right)}^N\)</p>
+
+<p>\begin{align}
+{\left( 1- \frac{Np}{N} \right)}^N &amp; \to e^{-\lambda} \\<br />
+&amp; \text{because } Np \to \lambda \text{ and } \\<br />
+&amp; {\left( 1 - \frac{x}{n} \right)}^n \to e^{-x} \text{ as } n \to \infty
+\end{align}</p>
+
+<p>Lastly for \({\left( 1- \frac{Np}{N} \right)}^{-r}\)</p>
+
+<p>\begin{align}
+{\left( 1- \frac{Np}{N} \right)}^{-r} &amp; \to 1 \\<br />
+&amp; \text{because } Np \to \lambda \text{, so } \frac{Np}{N} \to 0
+\end{align}</p>
+
+<p>We therefore see that as \(N \to \infty\)</p>
+
+<p>\begin{align}
+P(X=r) &amp; \to (1)\frac{\lambda^r}{r!} e^{-\lambda} (1) \\<br />
+&amp; = \frac{e^{-\lambda} \lambda^r}{r!}
+\end{align}</p>
+
+<p>which is the pmf of the Poisson distribution, with parameter \(\lambda &gt; 0\).</p>
+
+<p>We sometimes write \(X \sim Pois(\lambda)\) to denote that \(X\) follows a
+Poisson distribution with parameter \(\lambda &gt; 0\). Note that \(\lambda\)
+need not be an integer. Also note that \(X\) can take any non-negative
+integers, again without upper bound, i.e. \(P(X=r) &gt; 0\) for any integer
+\(r \geq 0\).</p>
+
+<p>Also, we check that the probabilities sum to 1:</p>
+
+<p>\begin{align}
+\sum_{r=0}^{\infty} {P(X=r)} &amp; = \sum_{r=0}^{\infty} {\frac{e^{-\lambda} \lambda^r}{r!}} \\<br />
+&amp; = e^{-\lambda} \sum_{r=0}^{\infty} {\frac{\lambda^r}{r!}} \\<br />
+&amp; = e^{-\lambda} e^{\lambda} \\<br />
+&amp; = 1 \\<br />
+&amp; \text{ by the power series } \sum_{r=0}^{\infty} {\frac{x^r}{r!}} = e^{x}
+\end{align}</p>
+
+<p>We briefly mention a few properties of Poisson distribution:</p>
+
+<ul>
+<li>If \(X \sim Pois(\lambda)\) counts the events with constant rate \(\lambda\) on an interval with certain length (or size) \(L\), then the count on the interval with length \(kL\) for \(k &gt; 0\) would follow \(Pois(k \lambda)\). In other words, with constant rate, the counts on different sizes of the interval also follow Poisson distribution, with the parameter scaled by the length of the interval.</li>
+<li>Sum of independent Poisson random variables also follows Poisson distribution, where the parameter is the sum of the parameters, i.e. if \(X_i \sim Pois(\lambda_i)\), then \(\sum_{i} {X_i} \sim Pois(\sum_i \lambda_i)\). Note that the \(\lambda\)&rsquo;s may not be equal.</li>
+</ul>
+
+<p>We plot the first few values of pmf of Poisson distribution for a few
+\(\lambda\) values:</p>
+
+<figure>
+    <img src="/ox-hugo/poisson_pmf_eg1.png"/> 
+</figure>
+
+
+<h4 id="expected-value-and-variance-4">Expected value and variance</h4>
+
+<p>In the above derivation, we derive the pmf of Poisson distribution
+from \(B(N,p)\) as \(N \to \infty\). For each \(N\), the expected value of
+the total count is \(Np \to \lambda\), and the variance is \(Np(1-p) =
+Np(1- \frac{Np}{N}) \to \lambda\). It is a reasonable guess that both
+the expected value and variance of \(Pois(\lambda)\) are \(\lambda\). This
+is indeed the case, we just quickly show it from the definition.</p>
+
+<p>\begin{align}
+E(X) &amp; = \sum_{r=0}^{\infty} {r P(X=r)} \\<br />
+&amp; = \sum_{r=0}^{\infty} {r \frac{e^{-\lambda} \lambda^r}{r!}} \\<br />
+&amp; = \sum_{r=1}^{\infty} {r \frac{e^{-\lambda} \lambda^r}{r!}} \text{ as zero times anything is zero} \\<br />
+&amp; = \lambda e^{-\lambda} \sum_{r-1=0}^{\infty} {\frac{\lambda^{r-1}}{(r-1)!}} \\<br />
+&amp; = \lambda e^{-\lambda} e^{\lambda} \text{, again by the power series } \sum_{u=0}^{\infty} {\frac{x^u}{u!}} = e^{x} \\<br />
+&amp; = \lambda
+\end{align}</p>
+
+<p>For variance, we first calculate \(E(X^2)\):</p>
+
+<p>\begin{align}
+E(X^2) &amp; = E[X(X-1) + X] \\<br />
+&amp; = E[X(X-1)] + E(X) \\<br />
+&amp; = E(X) + \sum_{r=0}^{\infty} {r(r-1) P(X=r)} \\<br />
+&amp; = E(X) + \sum_{r=2}^{\infty} {r(r-1) \frac{e^{-\lambda} \lambda^r}{r!}} \text{ as } r(r-1)=0 \text{ for } r=0 \text{ or } r=1\\<br />
+&amp; = E(X) + \lambda^2 e^{-\lambda} \sum_{r=2}^{\infty} {\frac{\lambda^{r-2}}{(r-2)!}} \\<br />
+&amp; = E(X) + \lambda^2 e^{-\lambda} \sum_{r-2=0}^{\infty} {\frac{\lambda^{r-2}}{(r-2)!}} \\<br />
+&amp; = E(X) + \lambda^2 e^{-\lambda} e^{\lambda} \text{, again by the power series } \sum_{u=0}^{\infty} {\frac{x^u}{u!}} = e^{x} \\<br />
+&amp; = E(X) + \lambda^2 \\<br />
+&amp; = \lambda + \lambda^2
+\end{align}</p>
+
+<p>Then we have</p>
+
+<p>\begin{align}
+Var(X) &amp; = E(X^2) - [E(X)]^2 \\<br />
+&amp; = \lambda + \lambda^2 - \lambda^2 \\<br />
+&amp; = \lambda
+\end{align}</p>
+
+<h4 id="example-number-of-defects-in-undersea-cable">Example: Number of defects in undersea cable</h4>
+
+<p>One simple example is to model the number of defects in undersea
+cable, where we may assume a constant rate \(\lambda\) of defects per
+1km, then over any segment of cable of length \(L\) km, the distribution
+of the count is \(Pois(L \lambda)\).</p>
+
+<h4 id="example-hospital-benefit-claims-over-a-year">Example: Hospital benefit claims over a year</h4>
+
+<p>An example in insurance is the number of hospital benefit claims over
+a year with an assumed rate \(\lambda\), where one policy may have zero
+or more claims over a year. The claim count of each policy can be
+modeled as \(Pois(\lambda_i)\). If we are only counting the claims
+over a period of 9 months, then the distribution would be
+\(Pois(\frac{9}{12} \lambda_i)\). If we are interested in the total
+claims counts of \(n\) policies over one calendar year, assuming the
+claims of the different policies are independent, the distribution is
+\(Pois(\sum_{i=1}^n \lambda_i t_i)\), where \(t_i\) is the exposure period
+of the \(i\) th policy. For example, if a policy is issued in the middle
+of the year, its exposure would only be 0.5 year till the end of the
+calendar year. We remark that the \(\lambda_i\) &rsquo;s need not be the same for
+all \(i\), but can be different for each policy, if we wish to model the
+rate \(\lambda_i\) &rsquo;s using covariates associated with the \(i\) th policy. We
+will revisit this idea in a future post when we discuss the
+<em>Generalized Linear Model</em>.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this post, we have looked at some common discrete distributions:</p>
+
+<ul>
+<li>Discrete uniform distribution: the probabilities of each of the \(k\) finite possible values have the same value \(\frac{1}{k}\)</li>
+<li>Bernoulli distribution: only two possible values, the value 1 (often called a &ldquo;success&rdquo;) with probability \(p \geq 0\), and the value 0 (often called a &ldquo;failure&rdquo;) with probability \(1-p\).</li>
+<li>Binomial distribution: the sum of \(n\) i.i.d. Bernoulli random variables, with pmf \(P(X=r) = C_r^n p^r (1-p)^{n-r}\).</li>
+<li>Geometric distribution: the number of Bernoulli failures until the first success, in a series of i.i.d. Bernoulli trials, with pmf \(P(X=r) = (1-p)^{r}p\).</li>
+<li>Negative binomial distribution: the number of Bernoulli failures until \(k\) successes, in a series of i.i.d. Bernoulli trials, with pmf \(P(X=r) = C_{r}^{r+k-1} {p^{k}(1-p)^{r}}\).</li>
+<li>Poisson distribution: the count of events over an interval with constant event rate \(\lambda\), where the count follows the <em>law of rare events</em>, with pmf \(P(X=r) = \frac{e^{-\lambda} \lambda^r}{r!}\).</li>
+</ul>
+
+<p>For completeness, we have also derived that the variance of a sum of
+independent random variables is the sum of the variances. We also
+briefly mentioned the covariance of two numerical random variables.</p>
+
+<p>We will turn our focus to continuous distribution in a future post,
+before we turn to look at <em>maximum likelihood estimation</em>.</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Peter Lo</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2019-06-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/probability-distribution/">probability distribution</a>
+          <a href="/tags/discrete-distribution/">discrete distribution</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/discrete-distributions1/">
+            <span class="next-text nav-default">Discrete Distributions - Part 1</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'https-peterloleungyau-github-io';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:peterloleungyau@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.linkedin.com/in/leung-yau-lo-7a3274167/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/peterloleungyau" class="iconfont icon-github" title="github"></a>
+  <a href="https://peterloleungyau.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Peter Lo</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-139262854-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

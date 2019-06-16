@@ -5,10 +5,20 @@
     <description>Recent content in discrete distribution on Peter&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 27 May 2019 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 16 Jun 2019 00:00:00 +0800</lastBuildDate>
     
         <atom:link href="https://peterloleungyau.github.io/tags/discrete-distribution/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Discrete Distributions - Part 2</title>
+      <link>https://peterloleungyau.github.io/post/discrete-distributions2/</link>
+      <pubDate>Sun, 16 Jun 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://peterloleungyau.github.io/post/discrete-distributions2/</guid>
+      <description>In the previous post, we have looked at some basic concepts of distributions of discrete random variable. In this post we look at some examples of common discrete random variables, including discrete uniform distribution, Bernoulli distribution, Binomial distribution, Geometric distribution, Negative binomial distribution and Poisson distribution.
+Common Discrete Distributions Discrete Uniform Distribution When a discrete random variable has \(k\) different possible values, and we think that the different possibilities are equally likely, what should the distribution be?</description>
+    </item>
     
     <item>
       <title>Discrete Distributions - Part 1</title>
