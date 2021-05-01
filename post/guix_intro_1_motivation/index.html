@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Guix Introduction Part 1: Motivation and What Guix Promises - Peter&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Peter Lo" /><meta name="description" content="This is the first part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This is written in a way that I wish Guix was introduced to me back when I first learned it. We first look at the basic concepts related to dependencies, then the motivation of better dependency management, namely the dependency hell, and the desire for reproducible builds." />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://peterloleungyau.github.io/post/guix_intro_1_motivation/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Guix Introduction Part 1: Motivation and What Guix Promises" />
+<meta property="og:description" content="This is the first part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This is written in a way that I wish Guix was introduced to me back when I first learned it. We first look at the basic concepts related to dependencies, then the motivation of better dependency management, namely the dependency hell, and the desire for reproducible builds." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://peterloleungyau.github.io/post/guix_intro_1_motivation/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-01T00:00:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-01T00:00:00&#43;08:00" />
+
+<meta itemprop="name" content="Guix Introduction Part 1: Motivation and What Guix Promises">
+<meta itemprop="description" content="This is the first part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This is written in a way that I wish Guix was introduced to me back when I first learned it. We first look at the basic concepts related to dependencies, then the motivation of better dependency management, namely the dependency hell, and the desire for reproducible builds."><meta itemprop="datePublished" content="2021-05-01T00:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-01T00:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="2277">
+<meta itemprop="keywords" content="Guix,Functional Package Manager,Reproducibility," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Guix Introduction Part 1: Motivation and What Guix Promises"/>
+<meta name="twitter:description" content="This is the first part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This is written in a way that I wish Guix was introduced to me back when I first learned it. We first look at the basic concepts related to dependencies, then the motivation of better dependency management, namely the dependency hell, and the desire for reproducible builds."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Peter&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Peter&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Guix Introduction Part 1: Motivation and What Guix Promises</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-01 </span>
+        <div class="post-category">
+            <a href="/categories/guix/"> Guix </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#basic-concepts-of-packages-and-dependency">Basic concepts of packages and dependency</a>
+      <ul>
+        <li><a href="#package">Package</a></li>
+        <li><a href="#dependency">Dependency</a></li>
+        <li><a href="#dependency-hell">Dependency hell</a></li>
+        <li><a href="#reproducible-build">Reproducible build</a></li>
+        <li><a href="#hash">Hash</a></li>
+      </ul>
+    </li>
+    <li><a href="#guix-functional-package-manager">Guix: functional package manager</a></li>
+    <li><a href="#what-s-next">What&rsquo;s next?</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>This is the first part of a brief introduction to the Guix functional
+package manager, and how it could be used to manage dependencies of
+projects, much like virtual environments for Python, but with much
+larger scope.</p>
+<p>This is written in a way that I wish Guix was introduced to me back
+when I first learned it. We first look at the basic concepts related to
+dependencies, then the motivation of better dependency management,
+namely the dependency hell, and the desire for reproducible
+builds. Then we list what Guix promises.</p>
+<h2 id="basic-concepts-of-packages-and-dependency">Basic concepts of packages and dependency</h2>
+<p>We first list out some concepts related to packages and dependency.</p>
+<h3 id="package">Package</h3>
+<ul>
+<li>loosely speaking, a package is a collection of functionality that we are interested in, e.g.
+<ul>
+<li>a library of functions, e.g. the <a href="https://www.tidyverse.org/">tidyverse</a> R package</li>
+<li>some applications, e.g. the <a href="https://www.mozilla.org/en-US/firefox/browsers/">firefox</a> web browser</li>
+<li>command line programs, e.g. the <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a> command for fast grep search on contents of files</li>
+<li>or just a set of documentation files</li>
+</ul>
+</li>
+</ul>
+<h4 id="package-building">Package building</h4>
+<ul>
+<li>the final files in a package are often produced through a <em>building</em> process from some sort of <em>source</em> files</li>
+<li>e.g.
+<ul>
+<li><code>ripgrep</code> is written in the <a href="https://www.rust-lang.org/">Rust programming language</a>, and would need a Rust compiler to produce the program</li>
+<li>some pdf documentations may be produced through the <a href="https://www.latex-project.org/">Latex</a> typesetting system</li>
+<li>an R package needs to be built, see <a href="https://bookdown.org/rdpeng/RProgDA/building-r-packages.html">https://bookdown.org/rdpeng/RProgDA/building-r-packages.html</a></li>
+</ul>
+</li>
+<li>some packages are very flexible, and allow specifying different options when building, resulting in functionally slightly different packages
+<ul>
+<li>e.g. some functions may be left out if it is considered not useful</li>
+<li>e.g. some functions could be provided by different <strong>dependent packages</strong></li>
+</ul>
+</li>
+<li>building script:
+<ul>
+<li>most packages have some building process (e.g. a script or a makefile)</li>
+</ul>
+</li>
+<li>building environment:
+<ul>
+<li>some packages will automatically detect its environment to change building options</li>
+<li>e.g. if some other package is absent, some functionality will be left out, but the building will still succeed</li>
+<li>therefore, if the building environment is not properly isolated, the &ldquo;same&rdquo; building script may still result in different built package, depending on what other packages are present in the system</li>
+<li>this is similar to programming where the output of a &ldquo;function&rdquo; depends not only on its inputs, but also on other global variables</li>
+</ul>
+</li>
+</ul>
+<h4 id="package-version">Package version</h4>
+<ul>
+<li>strictly speaking, package version is just a name attached to a package, and the name could theoretically be arbitrary, although most package authors follow some conventions</li>
+<li>e.g. a lot of packages follow the <a href="https://semver.org/">Semantic versioning</a>, briefly
+<ul>
+<li>a version number consists of three numbers, in the format of &ldquo;MAJOR.MINOR.PATCH&rdquo;, e.g. &ldquo;1.0.4&rdquo;, where each should be incremented as follows
+<ul>
+<li>MAJOR: when you make incompatible API changes, where MINOR and PATCH could be reset to 0, e.g. from &ldquo;1.2.3&rdquo; to &ldquo;2.0.0&rdquo;</li>
+<li>MINOR: when you add functionality in a backwards compatible manner, where PATCH could be reset to 0, e.g. from &ldquo;1.2.3&rdquo; to &ldquo;1.3.0&rdquo;</li>
+<li>PATCH: when you make backwards compatible bug fixes, e.g. from &ldquo;1.2.3&rdquo; to &ldquo;1.2.4&rdquo;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>NOTE:
+<ul>
+<li>normally, different versions will have some differences, although the differences may be small, or supposed to be <em>backward compatible</em>.</li>
+<li>even for the same version number, the package may be functionally different if built differently, as mentioned above.</li>
+</ul>
+</li>
+</ul>
+<h3 id="dependency">Dependency</h3>
+<ul>
+<li>loosely speaking, if a package A needs another package B to provide some functionality, then A <em>depends</em> on B, i.e. B is a <em>dependency</em> of A.</li>
+</ul>
+<h4 id="direct-indirect-dependency">Direct/indirect dependency</h4>
+<ul>
+<li>often a package will list out its needed dependencies (possibly also the range of allowed versions of each dependency), either formally in some fixed format, or informally as free text in some readme</li>
+<li><strong>direct dependency</strong>: the dependencies listed for a package</li>
+<li><strong>indirect dependency</strong>: not direct dependency, but are (direct or indirect) dependencies of the direct dependencies</li>
+<li>Why the distinction of direct and indirect dependency? Both are needed to fully capture the dependencies.
+<ul>
+<li>the distinction is useful mainly when the dependencies are updated</li>
+<li>if package A directly depends on package B, presumably the developers of A knows which functionality of B is needed</li>
+<li>if B is updated to B1, then the developers of A need only check whether the needed functionality is still provided by B1, and act accordingly, rather than checking each of the dependencies of B and B1 to see which are still needed.</li>
+</ul>
+</li>
+</ul>
+<h4 id="build-time-run-time-dependency">Build-time/run-time dependency</h4>
+<ul>
+<li><strong>build-time dependency</strong>: dependency needed for building a package
+<ul>
+<li>e.g. a particular version of <code>gcc</code> for compiling a program</li>
+<li>e,g, <strong>statically linked libraries</strong>, i.e. those compiled into the program, so are needed at build-time</li>
+<li>a build-time dependency may or may not be needed when the program is later run</li>
+</ul>
+</li>
+<li><strong>run-time dependency</strong>: dependency needed for using the package, e.g. running the application
+<ul>
+<li>e.g. the <strong>dynamically linked libraries</strong>, i.e. the libraries will be loaded only when the program is run</li>
+<li>nowadays, most programs use mostly dynamically linked libraries</li>
+<li>NOTE: a dependency can be both build-time and run-time dependency</li>
+</ul>
+</li>
+</ul>
+<h4 id="optional-dependency">Optional dependency</h4>
+<ul>
+<li><strong>optional dependency</strong>: dependency that can be omitted for the package to build or run, but some functionality may be missing</li>
+<li>e.g. <a href="http://www.inkscape.org/">inkscape</a> can be built without the optional dependency <code>potrace</code>, just without bitmap tracing functionality.</li>
+<li>in most <strong>package managers</strong> which mainly distribute binary packages, often most optional dependencies would be included to provide the most functionality</li>
+</ul>
+<h3 id="dependency-hell">Dependency hell</h3>
+<ul>
+<li>roughly speaking, <a href="https://en.wikipedia.org/wiki/Dependency%5Fhell">dependency hell</a> refers to the problems caused by the dependency on specific versions of some packages.</li>
+<li>dependency hell takes a few forms:
+<ul>
+<li>too many or long chains of dependencies:
+<ul>
+<li>this is only a problem if the dependencies have to be hunted down manually, which could become tedious very quickly</li>
+<li>most package managers solve this by installing the dependencies when a package is installed</li>
+</ul>
+</li>
+<li>conflicting dependencies:
+<ul>
+<li>
+<p>in many package manager (and default in dynamic library in Linux), minor versions are considered backward compatible, and for each package of the same major version, only the newest minor version is kept/used</p>
+</li>
+<li>
+<p>if both package A and B depend on a package C, but A and B needs different minor versions of C to work correctly, then A and B have conflicts</p>
+</li>
+<li>
+<p>this may happen if B is updated to B1 causing C to be updated to C1, therefore causing A to break, even if the older versions of the 3 packages previously coexisted and worked correctly.</p>
+<figure><img src="/ox-hugo/dep_before_update.png"
+         alt="Figure 1: Dependency before updating B"/><figcaption>
+            <p>Figure 1: Dependency before updating B</p>
+        </figcaption>
+</figure>
+
+<figure><img src="/ox-hugo/dep_after_update.png"
+         alt="Figure 2: Dependency after updating B"/><figcaption>
+            <p>Figure 2: Dependency after updating B</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>in this case, it is clear that if we just let A use the old C, and let the new B1 use the new C1, then A can work as before, and B can still be updated to B1.</p>
+<figure><img src="/ox-hugo/dep_ideal_after_update.png"
+         alt="Figure 3: Ideal dependency after updating B"/><figcaption>
+            <p>Figure 3: Ideal dependency after updating B</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>ways that code of package A can break if a dependency B updates to a supposedly <em>backward compatible</em> minor version:
+<ul>
+<li>although most of the time updating a minor version does not cause problem, they might still cause breakage</li>
+<li>e.g. suppose A depends on a function in B, there could be a few cases:
+<ul>
+<li>the function interface remains unchanged or adds optional parameters, but the implementation is changed:
+<ul>
+<li>A may rely on undocumented behavior of the function, which has changed in the new implementation, although the documented interface is still the same.
+<ul>
+<li>e.g. the old implementation may sort the output as a side effect, but not promised in the function interface, and A may have relied on the sorted order</li>
+</ul>
+</li>
+<li>the new implementation may have buggy edge case, causing A to break</li>
+<li>the new implementation may expose a buggy edge case in A, causing A to break</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="reproducible-build">Reproducible build</h3>
+<ul>
+<li>it is desirable to have the <em>exact same versions</em> of dependencies between testing and production systems, and preferably also for the development environment</li>
+<li>it is therefore desirable to <em>reproduce</em> the exact same set of packages on a different machine (of the same architecture) and/or at a different time</li>
+<li>this could be achieved in two main ways:
+<ul>
+<li>record the set of versions of the (pre-built) packages, and reinstall when needed
+<ul>
+<li>e.g. python virtual environment mostly follows this paradigm</li>
+</ul>
+</li>
+<li>record the set of versions of the packages, and rebuild them when needed
+<ul>
+<li>this is similar to the previous one, with the difference that the package can be built from scratch if needed</li>
+<li>e.g. Guix can rebuild package(s) through the set of package definitions with explicit dependencies information
+<ul>
+<li>Guix can simply download the pre-built package (called <em>substitute</em> in Guix) when available</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>record the set of built packages and just copy them as a whole when needed
+<ul>
+<li>e.g. building a docker image to contain all needed packages</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>isolated building environment can help with reproducibility
+<ul>
+<li>only the explicitly listed dependencies are visible in building, so that the building script will not depend on other packages unknowingly</li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>reproducibility raises the question of <em>sameness</em> of packages
+<ul>
+<li>the package name with version number <em>would be</em> sufficient if each version is always built in the same way with the same versions of dependencies
+<ul>
+<li>this is the strategy adopted by most package managers</li>
+</ul>
+</li>
+<li>a better way is to use the package name together with some kind of <strong>hash</strong>
+<ul>
+<li>not necessarily the hash <em>of</em> the package itself, as we will see in later parts of this series</li>
+<li>but different contents of a package should produce different hashes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="hash">Hash</h3>
+<ul>
+<li>basically a (very large) integer calculated through a <strong>hash function</strong> on some input, e.g. a file</li>
+<li>the calculated integer is in some fixed range, often written as a long hexadecimal string such as &ldquo;730e109bd7a8a32b1cb9d9a09aa2325d2430587ddbc0c38bad911525&rdquo;</li>
+<li>the input however often has no length limit</li>
+<li>e.g. <a href="https://en.wikipedia.org/wiki/SHA-2">sha-256</a>, <a href="https://en.wikipedia.org/wiki/MD5">md5</a></li>
+<li>desired properties of a good <strong>hash function</strong>:
+<ul>
+<li>the same input always produces the same hash, i.e. it is a <em>pure function</em> in the mathematical sense
+<ul>
+<li>i.e. if two inputs produce different hashes, the two inputs <em>must be</em> different</li>
+</ul>
+</li>
+<li>it is one-way
+<ul>
+<li>there is no efficient way to recover the original content just from the hash, other than trying all possible inputs to find those that give the same hash</li>
+</ul>
+</li>
+<li>even a slight change in the input results in drastically different hash
+<ul>
+<li>useful for identifying corruption or tampering of files</li>
+<li>can record the hashes of files, then calculate again at a later time, or after the files are transferred to a different machine, to check that the files still produce the same hashes. If not, the file is definitely different.</li>
+</ul>
+</li>
+<li><em>low</em> collision, i.e. different inputs <em>should</em> produce different hashes
+<ul>
+<li>it is impossible to have <strong>no</strong> collisions unless the set of possible inputs is less than the set of possible outputs</li>
+<li>so the realistic hope is that when used on the set of common real world inputs, there are no collisions</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>note that one hash is enough to represent a web of connected things:
+<ul>
+<li>e.g.
+<ul>
+<li>if you have a few (ordered) inputs, you hash each of them, and write the hashes to a file, then you hash this file</li>
+<li>this is still a deterministic hashing process</li>
+<li>if any of the input is changed, its calculated hash will <em>most probably</em> be different, so this file of hashes will be different, and consequently the final hash will be different</li>
+<li>each of the input itself could contain hashes of more inputs recursively, so a web of things could be represented as one hash</li>
+<li>this technique is also used in <a href="https://git-scm.com/">git</a> version control system to link the commits together</li>
+<li>the same technique could be used to hash the (direct) dependencies of a package, and therefore one hash could represent all the direct and indirect dependencies of a package</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="guix-functional-package-manager">Guix: functional package manager</h2>
+<p>Guix has the following characteristics:</p>
+<ul>
+<li><a href="https://guix.gnu.org/">Guix</a> is in fact a package building system, being a good package manager is a side effect
+<ul>
+<li>inspired by the <a href="https://nixos.org/">Nix</a> functional package manager
+<ul>
+<li>which is in turn partly inspired by functional programming, and by <a href="https://wiki.gentoo.org/wiki/Main%5FPage">Gentoo</a>&rsquo;s package management</li>
+</ul>
+</li>
+<li>to make the package building a <em>pure function</em> and therefore more easily reproduced</li>
+</ul>
+</li>
+<li>designed to properly address the &ldquo;dependency hell&rdquo; problem</li>
+<li>aims at reproducible builds
+<ul>
+<li>the <em>exact</em> same set of packages could be reproduced at a later time or on a different machine (of the same architecture), by just using two small text files</li>
+</ul>
+</li>
+<li>allows atomic installation/uninstallation/upgrade of packages
+<ul>
+<li>each action may involve one or more packages, and is a <strong>transaction</strong>, i.e. either it succeeds as a whole, or does not succeed, there would not be half installed packages</li>
+</ul>
+</li>
+<li>allows easy rollback of install/uninstall/upgrade actions
+<ul>
+<li>each transaction results in new <strong>generation</strong>, which is like a snapshot of the current set of packages (in a <em>profile</em>)</li>
+<li>can easily rollback to previous generations</li>
+<li>so there is little fear of accidentally installing/uninstalling/upgrading the wrong packages</li>
+</ul>
+</li>
+<li>allows different versions of the &ldquo;same&rdquo; package to coexist and used by different packages, without conflict</li>
+<li>encourages declarative package management
+<ul>
+<li>a set of packages can be specified in a <strong>manifest file</strong>, and can be installed in one transaction</li>
+</ul>
+</li>
+<li>currently only works on GNU/Linux
+<ul>
+<li>can be installed on any GNU/Linux distribution such as Debian, Ubuntu, Arch, etc</li>
+<li>can coexist with the existing package manager of the distribution</li>
+</ul>
+</li>
+<li>allows each user to manage his/her own packages
+<ul>
+<li>without root privilege</li>
+<li>without interfering other users</li>
+</ul>
+</li>
+<li>each user can have multiple <strong>profiles</strong> of packages
+<ul>
+<li>each profile has its own list of generations, and can be rolled back separately</li>
+</ul>
+</li>
+<li>allows easy creation of isolated environments with designated packages
+<ul>
+<li>useful for per-project dependency management</li>
+</ul>
+</li>
+<li><strong>Guix system</strong> is a GNU/Linux distribution built on top of the Guix package manager
+<ul>
+<li>uses a config file to declaratively specify the whole system, e.g. the system services, user accounts, etc</li>
+</ul>
+</li>
+</ul>
+<h2 id="what-s-next">What&rsquo;s next?</h2>
+<p>At this point, you may not think these characteristics are special if
+you have not experienced the pains brought by dependency
+management. Hopefully after reading this series of posts you will have
+better appreciation of why a package manager is useful and why Guix is
+a good one due to these good characteristics.</p>
+<p>In this first part we looked at the motivation of better dependency
+management, and listed what Guix promises. Next time we will take a
+closer look at Guix, and discuss the various components of Guix.</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Peter Lo</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-05-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/guix/">Guix</a>
+          <a href="/tags/functional-package-manager/">Functional Package Manager</a>
+          <a href="/tags/reproducibility/">Reproducibility</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/discrete-distributions2/">
+            <span class="next-text nav-default">Discrete Distributions - Part 2</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'https-peterloleungyau-github-io';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:peterloleungyau@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.linkedin.com/in/leung-yau-lo-7a3274167/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/peterloleungyau" class="iconfont icon-github" title="github"></a>
+  <a href="https://peterloleungyau.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Peter Lo</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-139262854-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.4 with even 4.0.0" />
+<meta name="generator" content="Hugo 0.83.0 with even 4.0.0" />
 
 
 <link rel="canonical" href="https://peterloleungyau.github.io/post/discrete-distributions1/" />
@@ -41,22 +41,15 @@
 <meta property="og:title" content="Discrete Distributions - Part 1" />
 <meta property="og:description" content="A probability distribution of a random variable refers to the probabilities that the random variable takes various values. In the case that the random variable can take only countably many different values, it is called a discrete random variable. In this case, we can summarize the distribution by simply specifying the probabilities of the different values. In this post, we first look at a simple example to get an intuitive idea of distribution of discrete random variable, then talk about some related concepts such as conditional probability, independence of events and random variables, expected value and variance." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://peterloleungyau.github.io/post/discrete-distributions1/" />
-<meta property="article:published_time" content="2019-05-27T00:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-27T00:00:00&#43;08:00"/>
+<meta property="og:url" content="https://peterloleungyau.github.io/post/discrete-distributions1/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-27T00:00:00&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-27T00:00:00&#43;08:00" />
 
 <meta itemprop="name" content="Discrete Distributions - Part 1">
-<meta itemprop="description" content="A probability distribution of a random variable refers to the probabilities that the random variable takes various values. In the case that the random variable can take only countably many different values, it is called a discrete random variable. In this case, we can summarize the distribution by simply specifying the probabilities of the different values. In this post, we first look at a simple example to get an intuitive idea of distribution of discrete random variable, then talk about some related concepts such as conditional probability, independence of events and random variables, expected value and variance.">
-
-
-<meta itemprop="datePublished" content="2019-05-27T00:00:00&#43;08:00" />
+<meta itemprop="description" content="A probability distribution of a random variable refers to the probabilities that the random variable takes various values. In the case that the random variable can take only countably many different values, it is called a discrete random variable. In this case, we can summarize the distribution by simply specifying the probabilities of the different values. In this post, we first look at a simple example to get an intuitive idea of distribution of discrete random variable, then talk about some related concepts such as conditional probability, independence of events and random variables, expected value and variance."><meta itemprop="datePublished" content="2019-05-27T00:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-27T00:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="3724">
-
-
-
-<meta itemprop="keywords" content="probability distribution,discrete distribution," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="probability distribution,discrete distribution," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Discrete Distributions - Part 1"/>
 <meta name="twitter:description" content="A probability distribution of a random variable refers to the probabilities that the random variable takes various values. In the case that the random variable can take only countably many different values, it is called a discrete random variable. In this case, we can summarize the distribution by simply specifying the probabilities of the different values. In this post, we first look at a simple example to get an intuitive idea of distribution of discrete random variable, then talk about some related concepts such as conditional probability, independence of events and random variables, expected value and variance."/>
 
@@ -141,36 +134,23 @@
   <h2 class="post-toc-title">Contents</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#discrete-random-variable">Discrete Random Variable</a>
-<ul>
-<li><a href="#simple-example-a-weird-dice">Simple Example: A Weird Dice</a></li>
-<li><a href="#probability-mass-function">Probability Mass Function</a></li>
-<li><a href="#conditional-probability-and-bayes-rule">Conditional Probability and Bayes Rule</a></li>
-<li><a href="#independence">Independence:</a>
-<ul>
-<li><a href="#independent-events">Independent Events</a></li>
-<li><a href="#independent-random-variables">Independent Random Variables</a></li>
-</ul></li>
-<li><a href="#expected-value-and-variance">Expected Value and Variance</a>
-<ul>
-<li><a href="#basic-idea-of-expected-value">Basic idea of expected value</a></li>
-<li><a href="#some-properties-of-expected-value">Some properties of expected value</a></li>
-<li><a href="#variance-expected-squared-deviation-from-the-mean">Variance: expected squared deviation from the mean</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#summary">Summary</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#discrete-random-variable">Discrete Random Variable</a>
+      <ul>
+        <li><a href="#simple-example-a-weird-dice">Simple Example: A Weird Dice</a></li>
+        <li><a href="#probability-mass-function">Probability Mass Function</a></li>
+        <li><a href="#conditional-probability-and-bayes-rule">Conditional Probability and Bayes Rule</a></li>
+        <li><a href="#independence">Independence:</a></li>
+        <li><a href="#expected-value-and-variance">Expected Value and Variance</a></li>
+      </ul>
+    </li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<p>A probability distribution of a random variable refers to the
+      <p>A probability distribution of a random variable refers to the
 probabilities that the random variable takes various values. In the
 case that the random variable can take only countably many different
 values, it is called a discrete random variable. In this case, we can
@@ -180,17 +160,12 @@ to get an intuitive idea of distribution of discrete random variable,
 then talk about some related concepts such as conditional probability,
 independence of events and random variables, expected value and
 variance.</p>
-
 <h2 id="discrete-random-variable">Discrete Random Variable</h2>
-
 <p>We first use a simple example to explain some probability concepts.</p>
-
 <h3 id="simple-example-a-weird-dice">Simple Example: A Weird Dice</h3>
-
 <p>Suppose we have a weird dice, let \(X\) be the random variable of the
 value of the dice when thrown, where the probabilities of getting
 different values are as follows:</p>
-
 <table>
 <thead>
 <tr>
@@ -203,7 +178,6 @@ different values are as follows:</p>
 <th>6</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>\(P(X)\)</td>
@@ -216,7 +190,6 @@ different values are as follows:</p>
 </tr>
 </tbody>
 </table>
-
 <p>Note that the probabilities are all non-negative, and sum to 1. Also
 note that we have not explicitly specified the sample space, which in
 practice is usually omitted, as there could be many possible sample
@@ -226,30 +199,22 @@ set of possible values of the random variable as the sample space, and
 the random variable is simply the identity function on the sample
 space.  E.g. we could take \(\{1, 2, 3, 4, 5, 6\}\) as the sample space
 for \(X\) above.</p>
-
 <p>We may visualize the distribution as follows:</p>
-
-<figure>
-    <img src="/ox-hugo/discrete_eg1.png"/> 
+<figure><img src="/ox-hugo/discrete_eg1.png"/>
 </figure>
-
 
 <p>Recall that the probability of an event is the relative frequency of
 the event when the number of trials approaches infinity. Therefore, if
 we throw the above weird dice a <em>huge</em> number of times, and plot the
 bar chart of the proportion of the different values observed, we would
 get a plot <em>very</em> close to the above.</p>
-
 <p>In this example, the probability of \(X=1\) is twice the probability of
 \(X=3\), so in a large number of trials (e.g. 10000), we would expect to
 see <em>about</em> twice as many 1&rsquo;s as 3&rsquo;s. The probabilities describe how
 the trials would be <em>distributed</em> among the different possible values.</p>
-
 <p>With the summation rule of exclusive (also called <em>disjoint</em>) events, we
 can calculate the probabilities of various events on \(X\).</p>
-
 <p>For example:</p>
-
 <table>
 <thead>
 <tr>
@@ -257,40 +222,32 @@ can calculate the probabilities of various events on \(X\).</p>
 <th>Probability</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>\(X\) is even</td>
 <td>\(P(X \in \{2, 4, 6\}) = P(X=2) + P(X=4) + P(X=6)\), which is 0.05 + 0.4 + 0.15 = 0.6</td>
 </tr>
-
 <tr>
 <td>\(X\) is prime</td>
 <td>\(P(X \in \{2, 3, 5\}) = P(X=2) + P(X=3) + P(X=5)\), which is 0.05 + 0.1 + 0.1 = 0.25</td>
 </tr>
-
 <tr>
 <td>\(X = 3.5\)</td>
 <td>\(P(X = 3.5) = 0\)</td>
 </tr>
 </tbody>
 </table>
-
 <p>In principle, for any event, we can determine the probability by
 summing over the appropriate probabilities.</p>
-
 <h3 id="probability-mass-function">Probability Mass Function</h3>
-
 <p>In general, to summarize the distribution of a discrete random
 variables, we only need to specify its probabilities on different
 values. The function \(f_X(x) = P(X=x)\) is called the <em>Probability Mass
 Function</em> (pmf for short) of the discrete random variable \(X\).</p>
-
 <p>Probability values are non-negative and no larger than 1, and that the
 probability of a sure event is 1. Therefore, for the random variable
 \(X\) in the dice example, any sequence of 6 non-negative numbers that
 sum to 1 could specify a possible distribution.</p>
-
 <p>If a random variable can take only a finite number of values, it is
 possible to explicitly list the probabilities of the different values,
 as we have done in the above example. On the other hand, when a random
@@ -304,21 +261,17 @@ interpretation in the situation being modeled. Such distributions are
 called <em>parametric distributions</em>. We will see concrete examples later
 in a future post, but before that, let&rsquo;s talk about some useful basic
 concepts.</p>
-
 <h3 id="conditional-probability-and-bayes-rule">Conditional Probability and Bayes Rule</h3>
-
 <p>If we know partial information on the value of a random variable, but
 not its exact value, will the probabilities of the different values
 change? In the weird dice example, can we make sense of sentence such
 as &ldquo;what is the probability that \(X\) is 4, <em>given</em> that it is even&rdquo;?</p>
-
 <p>In the frequentist interpretation, a probability is the relative
 frequency of an event in infinitely many trials. Then it seems
 reasonable to interpret the above sentence as &ldquo;the relative frequency
 of 4 among the trials that are even, in an infinitely many
 trials&rdquo;. Let&rsquo;s say we throw the dice 10,000 times, we would expect the
 approximate number of times of the different values as follows:</p>
-
 <table>
 <thead>
 <tr>
@@ -331,7 +284,6 @@ approximate number of times of the different values as follows:</p>
 <th>6</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>\(P(X)\)</td>
@@ -342,7 +294,6 @@ approximate number of times of the different values as follows:</p>
 <td>0.1</td>
 <td>0.15</td>
 </tr>
-
 <tr>
 <td>approx. frequency in 10,000 throws</td>
 <td>2000</td>
@@ -352,17 +303,15 @@ approximate number of times of the different values as follows:</p>
 <td>1000</td>
 <td>1500</td>
 </tr>
-
 <tr>
 <td>relative frequency among even throws</td>
 <td>0</td>
-<td><sup>500</sup>&frasl;<sub>6000</sub></td>
+<td>500/6000</td>
 <td>0</td>
-<td><sup>4000</sup>&frasl;<sub>6000</sub></td>
+<td>4000/6000</td>
 <td>0</td>
-<td><sup>1500</sup>&frasl;<sub>6000</sub></td>
+<td>1500/6000</td>
 </tr>
-
 <tr>
 <td>approx. frequency in \(n\) throws</td>
 <td>\(0.2n\)</td>
@@ -372,7 +321,6 @@ approximate number of times of the different values as follows:</p>
 <td>\(0.1n\)</td>
 <td>\(0.15n\)</td>
 </tr>
-
 <tr>
 <td>relative frequency among even throws</td>
 <td>0</td>
@@ -384,17 +332,15 @@ approximate number of times of the different values as follows:</p>
 </tr>
 </tbody>
 </table>
-
 <p>Out of 10,000 throws, approximately 500 + 4000 + 1500 = 6000 throws
 would be even, therefore, among these throws, the relative frequency
-of 4 is <sup>4000</sup>&frasl;<sub>6000</sub> = <sup>2</sup>&frasl;<sub>3</sub>. We note that the number &ldquo;10,000&rdquo; does not
+of 4 is 4000/6000 = 2/3. We note that the number &ldquo;10,000&rdquo; does not
 play a crucial role. If we consider \(n\) throws, approximately \(0.05n +
 0.4n + 0.15n\) would be even, and the relative frequency of 4 among
 even throws would be approximately \(\frac{0.4n}{0.6n} = \frac{2}{3}\),
 where the \(n\) gets cancelled. As \(n\) approaches infinitely, the true
 relative frequency should converge to \(\frac{2}{3}\), which is
 \(\frac{P(X=4)}{P(X \text{ is even})}\).</p>
-
 <p>In the Bayesian interpretation, probability is a degree of belief of
 an event, normalized such that the degree of belief of the sure event
 is 1. Before knowing anything about the value of the dice throw, our
@@ -410,42 +356,31 @@ degree of belief. Note that dividing the degree of belief by the same
 number would not change their relative degree of belief, so we need
 only divide them by a number \(c\) such that they sum to 1. A moment of
 thought would reveal that we should divide by</p>
-
 <p>\begin{equation}
-c = P(X \text{ is even}) \\<br />
+c = P(X \text{ is even}) \\\<br>
 = P(X=2) + P(X=4) + P(X=6)
 \end{equation}</p>
-
 <p>because then their sum would be</p>
-
 <p>\begin{equation}
-\frac{P(X=2)}{c} + \frac{P(X=4)}{c} + \frac{P(X=6)}{c} \\<br />
-\text{ which is } \\<br />
+\frac{P(X=2)}{c} + \frac{P(X=4)}{c} + \frac{P(X=6)}{c} \\\<br>
+\text{ which is } \\\<br>
 \frac{P(X=2) + P(X=4) + P(X=6)}{c} = 1 \text{ as desired.}
 \end{equation}</p>
-
 <p>Therefore, the &ldquo;the probability that \(X\)
 is 4, <em>given</em> that it is even&rdquo; would be \(\frac{P(X=4)}{P(X \text{ is even})}\),
 which is \(\frac{0.4}{0.6} = \frac{2}{3}\), and unsurprisingly the same
 as the value above.</p>
-
 <p>The concept such as &ldquo;the probability that \(X\) is 4, <em>given</em> that it is
 even&rdquo; is called <em>conditional probability</em>. In general, &ldquo;the
 probability of event A, <em>given</em> the event B&rdquo;, denoted as \(P(A|B)\) is
 defined as</p>
-
 <p>\begin{equation}
 P(A|B) = \frac{P(A \text{ and } B)}{P(B)}
 \end{equation}</p>
-
 <p>where it is assumed that \(P(B) &gt; 0\).</p>
-
 <p>We can visualize it as follows:</p>
-
-<figure>
-    <img src="/ox-hugo/conditional_prob_eg1.png"/> 
+<figure><img src="/ox-hugo/conditional_prob_eg1.png"/>
 </figure>
-
 
 <p>Where the rectangle represents the sample space with area 1, and the
 two ovals represent the events A and B, and their areas are the
@@ -457,38 +392,27 @@ to &ldquo;(not A) and B&rdquo; (the pink part), and normalize them to sum
 to 1. Since the areas of &ldquo;A and B&rdquo; and &ldquo;(not A) and B&rdquo; sums to the
 area of &ldquo;B&rdquo;, therefore \(P(A|B)\) would be \(\frac{P(A \text{ and }
 B)}{P(B)}\).</p>
-
 <p>Moreover, by rearranging the terms of \(P(A|B) = \frac{P(A \text{ and } B)}{P(B)}\), we have</p>
-
 <p>\begin{equation}
 P(A \text{ and } B) = P(B)P(A|B)
 \end{equation}</p>
-
 <p>and similarly we also have</p>
-
 <p>\begin{equation}
 P(A \text{ and } B) = P(A)P(B|A)
 \end{equation}</p>
-
 <p>where we can decompose \(P(A \text{ and } B)\) into two parts, which
 sometimes may be easier to compute.</p>
-
 <p>We also briefly mention the famous Bayes rule, which is a direct
 consequence of the definition of conditional probability:</p>
-
 <p>\begin{equation}
-P(A|B) = \frac{P(A \text{ and } B)}{P(B)} \\<br />
+P(A|B) = \frac{P(A \text{ and } B)}{P(B)} \\\<br>
 = \frac{P(A)P(B|A)}{P(B)}
 \end{equation}</p>
-
 <p>which is very useful when determining \(P(B|A)\) is easier than
 determining \(P(A|B)\). An example of application of the Bayes rule is
 the <em>naive Bayes classifier</em>, but we will not go into details here.</p>
-
 <h3 id="independence">Independence:</h3>
-
 <h4 id="independent-events">Independent Events</h4>
-
 <p>Independence is a very important concept in probability, as it often
 simplifies a lot of calculations. Let&rsquo;s start with independent
 events. What does it mean to say &ldquo;event A is independent of event B&rdquo;?
@@ -496,68 +420,51 @@ One reasonable idea is that &ldquo;knowing B does not give additional useful
 information about A, and vice versa&rdquo;, in other words, &ldquo;knowing B does
 not change the probability of A&rdquo;. In the language of conditional
 probability, this would mean that \(P(A|B) = P(A)\) and \(P(B|A) = P(B)\).</p>
-
 <p>Recall that we have \(P(A \text{ and } B) = P(A)P(B|A)\), so that if A
 and B are independent (accordingly to our intuitive idea above), we
 would have \(P(A \text{ and } B) = P(A)P(B)\). On the other hand, if we
 have \(P(A \text{ and } B) = P(A)P(B)\), we then have</p>
-
 <p>\begin{equation}
-P(A|B) = \frac{P(A \text{ and } B)}{P(B)} \\<br />
-= \frac{P(A)P(B)}{P(B)} \\<br />
+P(A|B) = \frac{P(A \text{ and } B)}{P(B)} \\\<br>
+= \frac{P(A)P(B)}{P(B)} \\\<br>
 = P(A)
 \end{equation}</p>
-
 <p>And similarly we get \(P(B|A) = P(B)\). We therefore see that these two
 conditions are essentially equivalent, but \(P(A \text{ and } B) =
 P(A)P(B)\) is usually taken as the definition of &ldquo;A and B are
 independent events&rdquo;, because it is also well defined when either
 \(P(A)\) or \(P(B)\) is zero.</p>
-
 <p>For more than two events, you can probably guess how the definition
 for two events should be extended:</p>
-
 <blockquote>
 <p>A set of \(k\) events \(A_k\) are <em>mutually independent</em> if and only if</p>
-
 <p>\begin{equation}
-P(A_1 \text{ and } A_2 \text{ and } \ldots \text{ and } A_k) \\<br />
- = P(A_1)P(A_2)\ldots P(A_k)
+P(A_1 \text{ and } A_2 \text{ and } \ldots \text{ and } A_k) \\\<br>
+= P(A_1)P(A_2)\ldots P(A_k)
 \end{equation}</p>
 </blockquote>
-
 <p>We can two visualize independent events as follows:</p>
-
-<figure>
-    <img src="/ox-hugo/independent_events_eg1.png"/> 
+<figure><img src="/ox-hugo/independent_events_eg1.png"/>
 </figure>
-
 
 <p>where the four regions with different colours represent different
 combinations of whether event A and B have occurred. Note that the
 areas align very well such that given B (restricting to the areas in
 the top row), the ratio of area of A to &ldquo;not A&rdquo; has not changed.</p>
-
 <p>On the other hand, for dependent events, to more clearly illustrate,
 we exaggerate in the following diagram.</p>
-
-<figure>
-    <img src="/ox-hugo/dependent_events_eg1.png"/> 
+<figure><img src="/ox-hugo/dependent_events_eg1.png"/>
 </figure>
-
 
 <p>Note that \(P(A)\) and \(P(B)\) have not changed in the two pictures, but
 it is clear that on the left, \(P(A|B) &lt; P(A)\), whereas on the right,
 \(P(A|B) &gt; P(A)\).</p>
-
 <p>In the above weird dice example, we have already seen a pair of
 dependent events: &ldquo;the number is even&rdquo; and &ldquo;the number is 4&rdquo;. For the
 weird dice example, it is difficult to find independent events, but we
 can see examples of independent events when we discuss independent
 random variables below.</p>
-
 <h4 id="independent-random-variables">Independent Random Variables</h4>
-
 <p>Suppose that I throw the weird dice above, and my friend flips a
 biased coin, would we expect the outcomes of the dice and the coin to
 be dependent? I guess not. But what would it mean to say the two
@@ -569,10 +476,8 @@ random variable, the useful information is its probability
 distribution, so we may rephrase this idea of independent random
 variables as &ldquo;given the value of one random variable, the probability
 distribution of the other is not changed, and vice versa&rdquo;.</p>
-
 <p>We have already seen the probability distribution of the value of the
 dice \(X\) above, we copy it to here for convenience.</p>
-
 <table>
 <thead>
 <tr>
@@ -585,7 +490,6 @@ dice \(X\) above, we copy it to here for convenience.</p>
 <th>6</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>\(P(X)\)</td>
@@ -598,9 +502,7 @@ dice \(X\) above, we copy it to here for convenience.</p>
 </tr>
 </tbody>
 </table>
-
 <p>Just for concreteness, suppose the distribution of the biased coin \(Y\) is</p>
-
 <table>
 <thead>
 <tr>
@@ -609,7 +511,6 @@ dice \(X\) above, we copy it to here for convenience.</p>
 <th>T</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>\(P(Y)\)</td>
@@ -618,22 +519,17 @@ dice \(X\) above, we copy it to here for convenience.</p>
 </tr>
 </tbody>
 </table>
-
 <p>If \(X\) and \(Y\) are independent, what should be the probability
 distribution of the pair \((X, Y)\)? If knowing \(Y\) does not change our
 belief on the probabilities of \(X\), then for any values \(x\) and \(y\),
 we should have: \(P(X=x|Y=y) = P(X=x)\). But since</p>
-
 <p>\begin{equation}
 P(X=x|Y=y) = \frac{P(X=x, Y=y)}{P(Y=y)}
 \end{equation}</p>
-
 <p>we see that we should have \(P(X=x, Y=y)\) = \(P(X=x)P(Y=y)\), the similar
 form of multiplication of probabilities as in independent events!</p>
-
 <p>Therefore, the distribution of \(X\) and \(Y\) together (called the <em>joint
 distribution</em>) would look like this:</p>
-
 <table>
 <thead>
 <tr>
@@ -647,7 +543,6 @@ distribution</em>) would look like this:</p>
 <th>\(P(Y)\)</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>\(Y=H\)</td>
@@ -659,7 +554,6 @@ distribution</em>) would look like this:</p>
 <td>0.045</td>
 <td>0.3</td>
 </tr>
-
 <tr>
 <td>\(Y=T\)</td>
 <td>0.14</td>
@@ -670,7 +564,6 @@ distribution</em>) would look like this:</p>
 <td>0.105</td>
 <td>0.7</td>
 </tr>
-
 <tr>
 <td>\(P(X)\)</td>
 <td>0.2</td>
@@ -683,7 +576,6 @@ distribution</em>) would look like this:</p>
 </tr>
 </tbody>
 </table>
-
 <p>You may try to verify that indeed we have \(P(X=x,Y=y)\) =
 \(P(X=x)P(Y=y)\).  Note that in the joint distribution of \(X\) and \(Y\),
 the sums of each row give the probability distribution of \(Y\), and the
@@ -695,134 +587,114 @@ distribution</em>. The marginal distribution can be obtained by summing
 (in the discrete case) over all the possible values of other random
 variables in the joint distribution (a process called
 <em>marginalization</em>).</p>
-
 <p>In fact independence of random variable is defined as:</p>
-
 <blockquote>
 <p>Two random variables \(X\) and \(Y\) are <em>independent</em> if and only if</p>
-
 <p>\(P(X \in A \text{ and } Y \in B) = P(X \in A)P(Y \in B)\) for any events \(\{X \in A\}\) and \(\{Y \in B\}\).</p>
 </blockquote>
-
 <p>This definition implies the condition we considered above, by taking
 the events be \(X=x\) and \(Y=y\). And for discrete random variables, it
 is easy to see the above condition implies the definition here,
 because the probability of any event can be calculated from the
 appropriate sums. Indeed, suppose \(A=\{x_1, x_2, \ldots\}\) and \(B=\{y_1,
 y_2, \ldots\}\), we have</p>
-
 <p>\begin{equation}
-P(X \in A \text{ and } Y \in B) = \sum_i\sum_j{P(X=x_i, Y=y_j)} \\<br />
-= \sum_i\sum_j{P(X=x_i)P(Y=y_j)} \\<br />
-= \left\{\sum_i{P(X=x_i)}\right\} \left\{\sum_j{P(Y=y_j)}\right\} \\<br />
+P(X \in A \text{ and } Y \in B) = \sum_i\sum_j{P(X=x_i, Y=y_j)} \\\<br>
+= \sum_i\sum_j{P(X=x_i)P(Y=y_j)} \\\<br>
+= \left\{\sum_i{P(X=x_i)}\right\} \left\{\sum_j{P(Y=y_j)}\right\} \\\<br>
 = P(X \in A)P(Y \in B)
 \end{equation}</p>
-
 <p>You may have already guessed the definition of independence of \(k\)
 random variables. In fact, we can extend the definition to countably
 many random variables:</p>
-
 <blockquote>
 <p>A sequence of random variables \(\{X_1, X_2, \ldots\}\) are mutually
 independent if and only if for any finite subset of them (no
 duplicates), say \(\{X_{s_1}, X_{s_2}, \ldots, X_{s_k}\}\), we have</p>
-
 <p>\begin{equation}
 P(X_{s_1} \in A_{s_1}, X_{s_2} \in A_{s_2}, \ldots, X_{s_k} \in
-A_{s_k}) = \\<br />
+A_{s_k}) = \\\<br>
 P(X_{s_1} \in A_{s_1})P(X_{s_2} \in A_{s_2})\ldots
 P(X_{s_k} \in A_{s_k})
 \end{equation}</p>
-
 <p>for any events \(\{X_{s_i} \in A_{s_i}\}\).</p>
 </blockquote>
-
 <h3 id="expected-value-and-variance">Expected Value and Variance</h3>
-
 <h4 id="basic-idea-of-expected-value">Basic idea of expected value</h4>
-
 <p>For numeric random variable (but we would only consider real-valued
 random variables), we can define some sort of &ldquo;average&rdquo; for it. Since
 each value may have different probabilities, intuitively we should
 weight by the probabilities. This intuition is exactly the definition
 of <em>expected value</em> of a discrete random variable.</p>
-
 <blockquote>
 <p>The <em>expected value</em> of a discrete random variable \(X\), denoted as
 \(E(X)\) is defined as</p>
-
 <p>\begin{equation}
 E(X) = \sum_i{x_i P(X=x_i)}
 \end{equation}</p>
 </blockquote>
-
 <p>For the weird dice above, we can calculate the expected value of \(X\) as</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-R" data-lang="R"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-R" data-lang="R"><span class="m">1</span><span class="o">*</span><span class="m">0.2</span> <span class="o">+</span> <span class="m">2</span><span class="o">*</span><span class="m">0.05</span> <span class="o">+</span> <span class="m">3</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="m">4</span><span class="o">*</span><span class="m">0.4</span> <span class="o">+</span> <span class="m">5</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="m">6</span><span class="o">*</span><span class="m">0.15</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="m">1</span><span class="o">*</span><span class="m">0.2</span> <span class="o">+</span> <span class="m">2</span><span class="o">*</span><span class="m">0.05</span> <span class="o">+</span> <span class="m">3</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="m">4</span><span class="o">*</span><span class="m">0.4</span> <span class="o">+</span> <span class="m">5</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="m">6</span><span class="o">*</span><span class="m">0.15</span>
+</code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text">3.6</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-text" data-lang="text">3.6
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>If we throw the weird dice a large number of times (say 10,000), and
+</div><p>If we throw the weird dice a large number of times (say 10,000), and
 then take the arithmetic mean of the realized values, we should obtain a
 number very close to the expected value 3.6, because the proportion
 that each value appears is close to the probability. In general, for a
 discrete numeric random variable, the arithmetic mean of a large
 number of independent trials will converge to the expected value, as
 the number of trials approaches infinity.</p>
-
 <p>We note that the expected value is not an integer, and is not a
 possible value of \(X\). This is often the case for discrete random
 variable, which are usually integer valued. The expected value is also
 called the <em>mean</em>, and could be regarded as some sort of &ldquo;center&rdquo;
 value (another reasonable and usual definition of the &ldquo;center&rdquo; is the
 <em>median</em>).</p>
-
 <p>We not only can take the &ldquo;average&rdquo; of the random variable itself, but
 in fact functions of the random variable.</p>
-
 <blockquote>
 <p>The <em>expected value</em> of a function \(g\) on a discrete random variable \(X\), denoted as
 \(E(g(X))\) is defined as</p>
-
 <p>\begin{equation}
 E(g(X)) = \sum_i{g(x_i) P(X=x_i)}
 \end{equation}</p>
 </blockquote>
-
 <p>For example, for the weird dice, we may calculate \(E(X^2)\)</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-R" data-lang="R"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-R" data-lang="R"><span class="p">(</span><span class="m">1</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="m">0.2</span> <span class="o">+</span> <span class="p">(</span><span class="m">2</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="m">0.05</span> <span class="o">+</span> <span class="p">(</span><span class="m">3</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="p">(</span><span class="m">4</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="m">0.4</span> <span class="o">+</span> <span class="p">(</span><span class="m">5</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="p">(</span><span class="m">6</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="m">0.15</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="p">(</span><span class="m">1</span><span class="n">^2</span><span class="p">)</span><span class="o">*</span><span class="m">0.2</span> <span class="o">+</span> <span class="p">(</span><span class="m">2</span><span class="n">^2</span><span class="p">)</span><span class="o">*</span><span class="m">0.05</span> <span class="o">+</span> <span class="p">(</span><span class="m">3</span><span class="n">^2</span><span class="p">)</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="p">(</span><span class="m">4</span><span class="n">^2</span><span class="p">)</span><span class="o">*</span><span class="m">0.4</span> <span class="o">+</span> <span class="p">(</span><span class="m">5</span><span class="n">^2</span><span class="p">)</span><span class="o">*</span><span class="m">0.1</span> <span class="o">+</span> <span class="p">(</span><span class="m">6</span><span class="n">^2</span><span class="p">)</span><span class="o">*</span><span class="m">0.15</span>
+</code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text">15.6</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-text" data-lang="text">15.6
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>In particular, the expected value of a constant \(a\) is the constant
+</div><p>In particular, the expected value of a constant \(a\) is the constant
 itself, i.e. \(E(a)\) = \(\sum_i{a P(X=x_i)}\) = \(a \sum_i{ P(X=x_i)}\) =
 \(a (1)\) = \(a\).</p>
-
 <p>Recall that a random variable \(X\) is a function on the sample space,
 so \(g(X)\) is also a function on the sample space, which means \(g(X)\)
 is also a random variable.</p>
-
 <p>We can also calculate the expected value of (numeric) functions of two
 or more (not necessarily independent) random variables (defined on the
 same probability space). For example, if we have two discrete random
@@ -833,17 +705,13 @@ the possible combinations of \(X_1=x_1\) and \(X_2=x_2\) weighted by
 which is summing \(x_1 x_2\) over all the possible combinations of
 \(X_1=x_1\) and \(X_2=x_2\) weighted by \(P(X_1=x_1, X_2=x_2)\). The
 expected value \(E(g(X_1, X_2))\) is calculated similarly for a function \(g\).</p>
-
 <h4 id="some-properties-of-expected-value">Some properties of expected value</h4>
-
 <p>We just briefly mention a very nice property of expected value:
 <em>linearity</em>, which means</p>
-
 <p>\begin{equation}
-E(a_1 X_1 + a_2 X_2 + \ldots + a_k X_k) = \\<br />
+E(a_1 X_1 + a_2 X_2 + \ldots + a_k X_k) = \\\<br>
 a_1 E(X_1) + a_2 E(X_2) + \ldots + a_k E(X_k)
 \end{equation}</p>
-
 <p>where the \(\{a_i\}\) are constants, and the random variables \(\{X_i\}\)
 are <strong>not necessarily</strong> independent. In words, if a random variable is
 scaled by a constant, its expected value is also scaled by the same
@@ -851,70 +719,54 @@ constant; and the expected value of a sum of random variables is just
 the sum of the expected values of the random variables. For example,
 we have \(E(X + 3 X^2) = E(X) + 3E(X^2)\), even though \(X\) and \(X^2\) are
 dependent random variables.</p>
-
 <p>But it is important to note that \(E(X_1 X_2)\) does not necessarily
 equal \(E(X_1)E(X_2)\). For example, for the weird dice, \(E(XX) = E(X^2)
 = 15.6\) as calculated above, and \(E(X)E(X)\) = \((3.6)(3.6)\) =
 12.96. However, if \(X_1\) and \(X_2\) are independent random variables,
 we indeed would have \(E(X_1 X_2)\) = \(E(X_1) E(X_2)\).</p>
-
 <h4 id="variance-expected-squared-deviation-from-the-mean">Variance: expected squared deviation from the mean</h4>
-
 <p>We mentioned expected value of a random variable is some sort of
 &ldquo;center&rdquo;, can we have a measure of how &ldquo;spreaded out&rdquo; (i.e. the
 <em>dispersion</em> of) the distribution of the random variable is? One idea
 is to calculate the &ldquo;average&rdquo; of the deviation from the &ldquo;center&rdquo;. One
 such measure is the <em>variance</em>, denoted by \(Var(X)\), and is defined as:</p>
-
 <blockquote>
 <p>The <em>variance</em> of a numeric random variable \(X\) is defined as</p>
-
 <p>\(Var(X) = E(X - \mu)^2\), where \(\mu = E(X)\).</p>
 </blockquote>
-
 <p>Note that for a given random variable \(X\), its mean \(E(X)\) is a
 constant (we usually use the letter \(\mu\) for mean), so the variance
 is the expected value of squared difference from the mean. There are
 other measures of dispersion which do not take the average of
 squared deviation, but rather the average of absolute deviation, but
 we would not discuss these here.</p>
-
 <p>It is intuitively clear that a random variable with a more
 concentrated distribution has less variation, and therefore a smaller
 variance, as illustrated in the following plots:</p>
-
-<figure>
-    <img src="/ox-hugo/discrete_var_eg1.png"/> 
+<figure><img src="/ox-hugo/discrete_var_eg1.png"/>
 </figure>
 
-
 <p>With \(\mu = E(X)\), and the properties of expected value, we see that</p>
-
 <p>\begin{equation}
-Var(X) = E(X - \mu)^2 \\<br />
-= E(X^2 - 2\mu X + \mu^2) \\<br />
-= E(X^2) - E(2\mu X) + E(\mu^2) \\<br />
-= E(X^2) - 2 \mu E(X) + \mu^2 \\<br />
-= E(X^2) - 2 \mu \mu + \mu^2 \\<br />
-= E(X^2) - \mu^2 \\<br />
-= E(X^2) - [E(X)]^2 \\<br />
+Var(X) = E(X - \mu)^2 \\\<br>
+= E(X^2 - 2\mu X + \mu^2) \\\<br>
+= E(X^2) - E(2\mu X) + E(\mu^2) \\\<br>
+= E(X^2) - 2 \mu E(X) + \mu^2 \\\<br>
+= E(X^2) - 2 \mu \mu + \mu^2 \\\<br>
+= E(X^2) - \mu^2 \\\<br>
+= E(X^2) - [E(X)]^2 \\\<br>
 \end{equation}</p>
-
 <p>which gives an alternative formula to calculate the variance.</p>
-
 <p>If the random variable has units (e.g. kg), the unit of its variance
 would also be squared (e.g. kg squared), and therefore does not have
 the same scale as the random variable. To remedy this, we take the
 square root of the variance, which is called the <em>standard deviation</em>
 of the random variable \(X\), often denoted with the letter \(\sigma\), as
 in \(\sigma_X = \sqrt{Var(X)}\).</p>
-
 <h2 id="summary">Summary</h2>
-
 <p>In this post, we have looked at the concepts related to the
 distribution of a discrete random variable through some simple
 examples:</p>
-
 <ul>
 <li>discrete random variable: a random variable with at most countably many different values.</li>
 <li>probability mass function: \(f_X(x) = P(X=x)\), the function giving the probabilities for different values of a discrete random variable.</li>
@@ -924,7 +776,6 @@ examples:</p>
 <li>expected value of discrete numeric random variable: sum of the possible values of the random variable, weighted by the probabilities of the values.</li>
 <li>variance of discrete numeric random variable: expected value of squared deviation from the mean of random variable.</li>
 </ul>
-
 <p>We will look at some common examples of discrete random variables in a
 future post, before we turn to look at continuous random variables.</p>
 
@@ -1005,7 +856,8 @@ future post, before we turn to look at continuous random variables.</p>
 
   <span class="copyright-year">
     &copy; 
-    2019
+    2019 - 
+    2021
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
