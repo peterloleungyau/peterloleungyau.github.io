@@ -5,10 +5,20 @@
     <description>Recent content in Posts on Peter&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 10 May 2021 00:00:00 +0800</lastBuildDate>
     
         <atom:link href="https://peterloleungyau.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Guix Introduction Part 2: What is Guix? A closer look</title>
+      <link>https://peterloleungyau.github.io/post/guix_intro_2_what/</link>
+      <pubDate>Mon, 10 May 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://peterloleungyau.github.io/post/guix_intro_2_what/</guid>
+      <description>This is the second part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This is written in a way that I wish Guix was introduced to me back when I first learned it. This time we take a closer look at Guix, and briefly introduce the various main components of Guix.</description>
+    </item>
     
     <item>
       <title>Guix Introduction Part 1: Motivation and What Guix Promises</title>
