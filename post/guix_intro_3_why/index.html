@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Guix Introduction Part 3: Why Guix? - Peter&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Peter Lo" /><meta name="description" content="This is the third part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at why bother with Guix and how it compares with some other dependency management alternatives such as: system and language package managers; including all dependencies as in docker; another functional package manager Nix." />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://peterloleungyau.github.io/post/guix_intro_3_why/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Guix Introduction Part 3: Why Guix?" />
+<meta property="og:description" content="This is the third part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at why bother with Guix and how it compares with some other dependency management alternatives such as: system and language package managers; including all dependencies as in docker; another functional package manager Nix." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://peterloleungyau.github.io/post/guix_intro_3_why/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-11T00:00:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-11T00:00:00&#43;08:00" />
+
+<meta itemprop="name" content="Guix Introduction Part 3: Why Guix?">
+<meta itemprop="description" content="This is the third part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at why bother with Guix and how it compares with some other dependency management alternatives such as: system and language package managers; including all dependencies as in docker; another functional package manager Nix."><meta itemprop="datePublished" content="2021-05-11T00:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-11T00:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="5033">
+<meta itemprop="keywords" content="Guix,Functional Package Manager,Reproducibility," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Guix Introduction Part 3: Why Guix?"/>
+<meta name="twitter:description" content="This is the third part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at why bother with Guix and how it compares with some other dependency management alternatives such as: system and language package managers; including all dependencies as in docker; another functional package manager Nix."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Peter&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Peter&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Guix Introduction Part 3: Why Guix?</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-11 </span>
+        <div class="post-category">
+            <a href="/categories/guix/"> Guix </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#use-operating-system-package-managers">Use operating system package managers</a>
+      <ul>
+        <li><a href="#downsides">downsides:</a></li>
+        <li><a href="#upsides-of-guix">upsides of Guix:</a></li>
+      </ul>
+    </li>
+    <li><a href="#use-language-specific-package-manager-such-as-pip-packrat-npm-etc">Use language specific package manager such as pip, packrat, npm, etc</a>
+      <ul>
+        <li><a href="#downsides">downsides:</a></li>
+        <li><a href="#upsides-of-guix">upsides of Guix:</a></li>
+      </ul>
+    </li>
+    <li><a href="#avoid-dependency-hell-by-including-all-dependencies">Avoid dependency hell by including all dependencies</a>
+      <ul>
+        <li><a href="#downsides">downsides:</a></li>
+        <li><a href="#upsides-of-guix">upsides of Guix:</a></li>
+      </ul>
+    </li>
+    <li><a href="#use-another-functional-package-manager-such-as-nix">Use another functional package manager such as Nix</a>
+      <ul>
+        <li><a href="#upsides-of-nix-downsides-of-guix">upsides of Nix / downsides of Guix:</a></li>
+        <li><a href="#downsides-of-nix-upsides-of-guix">downsides of Nix / upsides of Guix:</a></li>
+      </ul>
+    </li>
+    <li><a href="#what-s-next">What&rsquo;s next?</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>This is the third part of a brief introduction to the Guix functional
+package manager, and how it could be used to manage dependencies of
+projects, much like virtual environments for Python, but with much
+larger scope.</p>
+<p>This time we look at why bother with Guix and how it compares with
+some other dependency management alternatives such as: system and
+language package managers; including all dependencies as in docker;
+another functional package manager Nix.</p>
+<p>Although there are a lot of package managers at both the language
+level and operating system level, and tools such as docker to help
+tackle the dependency problem, Guix still has merits when compared to
+these, as we now discuss.</p>
+<h2 id="use-operating-system-package-managers">Use operating system package managers</h2>
+<ul>
+<li>e.g. apt, yum, pacman</li>
+<li>these package managers resolve dependencies for you, some allow pinning particular versions of package</li>
+<li>sometimes language specific packages is also packaged</li>
+</ul>
+<h3 id="downsides">downsides:</h3>
+<ul>
+<li>these package managers mostly operate by <em>mutating</em> the system state when adding or removing packages, so may not be easy to revert to previous state in case installing/upgrading some packages causes problem
+<ul>
+<li>if the process is interrupted, the system might be in an inconsistent state</li>
+<li>installing/upgrading package may cause some dependencies to be updated, which might break other packages</li>
+<li>subsequently removing that package does not necessarily revert the updated dependencies</li>
+</ul>
+</li>
+<li>since installing/upgrading package may cause dependencies to be updated, which may cause conflicts if some packages need older versions of the dependencies
+<ul>
+<li>although this is not common, this could be painful when it happens</li>
+<li>this is problematic often when you want newer version of some package, but older version of another package, and they (or their chain of dependencies) somehow have version conflicts</li>
+</ul>
+</li>
+<li>since the packages are installed to some shared location, usually root privilege is needed to install/upgrade/remove packages, e.g. through <code>sudo</code>
+<ul>
+<li>this is not much of a problem on desktop Linux system because it is often used by one person</li>
+<li>it is more of a problem on servers with multiple users, either we trust all users and give them root privilege (through <code>sudo</code>), or we reserve the root privilege to a small number of users (e.g. the system admins)</li>
+<li>and the possibility of possible breakage and conflicts when upgrading packages only increases with the number of users</li>
+<li>therefore, on such systems, some users may not get the packages he/she wants, either it is too new or too old, because the updating schedule is often set by the system admins</li>
+<li>package managers such as <a href="https://brew.sh/">Homebrew</a> try to remedy this short-coming by installing packages under the user&rsquo;s home directory, and therefore each user can manage his/her own packages without root privilege
+<ul>
+<li>although this reduces possible conflicts with other users, there are still possible conflicts among the packages</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="upsides-of-guix">upsides of Guix:</h3>
+<ul>
+<li>Guix can be used just like the usual system package manager, although there are better ways of using it for specific needs</li>
+<li>every install/remove/upgrade packages action (which may involve multiple packages) is one <em>transaction</em>, and causes a <em>generation</em> to be created
+<ul>
+<li>Guix can detect and remedy interrupt of the action to maintain transactional behavior, i.e. either it succeeds or fails as a whole, so that the system would not be in a half-completed inconsistent state.
+<ul>
+<li>if an action is interrupted, it has not succeeded, and can be safely repeated</li>
+<li>but in case an action involves multiple packages, a completely downloaded or built package need not be re-built or re-downloaded when the action is repeated, since they would be cached (in a <em>store</em> where only the Guix daemon can modify) and identified by hash.</li>
+</ul>
+</li>
+<li>a <em>generation</em> is essentially a record of the set of specific packages and their dependencies, so it is easy to revert to previous generation
+<ul>
+<li>all the packages and dependencies referenced by a generation would be kept in the system</li>
+<li>so normally removing packages in Guix simply results in a generation without those packages, the packages themselves are still in the system cache, this is similar in spirit to git where a commit &ldquo;deletes&rdquo; some files.</li>
+<li>reverting to other generation involves only updating some symbolic links, so is quick</li>
+<li>the user can safely try out different versions of some packages, knowing that it is easy to revert to previous known good state if the user dislike the version for whatever reason (e.g. bugs, different UI, missing features, etc)</li>
+<li>the user can optionally delete older generations, and do a <em>garbage collection</em> to really delete any unreferenced (directly or indirectly) packages to free up disk space</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>each package in Guix literally has its dependencies hard-coded using absolute paths to the dependency in the <em>store</em> (as much as possible)
+<ul>
+<li>each package in Guix is cached in <code>/gnu/store</code> with a path with some sort of hash to identify the exact version of the package</li>
+<li>therefore an updated package may also have updated dependencies, but older versions of the package or other packages still refer to their previous versions of dependencies fixed at built time</li>
+<li>therefore there is no fear that updating a package will break another package just because they share some dependencies with conflicting versions</li>
+<li>also, two packages with conflicting dependencies can coexist in Guix because each can have their own versions of dependencies</li>
+</ul>
+</li>
+<li>Guix allows each user to manage his/her own packages without root privilege
+<ul>
+<li>the <em>store</em> of installed packages in Guix is managed by a dedicated daemon, so is essentially read-only to the users, so identical packages can be safely shared</li>
+<li>each user has his/her symbolic links under the home directory to profiles containing sets of packages, so any install/upgrade/remove actions can be performed by the user without root privilege</li>
+<li>and as mentioned above, because of hard-coded dependencies for each package, there will not be package conflicts among users nor for the same user</li>
+</ul>
+</li>
+</ul>
+<h2 id="use-language-specific-package-manager-such-as-pip-packrat-npm-etc">Use language specific package manager such as pip, packrat, npm, etc</h2>
+<ul>
+<li>many programming languages have their own package manager, because the system package manager may not have these language-specific packages, and having a language specific one would be more uniform across different operating systems or Linux distributions</li>
+<li>e.g.
+<ul>
+<li>pip for Python</li>
+<li><code>install.packages()</code> for R</li>
+<li>npm for Javascript</li>
+<li>RubyGems for Ruby</li>
+<li>Cabal for Haskell</li>
+</ul>
+</li>
+<li>for better management of possibly different packages for different projects, there are either some sort of <em>virtual environment</em>, or some kind of <em>lock files</em> to pin the versions of set of packages for each project, e.g.
+<ul>
+<li><a href="https://github.com/pyenv/pyenv#simple-python-version-management-pyenv">pyenv</a>, <a href="https://virtualenv.pypa.io/en/stable/">virtualenv</a>, <a href="https://docs.continuum.io/anaconda/packages/pkg-docs/">anaconda</a> for Python, see <a href="https://stackoverflow.com/a/39928067">https://stackoverflow.com/a/39928067</a> for a brief comparison</li>
+<li><a href="https://rstudio.github.io/packrat/">packrat</a> or <a href="https://rstudio.github.io/renv/">renv</a> for R</li>
+<li>rubygems, npm and cabal have lock files</li>
+</ul>
+</li>
+</ul>
+<h3 id="downsides">downsides:</h3>
+<ul>
+<li>these language-specific package managers naturally only handle packages for one programming language
+<ul>
+<li>if a project uses only one programming language, e.g. Python, then either one of the virtual environment manger may be sufficient</li>
+<li>but if the projects in the same team use multiple programming languages, e.g. both Python and R for data science projects, then the users would need to be familiar with multiple package managers</li>
+</ul>
+</li>
+<li>these package managers may not help with system-level dependencies, especially when pre-built binary package is not available (e.g. R packages under Linux) and the package needs to be built locally</li>
+<li>some dependencies are not managed by these virtual environments
+<ul>
+<li>e.g. packrat, being an R library, does not help manage the version of R itself
+<ul>
+<li>although this is often OK because R is usually backward compatible, but sometimes there could be issues, e.g. see <a href="https://github.com/rstudio/packrat/issues/327">https://github.com/rstudio/packrat/issues/327</a></li>
+</ul>
+</li>
+<li>in contrast, virtual environments in Python can also manage different versions of Python, because there are bigger differences between versions of Python</li>
+</ul>
+</li>
+<li>the virtual environments are often setup per-project, but identical packages (and dependencies) may be duplicated instead of shared, taking up more disk space than necessary (unless the file system had built-in support for deduplication)
+<ul>
+<li>e.g. packrat for R install a copy of the needed packages for each project</li>
+<li>in contrast, renv for R has a global shared cache of packages, so that identical packages can be shared for different projects, see <a href="https://cloud.r-project.org/web/packages/renv/vignettes/renv.html">https://cloud.r-project.org/web/packages/renv/vignettes/renv.html</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="upsides-of-guix">upsides of Guix:</h3>
+<ul>
+<li>Guix has system-level libraries, applications, language specific packages all at the same level, and can be managed in the same way.
+<ul>
+<li>e.g. <code>r-tidyverse</code> is the Guix package for the R <a href="https://www.tidyverse.org/">tidyverse</a> package, which depends on many other R packages, all of which can also be managed by Guix</li>
+<li>e.g. <code>python-numpy</code> is the Guix package for the Python <a href="https://numpy.org/">numpy</a> package, which depends on <code>gfortran@7.5.0</code> (version 7.5.0), <code>lapack@3.9.0</code>, <code>openblas@0.3.9</code>, <code>python-cython@0.29.21</code> and <code>python-pytest@5.3.5</code></li>
+<li>e.g. <code>r-xml</code> is the Guix package for the R <a href="https://cran.microsoft.com/web/packages/XML/index.html">xml</a> package, which (as of this writing, at version 3.99-0.5) depends on <a href="mailto:libxml2@2.9.10">libxml2@2.9.10</a>, <a href="mailto:pkg-config@0.29.2">pkg-config@0.29.2</a> and <a href="mailto:zlib@1.2.11">zlib@1.2.11</a>, but these libraries are managed by Guix in the same way as any other dependencies</li>
+<li>the philosophy of Guix is really to manage as many dependencies as sensible, e.g. <code>emacs-projectile</code> is the Guix package for the <a href="https://docs.projectile.mx/projectile/index.html">projectile</a> package of the <a href="https://www.gnu.org/software/emacs/">GNU Emacs</a> text editor</li>
+<li>Guix can also manage R itself as a package, so the R version can also be managed just as any other packages in your project</li>
+<li>therefore, Guix can handle dependencies across multiple programming languages, and mixing with system level dependencies</li>
+</ul>
+</li>
+<li>all Guix packages are put in <code>/gnu/store</code>, with a path having the name and a hash, e.g. <code>/gnu/store/9naz5xl42amla3ph860yxxqrk9420nvr-r-tidyverse-1.3.0</code> for the <code>r-tidyverse</code> currently on my system
+<ul>
+<li>this store is only modifiable by the Guix daemon, and are read-only for normal users</li>
+<li>by virtue of the nice properties of the hash, this path serves as a unique identity of package, even if they have the same version number
+<ul>
+<li>e.g. currently on my system, I find three Python 3.8.2 packages with different hashes, which are probably dependencies of other packages, and are built with slightly different settings:
+<ul>
+<li><code>/gnu/store/09a5iq080g9b641jyl363dr5jkkvnhcn-python-3.8.2</code></li>
+<li><code>/gnu/store/jxx8fr78jrcvpid5aplmkplbm1dk6czs-python-3.8.2</code></li>
+<li><code>/gnu/store/q9rm8h9imazsq2c4qiv2yjpvlvliywqb-python-3.8.2</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>therefore, the exact same package (as identified using the path) can be shared, while different versions (even with the same version number) can coexist</li>
+<li>also, when installing packages, if the exact package is also in the store, it need not be downloaded/built again</li>
+</ul>
+</li>
+<li>Guix can manage per-project dependencies, similar to a virtual environment or a per-project lockfile
+<ul>
+<li>
+<p>a list of packages can be recorded in a <em>manifest</em> file, which is a plain text file that can be easily version-controlled</p>
+</li>
+<li>
+<p>e.g. a manifest file for some R packages may look like this (this is in fact <a href="https://en.wikipedia.org/wiki/Scheme%5F(programming%5Flanguage)">Scheme</a> code, because Guix is implemented as a <em>domain specific language</em> in <a href="https://www.gnu.org/software/guile/">Guile</a> implementation of Scheme):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">specifications-&gt;manifest</span>
+  <span class="o">&#39;</span><span class="p">(</span>
+    <span class="c1">;; R</span>
+    <span class="s">&#34;r&#34;</span>
+    <span class="s">&#34;r-yaml&#34;</span>
+    <span class="s">&#34;r-xgboost&#34;</span>
+    <span class="s">&#34;r-tidymodels&#34;</span>
+    <span class="s">&#34;r-tidyverse&#34;</span>
+    <span class="s">&#34;r-survminer&#34;</span>
+    <span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>the manifest file is declarative, and simple enough that it can be easily maintained even by manually editing as needed</p>
+</li>
+<li>
+<p>note that the manifest file only contains the names of the packages, but not the explicit versions</p>
+<ul>
+<li>so by itself, it cannot pin-point the exact versions of the packages (and their dependencies)</li>
+<li>each (specific version) of package is described by a package definition
+<ul>
+<li>
+<p>e.g. the package definition for <code>r-xgboost</code> (version 1.2.0.1) is:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">define-public</span> <span class="nv">r-xgboost</span>
+  <span class="p">(</span><span class="nf">package</span>
+    <span class="p">(</span><span class="nf">name</span> <span class="s">&#34;r-xgboost&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">version</span> <span class="s">&#34;1.2.0.1&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">source</span>
+     <span class="p">(</span><span class="nf">origin</span>
+       <span class="p">(</span><span class="nf">method</span> <span class="nv">url-fetch</span><span class="p">)</span>
+       <span class="p">(</span><span class="nf">uri</span> <span class="p">(</span><span class="nf">cran-uri</span> <span class="s">&#34;xgboost&#34;</span> <span class="nv">version</span><span class="p">))</span>
+       <span class="p">(</span><span class="nf">sha256</span>
+        <span class="p">(</span><span class="nf">base32</span>
+         <span class="s">&#34;16hpvv2hwdzcyg90z7c1g5d2hj011qk8mivy4l2nqd2g7rkjwis4&#34;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">build-system</span> <span class="nv">r-build-system</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">propagated-inputs</span>
+     <span class="o">`</span><span class="p">((</span><span class="s">&#34;r-data-table&#34;</span> <span class="o">,</span><span class="nv">r-data-table</span><span class="p">)</span>
+       <span class="p">(</span><span class="s">&#34;r-magrittr&#34;</span> <span class="o">,</span><span class="nv">r-magrittr</span><span class="p">)</span>
+       <span class="p">(</span><span class="s">&#34;r-matrix&#34;</span> <span class="o">,</span><span class="nv">r-matrix</span><span class="p">)</span>
+       <span class="p">(</span><span class="s">&#34;r-stringi&#34;</span> <span class="o">,</span><span class="nv">r-stringi</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">native-inputs</span>
+     <span class="o">`</span><span class="p">((</span><span class="s">&#34;r-knitr&#34;</span> <span class="o">,</span><span class="nv">r-knitr</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">home-page</span> <span class="s">&#34;https://github.com/dmlc/xgboost&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">synopsis</span> <span class="s">&#34;Extreme gradient boosting&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">description</span>
+     <span class="s">&#34;This package provides an R interface to Extreme Gradient Boosting, which
+</span><span class="s">is an efficient implementation of the gradient boosting framework from Chen
+</span><span class="s">and Guestrin (2016).  The package includes efficient linear model solver and
+</span><span class="s">tree learning algorithms.  The package can automatically do parallel
+</span><span class="s">computation on a single machine.  It supports various objective functions,
+</span><span class="s">including regression, classification and ranking.  The package is made to be
+</span><span class="s">extensible, so that users are also allowed to define their own objectives
+</span><span class="s">easily.&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">license</span> <span class="nv">license:asl2</span><span class="o">.</span><span class="mi">0</span><span class="p">)))</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>we see that it contains information on:</p>
+<ul>
+<li>where to fetch the source files: <code>(uri (cran-uri &quot;xgboost&quot; version))</code></li>
+<li>the sha256 hash of source file: the <code>(sha256 (base32 ...))</code> part to aid reproducibility</li>
+<li>the way to build the package: <code>r-build-system</code> is used here for a typical R package</li>
+<li>the built-time dependency: <code>(native-inputs `((&quot;r-knitr&quot; ,r-knitr)))</code></li>
+<li>the run-time dependencies: <code>(propagated-inputs ...)</code> or <code>(inputs ...)</code> (see <a href="https://guix.gnu.org/manual/en/guix.html#package-Reference">https://guix.gnu.org/manual/en/guix.html#package-Reference</a> for details of the difference between the two)</li>
+<li>other auxiliary information which are not really essential, but nice to have</li>
+</ul>
+</li>
+<li>
+<p>the set of all these package definitions is managed with git repository</p>
+<ul>
+<li>they are managed as <em>channel</em>, which is git repository with some meta-data</li>
+<li>there is an official repository at <a href="https://git.savannah.gnu.org/git/guix.git">https://git.savannah.gnu.org/git/guix.git</a></li>
+<li>user can create their own repository for their own modification or private packages that they would not like to share with outsiders</li>
+<li>the particular commit(s) of the channel(s) in your system <em>determine</em> which exact versions of the packages when installed, reproducibly</li>
+</ul>
+</li>
+<li>
+<p>the current commit(s) of channel(s) can be exported to a plain text file by Guix, e.g.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">list </span><span class="p">(</span><span class="nf">channel</span>
+        <span class="p">(</span><span class="nf">name</span> <span class="ss">&#39;guix</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">url</span> <span class="s">&#34;https://git.sjtu.edu.cn/sjtug/guix.git&#34;</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">commit</span>
+          <span class="s">&#34;2283baae907f4f38a8299d47ba4c0b2b49222883&#34;</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">introduction</span>
+          <span class="p">(</span><span class="nf">make-channel-introduction</span>
+            <span class="s">&#34;9edb3f66fd807b096b48283debdcddccfea34bad&#34;</span>
+            <span class="p">(</span><span class="nf">openpgp-fingerprint</span>
+              <span class="s">&#34;BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA&#34;</span><span class="p">)))))</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Guix also provides <em>time-machine</em> to conveniently use particular commit(s) of channel(s) (in the form as exported above) for any Guix actions, see <a href="https://guix.gnu.org/manual/en/guix.html#Invoking-guix-time%5F002dmachine">Invoking guix time-machine</a></p>
+</li>
+<li>
+<p>therefore, by keeping two easily version-controlled plain text files (the manifest file for packages and the exported channel description), a set of particular versions of packages can be recorded reproducibly</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>there are a few ways to use the manifest file (and can be used together with channel description through time-machine for maximum benefits), in fact a manifest file is only a convenient way to specify a list of packages, so can be used for different commands of Guix:</p>
+<ul>
+<li>install the specified packages in one transaction (on the default profile of the user):
+<ul>
+<li>this is inconvenient for managing different sets of packages for different projects, because the actions are applied to the default profile of the user</li>
+<li>there are better ways for managing per-project packages</li>
+</ul>
+</li>
+<li>a better way is to install the specified packages in a separate profile for the project:
+<ul>
+<li>each user can create multiple profiles in addition to the default one, and each profile can have a separate set of packages and its own sequence of generations</li>
+<li>each profile can be activated as needed, much like a virtual environment in Python</li>
+<li>the Guix install/upgrade/remove actions can be applied to specified profile, see the <code>-p</code> option of <a href="https://guix.gnu.org/manual/en/guix.html#Invoking-guix-package">Invoking-guix-package</a> for details</li>
+<li>but the downside is that when the set of packages in the manifest file is changed, the user need to remember to reapply the manifest file to the chosen profile to update the set of packages</li>
+<li>if the packages for each project are rarely changed, using profiles can be a reasonable way of managing per-project packages, but there is still a better way</li>
+</ul>
+</li>
+<li>spawns a new shell with the specified packages accessible in the <code>PATH</code>, by using <code>guix environment</code>:
+<ul>
+<li><code>guix environment</code> is a powerful and flexible command in Guix
+<ul>
+<li>we can choose to have the packages themselves be accessible in the shell, by placing the list of packages or using the <code>-m</code> option for manifest file after the <code>--ad-hoc</code> option</li>
+<li>or we can choose to have the direct dependencies of the packages be accessible, or both
+<ul>
+<li>having the dependencies be accessible is useful for developing a package, because we may need the dependencies for testing the building of the package and tweaking as needed</li>
+</ul>
+</li>
+<li>we can either have an interactive shell with the needed packages accessible,</li>
+<li>or we can directly execute a command in the new shell by placing the command (and the arguments) after a <code>--</code> at the end of the list of packages</li>
+<li>can choose to have only the specified packages be accessible in the new shell by using the <code>--pure</code> option, the default is to augment current <code>PATH</code></li>
+<li>can even choose to run the command inside an isolated container, which uses the isolation capability of the Linux kernel in a similar way to docker containers</li>
+<li>of course this can be combined with <code>guix time-machine</code></li>
+<li><code>guix environment</code> is basically creating a temporary profile, so would not &ldquo;pollute&rdquo; or clutter the default profile when the shell exits or the specified command ends</li>
+<li>the specified packages will be downloaded/built if they are not already in the cache</li>
+<li>see <a href="https://guix.gnu.org/manual/en/guix.html#Invoking-guix-environment">Invoking-guix-environment</a> for more details of other useful options</li>
+</ul>
+</li>
+<li>therefore, we can spawn a new shell with needed packages each time we work on a project, we won&rsquo;t forget to reapply the manifest file</li>
+<li>e.g. to work on a project, suppose in a R project directory
+<ul>
+<li>
+<p>there is a manifest file <code>pkgs.scm</code> specifying the packages (including R itself),</p>
+</li>
+<li>
+<p>and there is an exported channel description file <code>channels.scm</code> containing the commits of the channels</p>
+</li>
+<li>
+<p>when we want to work on the project, we can type in the shell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix time-machine -C channels.scm -- environment --ad-hoc -m pkgs.scm
+<span class="c1"># then in the new shell, start R</span>
+R
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>or you can do it in one line:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix time-machine -C channels.scm -- environment --ad-hoc -m pkgs.scm -- R
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>the first time running this may take a while if the packages are not yet downloaded/built in your system, but subsequent runs should be much quicker because the packages are already cached</p>
+</li>
+<li>
+<p>moreover, these <code>pkgs.scm</code> and <code>channels.scm</code> files can be committed to version control system (e.g. git) together with other project files</p>
+<ul>
+<li>they are project dependencies, which are logically part of the project, so in my opinion should also be committed</li>
+<li>then everyone working on the project would be using the same versions of packages for the same commit</li>
+<li>if these two files are changed, the correct versions of the needed packages would be prepared by Guix the next time you work on the project</li>
+</ul>
+</li>
+<li>
+<p>of course, typing this long line each time is tiresome, so we can make an alias in your shell (e.g. by adding this to your <code>.bashrc</code> or <code>.bash_profile</code>) to reduce some typing, e.g.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">alias</span> <span class="nv">work</span><span class="o">=</span><span class="s2">&#34;guix time-machine -C channels.scm -- environment --ad-hoc -m pkgs.scm&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>then you can just type</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">work -- R
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>working with Python project, or any other language is similar, just make sure you have the needed packages in the <code>pkgs.scm</code> file.</p>
+</li>
+<li>
+<p>one thing that I have not yet investigated deeply enough:</p>
+<ul>
+<li>of course, we usually use some development tools such as IDE or text editor that are usually personal preferences, so they should not be put into <code>pkgs.scm</code>, but should better be installed in the default user profile</li>
+<li>e.g. for R, common choices are <a href="https://rstudio.com/">RStudio</a>, <a href="https://ess.r-project.org/">Emacs ESS</a> with <a href="https://ess.r-project.org/">ESS</a>, <a href="https://www.vim.org/">Vim</a>, <a href="https://code.visualstudio.com/">VSCode</a></li>
+<li>you would need some way to make these tools see and use the R in the newly spawned shell, which may need some tweaking, but I have not yet spent the time to investigate this</li>
+<li>we will explore this further in a future post in this series.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>e.g. another use is in running batch jobs, e.g. a <a href="https://www.jenkins.io/">Jenkins</a> job:
+<ul>
+<li>
+<p>suppose we have the same <code>pkgs.scm</code> and <code>channels.scm</code> in the project root</p>
+</li>
+<li>
+<p>also suppose we want to batch run the R script <code>myscript.R</code></p>
+</li>
+<li>
+<p>assuming we have the same alias as above, we can run the script as (or config the Jenkins job to run this)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">work -- Rscript myscript.R
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>of course you can run any command by putting them after <code>--</code>, and they would be run in the newly spawned shell</p>
+</li>
+<li>
+<p>e.g. to run another shell script containing many commands</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">work -- sh myscript.sh
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>again, using Guix ensures that the correct versions of the needed packages are there when needed, this is especially convenient when you need to run code on multiple machines, e.g. on multiple Jenkins nodes, and saves you the trouble of manually managing the dependencies on multiple machines for multiple projects.</p>
+</li>
+</ul>
+</li>
+<li>it should be clear that Guix can provide at least the same virtual environment like functionality, if not more useful and convenient</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="avoid-dependency-hell-by-including-all-dependencies">Avoid dependency hell by including all dependencies</h2>
+<ul>
+<li>including all dependencies is also a valid way to avoid dependency hell</li>
+<li>this has been common practice in Windows or MacOS for many years</li>
+<li>in Linux, similar strategy has become more common in recent years, e.g (among others).
+<ul>
+<li><a href="https://flatpak.org/">flatpak</a> provides bundled dependencies and sandboxing. This is mainly for application distribution</li>
+<li><a href="https://appimage.org/">AppImage</a> aims at providing a universal format for application that can run in different Linux distributions, with dependencies included. This is mainly for application distribution</li>
+<li><a href="https://www.docker.com/">docker</a> provided bundled dependencies in an <em>docker image</em>, and can run programs in an isolated (optionally for network and file system access) <em>container</em>. This is commonly used for deploying application and preparing a consistent development environment.
+<ul>
+<li>docker images are often built using a <em>dockerfile</em> which is a text file with imperative directives</li>
+<li>docker images are often built on top of another base image which already has included a lot of needed parts, so that by choosing (or first building) a suitable base image, images can often be built with a relatively simple dockerfile.</li>
+<li>once a docker image is built, the same running environment can be easily reproduced by starting another container using the same image</li>
+<li>docker images are organized in layers, where identical layers can be shared between images
+<ul>
+<li>roughly, each directive in the dockerfile creates a layer</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>I will focus more on docker, as I do not have much experience with either flatpak or AppImage, but I think the comments apply similarly.</li>
+</ul>
+<h3 id="downsides">downsides:</h3>
+<ul>
+<li>although once the package or docker image is built, the user should have little trouble with dependencies, these tools do not provide much help with building the package or docker image</li>
+<li>in order to <em>build</em> a docker image <em>reproducibly</em> through dockerfile, great care must be exercised:
+<ul>
+<li>a dockerfile often starts from a base image (e.g. from <a href="https://hub.docker.com/">docker hub</a>) by a name and a tag, but the image itself may have been updated inbetween builds
+<ul>
+<li>if the base image is something like <code>ubuntu:latest</code> which is meant to be the most updated version, it is normal that different builds using the same dockerfile would see different base image</li>
+</ul>
+</li>
+<li>most dockerfiles would then update the package manager repository of the base image, e.g. <code>apt-get update</code> for Debian based distributions
+<ul>
+<li>this is usually done to get security updates of the packages</li>
+<li>therefore, at different times, the exact versions of the packages may be different</li>
+</ul>
+</li>
+<li>then it is usual to install some package through the distribution package manager of the base image, or some language specific package manager
+<ul>
+<li>if the package versions are not carefully pinned, different versions may get installed at different times</li>
+</ul>
+</li>
+<li>if some packages are built from git repository, then a particular commit need to be used, otherwise, the latest version at the time of the build will be used</li>
+<li>basically, dockerfile itself does not provide much help for reproducible build, it is up to the writer of the dockerfile to ensure as much reproducibility as possible</li>
+</ul>
+</li>
+<li>since the layers are organized linearly, the potential sharing is limited unless the dockerfiles of the different images are carefully organized to have as much in common as possible from the top</li>
+<li>if some packages are built in building the docker image, some files or packages that are only needed in build time may be left over in the final image, if not carefully removed, making the image larger than necessary
+<ul>
+<li>see for example <a href="https://pythonspeed.com/articles/smaller-python-docker-images/">Multi-stage builds \#1: Smaller images for compiled code</a> and <a href="https://medium.com/the-artificial-impostor/smaller-docker-image-using-multi-stage-build-cb462e349968">Smaller Docker Image using Multi-Stage Build</a> for using multi-stage build to reduce docker image size</li>
+</ul>
+</li>
+<li>of course, sometimes the intention is simply to build the latest version of some packages, without reproducibility requirements, then dockerfile is sufficient</li>
+</ul>
+<h3 id="upsides-of-guix">upsides of Guix:</h3>
+<ul>
+<li>strong reproducibility guarantee
+<ul>
+<li>package definition contains the hash of source file for package building</li>
+<li>isolated environment is used for package building, to make the build process as deterministic as possible</li>
+<li>therefore need only use the same channel description file and Guix time machine to get the exact set of package definitions</li>
+<li>together with a manifest file of desired packages, the desired set of packages and their dependencies can be exactly reproduced easily</li>
+</ul>
+</li>
+<li>Guix can be used to produce docker image
+<ul>
+<li>Guix can pack a set of packages and their dependencies (and nothing more, e.g. no leftover files only for building some packages) into various different formats, e.g. docker image, tarball and squashfs image, see the <code>-f</code> option in <a href="https://guix.gnu.org/manual/en/guix.html#Invoking-guix-pack">Invoking guix pack</a> for details
+<ul>
+<li>Guix can also build a vm-image, disk-image or docker image through <code>guix system vm-image</code>, <code>guix system disk-image</code> or <code>guix system docker-image</code> respectively, see <a href="https://guix.gnu.org/manual/en/html%5Fnode/Invoking-guix-system.html#Invoking-guix-system">Invoking guix system</a> for details</li>
+</ul>
+</li>
+<li>of course, this can be combined with Guix time machine through a channel file, and to use manifest files for the set of packages wanted</li>
+<li>therefore, we can use Guix to produce docker image instead of using dockerfile to enjoy better reproducibility, and continue to use the surrounding infrastructure built around docker images, e.g. <a href="https://kubernetes.io/">Kubernetes</a></li>
+<li>therefore, Guix can be used in a complementary way to docker, if you do not wish to completely replace docker with Guix</li>
+</ul>
+</li>
+<li>Guix also allows running programs in container:
+<ul>
+<li>by using the isolation capability of the Linux kernel, Guix environment allows running programs in container basically in the same way as docker</li>
+<li>the user can also control the sharing of current working directory and the network</li>
+<li>see the <code>--container</code> or <code>-C</code> option and other related options in <a href="https://guix.gnu.org/manual/en/guix.html#Invoking-guix-environment">Invoking guix environment</a> for details, but note that it requires a Linux kernel at least as new as version 3.19</li>
+</ul>
+</li>
+<li>more fine grained sharing
+<ul>
+<li>in Guix, each exact version of each package is identified by a hash (together with package name and version number), and identical packages are cached in the store and easily shared, either directly needed, or indirectly needed as a dependency of another package</li>
+<li>this sharing is automatic, so does not need careful arrangement of the user, and much more fine-grained than simple layer sharing in docker image</li>
+<li>there has been discussion among Guix developers to extend the sharing to individual files, so that identical files in different packages can also be shared</li>
+</ul>
+</li>
+</ul>
+<h2 id="use-another-functional-package-manager-such-as-nix">Use another functional package manager such as Nix</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Nix%5Fpackage%5Fmanager">Nix</a> originated from Dolstra, E.&rsquo;s PhD research <a href="https://nixos.org/~eelco/pubs/phd-thesis.pdf">The Purely Functional Software Deployment Model</a>, and refers to two related things:
+<ul>
+<li>Nix is a dynamically typed, functional programming language with lazy evaluation, designed for implementing the Nix functional package manager</li>
+<li>Nix is a functional package manager implemented using the Nix programming language
+<ul>
+<li>Nix can be used on Linux and MacOS</li>
+<li>Guix is inspired by Nix</li>
+<li>basically Guix is a re-implementation of the Nix package manager using Guile instead of the Nix programming language, and in the process can correct some crufts and add some improvements</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://nixos.org/">NixOS</a> is a Linux distribution based on the Nix package manager, in the same way that Guix system is a Linux distribution based on the Guix package manager</li>
+<li>Nix is also a fine choice of functional package manager</li>
+</ul>
+<h3 id="upsides-of-nix-downsides-of-guix">upsides of Nix / downsides of Guix:</h3>
+<ul>
+<li>while Guix is only available in Linux, Nix is available in both Linux and MacOS. However, the supporting and testing of packages in MacOS may not be as good as in Linux</li>
+<li>since Nix was developed (first around 2004) much earlier than Guix (first release in 2013, see <a href="https://en.wikipedia.org/wiki/GNU%5FGuix#Releases">GNU Guix Releases</a>), Nix has more packages</li>
+</ul>
+<h3 id="downsides-of-nix-upsides-of-guix">downsides of Nix / upsides of Guix:</h3>
+<ul>
+<li>the Nix package manager is implemented in the Nix programming language, which is a very specialized and niche programming language because it is not used in other contexts or purposes
+<ul>
+<li>on the other hand, Guix is implemented in Guile, which is a dialect of Scheme. Scheme is a general purpose programming language useful in other contexts</li>
+<li>of course, for simple use, the users of Nix need not know much about the underlying implementation language, just as Guix users need not know Guile for simple uses</li>
+<li>but for more complicated uses, some knowledge of Nix (respectively Guile in the case of Guix) is needed, in which case learning a general purpose language may be considered more useful than learning a niche language, and the tools normally used for Scheme (e.g. editor support, REPL, debuggers) can be used for Guix hacking</li>
+<li>also, the data structures available in the Nix language is more limited, whereas Guix can use distinct data structures for different kinds of objects
+<ul>
+<li>e.g. in Nix, each package is represented as a <em>function</em> that takes inputs from a large mapping; but in Guix a package is represented as a first-class object in Scheme, forming an explicit dependency graphs, which easily allows different kinds of processing on the dependencies (e.g. substitute a particular package with a modified one; or plotting the dependency graph for visualization)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Guix was developed much later than Nix, and therefore has a chance to improve on some early decisions of Nix after some years of real world usage experience
+<ul>
+<li>e.g. the use of richer Scheme data structures in Guix for different kinds of objects</li>
+<li>e.g. the rough equivalent to <code>guix environment</code> in Nix is <a href="https://nixos.wiki/wiki/Development%5Fenvironment%5Fwith%5Fnix-shell">nix-shell</a>, which is originally intended to provide a shell where the build-time dependencies of a package is available for development and testing
+<ul>
+<li>if you want to have some packages available in the new shell, you can define a dummy package with the desired packages as build-time dependencies</li>
+<li>in contrast, <code>guix environment</code> allows specifying the list packages of which their dependencies are wanted, or the list of packages which themselves are wanted (the <code>--ad-hoc</code> option), or a mixture of the two
+<ul>
+<li>apparently <code>nix-shell</code> now also allows this: <a href="https://nixos.org/manual/nix/unstable/command-ref/nix-shell.html">https://nixos.org/manual/nix/unstable/command-ref/nix-shell.html</a></li>
+</ul>
+</li>
+<li>also, to my knowledge <code>nix-shell</code> does not have the convenient time machine as <code>guix time-machine</code> to pin-point the set of packages at particular commit of channels, but similar effect could be achieved by some Nix constructs in the <code>shell.nix</code> or <code>default.nix</code> file manually
+<ul>
+<li>see <a href="https://nixos.wiki/wiki/FAQ/Pinning%5FNixpkgs">Pinning Nixpkgs</a> for examples of pinning versions of packages</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Nix relies more heavily on the shell for various build steps and occasionally causes trouble due to the escaping and substitutions in the shell, while Guix relies mostly on Scheme, so does not have issues with escaping</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>see the following for more comparison between Nix and Guix:
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=16490027">https://news.ycombinator.com/item?id=16490027</a></li>
+<li><a href="https://sandervanderburg.blogspot.com/2012/11/on-nix-and-gnu-guix.html">https://sandervanderburg.blogspot.com/2012/11/on-nix-and-gnu-guix.html</a></li>
+<li><a href="https://www.reddit.com/r/GUIX/comments/hxcq7d/guix%5Fvs%5Fnix/">https://www.reddit.com/r/GUIX/comments/hxcq7d/guix%5Fvs%5Fnix/</a></li>
+</ul>
+</li>
+<li>in short, both Nix and Guix are fine choices of functional package manager, and share a lot of similarities</li>
+</ul>
+<h2 id="what-s-next">What&rsquo;s next?</h2>
+<p>In this part we compared Guix with other solutions, and showed that
+Guix has various advantages. Next time we show how you can try out
+Guix by various ways of installing Guix, either in a physical or
+virtual machine, either as a complete GNU/Linux distribution, or just
+as a package manager on top of another Linux distribution.</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Peter Lo</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-05-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/guix/">Guix</a>
+          <a href="/tags/functional-package-manager/">Functional Package Manager</a>
+          <a href="/tags/reproducibility/">Reproducibility</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/guix_intro_2_what/">
+            <span class="next-text nav-default">Guix Introduction Part 2: What is Guix? A closer look</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'https-peterloleungyau-github-io';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:peterloleungyau@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.linkedin.com/in/leung-yau-lo-7a3274167/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/peterloleungyau" class="iconfont icon-github" title="github"></a>
+  <a href="https://peterloleungyau.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Peter Lo</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-139262854-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
