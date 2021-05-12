@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Guix Introduction Part 4: Try Guix - Peter&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Peter Lo" /><meta name="description" content="This is the fourth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at how to install Guix, either in a physical or virtual machine, either as a complete GNU/Linux distribution, or just as a package manager on top of another Linux distribution." />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://peterloleungyau.github.io/post/guix_intro_4_try/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Guix Introduction Part 4: Try Guix" />
+<meta property="og:description" content="This is the fourth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at how to install Guix, either in a physical or virtual machine, either as a complete GNU/Linux distribution, or just as a package manager on top of another Linux distribution." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://peterloleungyau.github.io/post/guix_intro_4_try/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-12T00:00:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-12T00:00:00&#43;08:00" />
+
+<meta itemprop="name" content="Guix Introduction Part 4: Try Guix">
+<meta itemprop="description" content="This is the fourth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at how to install Guix, either in a physical or virtual machine, either as a complete GNU/Linux distribution, or just as a package manager on top of another Linux distribution."><meta itemprop="datePublished" content="2021-05-12T00:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-12T00:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="4030">
+<meta itemprop="keywords" content="Guix,Functional Package Manager,Reproducibility," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Guix Introduction Part 4: Try Guix"/>
+<meta name="twitter:description" content="This is the fourth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at how to install Guix, either in a physical or virtual machine, either as a complete GNU/Linux distribution, or just as a package manager on top of another Linux distribution."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Peter&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Peter&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Guix Introduction Part 4: Try Guix</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-12 </span>
+        <div class="post-category">
+            <a href="/categories/guix/"> Guix </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#get-guix">Get Guix</a>
+      <ul>
+        <li><a href="#run-guix-system-in-qemu-virtual-machine-with-pre-made-image">Run Guix system in qemu virtual machine with pre-made image</a></li>
+        <li><a href="#install-the-guix-system-the-gnu-linux-distribution-built-on-the-guix-package-manager">Install the Guix system, the GNU/Linux distribution built on the Guix package manager</a></li>
+        <li><a href="#install-the-guix-package-manager-in-existing-gnu-linux-distribution--possibly-in-a-vm">Install the guix package manager in existing GNU/Linux distribution (possibly in a VM)</a></li>
+      </ul>
+    </li>
+    <li><a href="#brief-summary-of-commonly-used-commands-in-guix">Brief summary of commonly used commands in Guix</a>
+      <ul>
+        <li><a href="#basic-usage-of-guix">Basic usage of Guix</a></li>
+        <li><a href="#using-manifest-file-to-specify-a-list-of-package--s">Using manifest file to specify a list of package(s)</a></li>
+        <li><a href="#using-guix-profiles">Using Guix profiles</a></li>
+        <li><a href="#using-guix-environment">Using Guix environment</a></li>
+        <li><a href="#using-guix-time-machine">Using Guix time-machine</a></li>
+        <li><a href="#use-guix-to-create-docker-image">Use Guix to create docker image</a></li>
+      </ul>
+    </li>
+    <li><a href="#what-s-next">What&rsquo;s next?</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>This is the fourth part of a brief introduction to the Guix functional
+package manager, and how it could be used to manage dependencies of
+projects, much like virtual environments for Python, but with much
+larger scope.</p>
+<p>This time we look at how to install Guix, either in a physical or
+virtual machine, either as a complete GNU/Linux distribution, or just
+as a package manager on top of another Linux distribution. We also
+list some commonly used Guix commands</p>
+<h2 id="get-guix">Get Guix</h2>
+<p>Refer to <a href="https://guix.gnu.org/manual/en/guix.html#System-Installation">System Installation</a> for details on getting Guix running
+(either the Guix system, or just the Guix package manager), we briefly
+summarize the main ways below. At the time of writing, the Guix
+version is 1.2.0.</p>
+<h3 id="run-guix-system-in-qemu-virtual-machine-with-pre-made-image">Run Guix system in qemu virtual machine with pre-made image</h3>
+<p>Running Guix in a virtual machine is probably the easiest way to
+try it out. <a href="https://www.qemu.org/">Qemu</a> is a generic and open source emulator and virtualizer
+that can be used to run a pre-made image.</p>
+<p>Refer to <a href="https://guix.gnu.org/manual/en/guix.html#Running-Guix-in-a-VM">Running Guix in a Virtual Machine</a> for more details. At the
+time of writing, the Guix version of the image is 1.2.0 for x86_64
+architecture. We summarize the steps below:</p>
+<ol>
+<li>
+<p>install qemu following the instructions at <a href="https://www.qemu.org/download/">https://www.qemu.org/download/</a></p>
+</li>
+<li>
+<p>download the <a href="https://ftp.gnu.org/gnu/guix/guix-system-vm-image-1.2.0.x86%5F64-linux.xz">guix-system-vm-image-1.2.0.x86_64-linux.xz</a> compressed image</p>
+</li>
+<li>
+<p>decompress to get <code>guix-system-vm-image-1.2.0.x86_64-linux</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">xz -d guix-system-vm-image-1.2.0.x86_64-linux.xz
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>invoke qemu on the image with</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 <span class="se">\
+</span><span class="se"></span>   -nic user,model<span class="o">=</span>virtio-net-pci <span class="se">\
+</span><span class="se"></span>   -enable-kvm -m <span class="m">1024</span> <span class="se">\
+</span><span class="se"></span>   -device virtio-blk,drive<span class="o">=</span>myhd <span class="se">\
+</span><span class="se"></span>   -drive <span class="k">if</span><span class="o">=</span>none,file<span class="o">=</span>./guix-system-vm-image-1.2.0.x86_64-linux,id<span class="o">=</span>myhd
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>you can change arguments such as <code>-m</code> as appropriate to set the
+amount of memory desired. Note that you may need to tweak the
+arguments of invoking qemu a bit, depending on your host system.
+E.g. in MacOS Mojave 10.14.6, I need to use the following:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 <span class="se">\
+</span><span class="se"></span>   -nic user,model<span class="o">=</span>virtio-net-pci <span class="se">\
+</span><span class="se"></span>   -m <span class="m">1024</span> <span class="se">\
+</span><span class="se"></span>   -device virtio-blk,drive<span class="o">=</span>myhd <span class="se">\
+</span><span class="se"></span>   -drive <span class="k">if</span><span class="o">=</span>none,file<span class="o">=</span>./guix-system-vm-image-1.2.0.x86_64-linux,id<span class="o">=</span>myhd <span class="se">\
+</span><span class="se"></span>   -accel hvf
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>wait for a while, then you will be in the default xfce desktop of
+a Guix system, i.e. a GNU/Linux distribution built around
+Guix. But note that by default, not many packages are installed,
+e.g. even a web browser is not installed by default. You may
+install them as needed, e.g. you may install <code>icecat</code> (the GNU
+version of Firefox browser) by:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -i icecat
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>optional: since the command for invoking qemu can be very long,
+you may put it into a shell script to more conveniently invoke the
+VM</p>
+</li>
+<li>
+<p>optional: you may use other front-ends (some are GUI) to more
+conveniently manage qemu VM, see
+<a href="https://wiki.archlinux.org/index.php/Libvirt#Client">https://wiki.archlinux.org/index.php/Libvirt#Client</a></p>
+</li>
+</ol>
+<h3 id="install-the-guix-system-the-gnu-linux-distribution-built-on-the-guix-package-manager">Install the Guix system, the GNU/Linux distribution built on the Guix package manager</h3>
+<p>You can also install a Guix system in either a virtual or physical machine.</p>
+<ul>
+<li>
+<p><strong>Get the Guix system install ISO image</strong></p>
+<p>Refer to <a href="https://guix.gnu.org/manual/en/guix.html#USB-Stick-and-DVD-Installation">USB Stick and DVD Installation</a></p>
+<ol>
+<li>
+<p>download the compressed 64-bit ISO from <a href="https://ftp.gnu.org/gnu/guix/guix-system-install-1.2.0.x86%5F64-linux.iso.xz">https://ftp.gnu.org/gnu/guix/guix-system-install-1.2.0.x86%5F64-linux.iso.xz</a></p>
+<ul>
+<li>you may instead get the compressed 32-bit ISO from <a href="https://ftp.gnu.org/gnu/guix/guix-system-install-1.2.0.i686-linux.iso.xz">https://ftp.gnu.org/gnu/guix/guix-system-install-1.2.0.i686-linux.iso.xz</a></li>
+</ul>
+</li>
+<li>
+<p>optionally verify the authenticity of the image:</p>
+<ul>
+<li>
+<p>get the sig file for 64-bit ISO and verify (change <code>x86_64-linux</code> to <code>i686-linux</code> if you download the 32-bit ISO)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">wget https://ftp.gnu.org/gnu/guix/guix-system-install-1.2.0.x86_64-linux.iso.xz.sig
+gpg --verify guix-system-install-1.2.0.x86_64-linux.iso.xz.sig
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>if then above command fails, then import the gpg public key first and then re-run the above verification:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">wget https://sv.gnu.org/people/viewgpg.php?user_id<span class="o">=</span><span class="m">15145</span> <span class="se">\
+</span><span class="se"></span>      -qO - <span class="p">|</span> gpg --import -
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>decompress the image with <code>xz -d</code> command to get <code>guix-system-install-1.2.0.x86_64-linux.iso</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">xz -d guix-system-install-1.2.0.x86_64-linux.iso.xz
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+</li>
+<li>
+<p><strong>Install in a fresh qemu virtual machine</strong></p>
+<p>Refer to <a href="https://guix.gnu.org/manual/en/guix.html#Installing-Guix-in-a-VM">Installing Guix in a Virtual Machine</a></p>
+<ol>
+<li>
+<p>install qemu following the instructions at <a href="https://www.qemu.org/download/">https://www.qemu.org/download/</a></p>
+</li>
+<li>
+<p>create a fresh disk image in qcow2 format, where you can choose an
+appropriate size, e.g. 50G (the created image file will initially
+be much smaller, but will grow in size when it is filled up)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">qemu-img create -f qcow2 guix-system.img 50G
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>boot the installation ISO image in the VM:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 -m <span class="m">1024</span> -smp <span class="m">1</span> -enable-kvm <span class="se">\
+</span><span class="se"></span>  -nic user,model<span class="o">=</span>virtio-net-pci -boot <span class="nv">menu</span><span class="o">=</span>on,order<span class="o">=</span>d <span class="se">\
+</span><span class="se"></span>  -drive <span class="nv">file</span><span class="o">=</span>guix-system.img <span class="se">\
+</span><span class="se"></span>  -drive <span class="nv">media</span><span class="o">=</span>cdrom,file<span class="o">=</span>guix-system-install-1.2.0.system.iso
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>note that you may need to tweak the arguments to
+<code>qemu-system-x86_64</code> depending on your host system, e.g. you may
+need to replace <code>-enable-kvm</code> with <code>-accel hvf</code> in MacOS. The
+<code>-enable-kvm</code> is optional anyway, but will significantly improve
+performance.</p>
+</li>
+<li>
+<p>note the few things mentioned in <a href="https://guix.gnu.org/manual/en/guix.html#Preparing-for-Installation">https://guix.gnu.org/manual/en/guix.html#Preparing-for-Installation</a></p>
+<ul>
+<li>The graphical installer is available on TTY1.</li>
+<li>You can obtain root shells on TTYs 3 to 6 by hitting ctrl-alt-f3, ctrl-alt-f4, etc.</li>
+<li>TTY2 shows the documentation and you can reach it with ctrl-alt-f2.</li>
+<li>Documentation is browsable using the Info reader commands (see <a href="https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html#Top">Stand-alone GNU Info</a>).</li>
+<li>The installation system runs the GPM mouse daemon, which
+allows you to select text with the left mouse button and to
+paste it with the middle button.</li>
+</ul>
+</li>
+<li>
+<p>for simplicity, choose <a href="https://guix.gnu.org/manual/en/guix.html#Guided-Graphical-Installation">Guided Graphical Installation</a> to finish the installation</p>
+</li>
+<li>
+<p>after the installation, you can get into guix with the default
+xfce desktop whenever you invoke the VM</p>
+</li>
+<li>
+<p>optional: since the command for invoking qemu can be very long,
+you may put it into a shell script to more conveniently invoke the
+VM</p>
+</li>
+<li>
+<p>optional: you may use other front-ends (some are GUI) to more
+conveniently manage qemu VM, see
+<a href="https://wiki.archlinux.org/index.php/Libvirt#Client">https://wiki.archlinux.org/index.php/Libvirt#Client</a></p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Install in other virtual machine</strong></p>
+<p>You can also install Guix system using the ISO in other types of
+virtual machines such as:</p>
+<ul>
+<li><a href="https://www.virtualbox.org/">VirtualBox</a> (free)</li>
+<li><a href="https://www.parallels.com/">Parallels</a> (proprietary)</li>
+<li><a href="https://www.vmware.com/">VmWare</a> (proprietary)</li>
+<li>and many others, see <a href="https://en.wikipedia.org/wiki/Comparison%5Fof%5Fplatform%5Fvirtualization%5Fsoftware">https://en.wikipedia.org/wiki/Comparison%5Fof%5Fplatform%5Fvirtualization%5Fsoftware</a></li>
+</ul>
+<p>Similar to installing in qemu VM:</p>
+<ul>
+<li>note the few things mentioned in <a href="https://guix.gnu.org/manual/en/guix.html#Preparing-for-Installation">https://guix.gnu.org/manual/en/guix.html#Preparing-for-Installation</a>
+<ul>
+<li>The graphical installer is available on TTY1.</li>
+<li>You can obtain root shells on TTYs 3 to 6 by hitting ctrl-alt-f3, ctrl-alt-f4, etc.</li>
+<li>TTY2 shows the documentation and you can reach it with ctrl-alt-f2.</li>
+<li>Documentation is browsable using the Info reader commands (see <a href="https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html#Top">Stand-alone GNU Info</a>).</li>
+<li>The installation system runs the GPM mouse daemon, which allows you to select text with the left mouse button and to paste it with the middle button.</li>
+</ul>
+</li>
+<li>for simplicity, choose <a href="https://guix.gnu.org/manual/en/guix.html#Guided-Graphical-Installation">Guided Graphical Installation</a> to finish the installation</li>
+<li>after the installation, you can get into guix with the default
+xfce desktop whenever you invoke the VM</li>
+</ul>
+</li>
+<li>
+<p><strong>Install on physical machine</strong></p>
+<p>Installing Guix system on physical machine is similar to installing in
+virtual machine, except that you need to transfer the ISO image to
+either a USB stick or a DVD. It is recommended that you try to install
+in a virtual machine first to get familiar with the process, see the
+preceding subsection.</p>
+<p>Refer to <a href="https://guix.gnu.org/manual/en/guix.html#USB-Stick-and-DVD-Installation">https://guix.gnu.org/manual/en/guix.html#USB-Stick-and-DVD-Installation</a></p>
+<ul>
+<li>
+<p><strong>Copying to a USB Stick</strong></p>
+<ol>
+<li>Insert a USB stick of 1 GiB or more into your machine</li>
+<li>if on a Linux machine,
+<ul>
+<li>
+<p>determine its device name, e.g. <code>/dev/sdb</code> or <code>/dev/sdc</code>. Note
+that it is <strong>VERY</strong> important to determine the correct device name,
+otherwise you may mistakenly wipe out another device.</p>
+</li>
+<li>
+<p>assuming that the USB stick is known as <code>/dev/sdX</code>, copy the image
+with:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># access to /dev/sdX usually requires root privilege</span>
+<span class="c1"># also, /dev/sdX should NOT be mount</span>
+sudo dd <span class="k">if</span><span class="o">=</span>guix-system-install-1.2.0.x86_64-linux.iso <span class="nv">of</span><span class="o">=</span>/dev/sdX <span class="nv">status</span><span class="o">=</span>progress
+sudo sync
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>if on a different OS or you prefer to use a GUI, you can try these programs:
+<ul>
+<li><a href="https://www.tipard.com/resource/burn-iso-to-usb.html">https://www.tipard.com/resource/burn-iso-to-usb.html</a></li>
+<li><a href="https://techrrival.com/best-usb-bootable-softwares/">https://techrrival.com/best-usb-bootable-softwares/</a></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>alternative: <strong>Burning on a DVD</strong></p>
+<ol>
+<li>Insert a blank DVD into your machine</li>
+<li>if on a Linux machine,
+<ul>
+<li>
+<p>determine its device name. Note that it is <strong>VERY</strong> important to
+determine the correct device name, otherwise you may mistakenly
+wipe out another device.</p>
+</li>
+<li>
+<p>assuming that the DVD drive is known as <code>/dev/srX</code>, copy the image
+with:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># access to /dev/srX usually requires root privilege</span>
+growisofs -dvd-compat -Z /dev/srX<span class="o">=</span>guix-system-install-1.2.0.x86_64-linux.iso
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>if on a different OS or you prefer to use a GUI, you can try these programs:
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/List%5Fof%5FISO%5Fimage%5Fsoftware">https://en.wikipedia.org/wiki/List%5Fof%5FISO%5Fimage%5Fsoftware</a></li>
+<li><a href="https://dvdcreator.wondershare.com/dvd-tips/best-free-iso-burner.html">https://dvdcreator.wondershare.com/dvd-tips/best-free-iso-burner.html</a></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Installation</strong></p>
+<p>Similar to installing in qemu VM:</p>
+<ul>
+<li>note the few things mentioned in <a href="https://guix.gnu.org/manual/en/guix.html#Preparing-for-Installation">https://guix.gnu.org/manual/en/guix.html#Preparing-for-Installation</a>
+<ul>
+<li>The graphical installer is available on TTY1.</li>
+<li>You can obtain root shells on TTYs 3 to 6 by hitting ctrl-alt-f3, ctrl-alt-f4, etc.</li>
+<li>TTY2 shows the documentation and you can reach it with ctrl-alt-f2.</li>
+<li>Documentation is browsable using the Info reader commands (see <a href="https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html#Top">Stand-alone GNU Info</a>).</li>
+<li>The installation system runs the GPM mouse daemon, which
+allows you to select text with the left mouse button and to
+paste it with the middle button.</li>
+</ul>
+</li>
+<li>for simplicity, choose <a href="https://guix.gnu.org/manual/en/guix.html#Guided-Graphical-Installation">Guided Graphical Installation</a> to finish the installation</li>
+<li>after the installation, you can get into guix with the default
+xfce desktop</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="install-the-guix-package-manager-in-existing-gnu-linux-distribution--possibly-in-a-vm">Install the guix package manager in existing GNU/Linux distribution (possibly in a VM)</h3>
+<p>Instead of installing a Guix system, you may choose to only install
+guix package manager on top of a GNU/Linux distribution (named
+&ldquo;foreign distro in Guix documentation&rdquo;, which does not need to be a Guix
+system, e.g. Debian, Ubuntu, Fedora, ArchLinux, etc).</p>
+<p>Refer to <a href="https://guix.gnu.org/manual/en/guix.html#Binary-Installation">Binary Installation</a></p>
+<ul>
+<li>the easiest way is to use the shell installer script:
+<ol>
+<li>
+<p>download and execute the shell installer script as <strong>root</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> /tmp
+wget https://git.savannah.gnu.org/cgit/guix.git/plain/etc/guix-install.sh
+chmod +x guix-install.sh
+./guix-install.sh
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>you may be asked to import gpg key, if so, just follow the instructions, then re-run the installer script</li>
+</ul>
+</li>
+<li>
+<p>after that, check <a href="https://guix.gnu.org/manual/en/guix.html#Application-Setup">Application Setup</a> for extra configuration you might need</p>
+</li>
+</ol>
+</li>
+<li>alternatively, you may choose to install the guix package from the
+package manager of your distribution, if there is one, e.g.:
+<ul>
+<li>ArchLinux: <a href="https://wiki.archlinux.org/index.php/Guix#AUR%5FPackage%5FInstallation">https://wiki.archlinux.org/index.php/Guix#AUR%5FPackage%5FInstallation</a></li>
+<li>Slackware: <a href="https://slackbuilds.org/repository/14.1/system/guix/">https://slackbuilds.org/repository/14.1/system/guix/</a></li>
+<li>Fedora: <a href="https://copr.fedorainfracloud.org/coprs/lantw44/guix/">https://copr.fedorainfracloud.org/coprs/lantw44/guix/</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="brief-summary-of-commonly-used-commands-in-guix">Brief summary of commonly used commands in Guix</h2>
+<p>Here we list some common commands and usage of Guix, see <a href="https://guix.gnu.org/manual/en/guix.html#Getting-Started">Getting Started</a> of the Guix manual for more details.</p>
+<h3 id="basic-usage-of-guix">Basic usage of Guix</h3>
+<ul>
+<li>
+<p><strong>Help on Guix commands</strong></p>
+<ul>
+<li>
+<p>Help on the main usage, to see the available commands</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix --help
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Help on each command, e.g. the <code>guix package</code> command</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package --help
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p><strong>Search packages</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix search keywords-here
+<span class="c1"># guix package -s keywords-here</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Show information of package(s)</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix show package1 package2
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Update channel(s)</strong></p>
+<p>To update the channels so that all the package definitions are
+updated, but the packages themselves are not automatically
+updated.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix pull
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Install package(s)</strong></p>
+<ul>
+<li>
+<p>You can install one or more packages in one transaction</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix install package1 package2
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>An alternative way</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -i package1 package2
+<span class="c1"># guix package --install package1 package2</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p><strong>Remove package(s)</strong></p>
+<ul>
+<li>
+<p><code>guix remove</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix remove package1 package2
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>An alternative way</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -r package1 package2
+<span class="c1"># guix package --remove package1 package2</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p><strong>Upgrade package(s)</strong></p>
+<ul>
+<li>
+<p><code>guix upgrade</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix upgrade package1 package2
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>An alternative way</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -u package1 package2
+<span class="c1"># guix package --upgrade package1 package2</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p><strong>Install/Remove/Upgrade package(s) in one transaction</strong></p>
+<p>You can also install/remove/upgrade package(s) in a single
+transaction, simply list the package(s) with suitable options of
+<code>guix package</code>, <code>-i</code> for installing, <code>-r</code> for removing, <code>-u</code> for
+upgrading:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -i package1 -r package2 -u package3
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>List installed packages</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -I
+<span class="c1"># guix package --list-installed</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Rollback to the previous generation</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package --roll-back
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>List generations</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -l
+<span class="c1"># guix package --list-generations</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Switch generations</strong></p>
+<ul>
+<li><code>PATTERN</code> can be a generation number or <code>+n</code> to go forward n
+generations; or <code>-n</code> to go backward n generations.</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -S PATTERN
+<span class="c1"># guix package --switch-generation=PATTERN</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>E.g. to go forward one generation</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -S +1
+<span class="c1"># guix package --switch-generation=+1</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>E.g. to go backward one generation, similar to <code>--roll-back</code>,
+but if the specified generation does not exist, the current
+generation will not change</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -S -1
+<span class="c1"># guix package --switch-generation=-1</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="using-manifest-file-to-specify-a-list-of-package--s">Using manifest file to specify a list of package(s)</h3>
+<ul>
+<li>
+<p>A manifest file is a Scheme file that evaluates to a list of guix
+<em>packages</em> (as Scheme object).</p>
+</li>
+<li>
+<p>A convenient way is to use the <code>specifications-&gt;manifest</code>
+function which takes a list of package names as strings and
+returns a list of the corresponding package objects.</p>
+</li>
+<li>
+<p>It can be used in a few contexts such as <code>guix package</code> to
+install packages, or <code>guix environment</code> to spawn a shell with
+specified packages (see below), through the <code>-m</code> or <code>--manifest</code>
+option.</p>
+</li>
+<li>
+<p>The advantage of a manifest file is that the list of packages can
+be easily version controlled (e.g. with <code>git</code>).</p>
+</li>
+<li>
+<p>An example of manifest file (let&rsquo;s say <code>pkgs.scm</code>) is:</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">specifications-&gt;manifest</span>
+ <span class="o">&#39;</span><span class="p">(</span>
+   <span class="c1">;; R</span>
+   <span class="s">&#34;r&#34;</span>
+   <span class="s">&#34;r-yaml&#34;</span>
+   <span class="s">&#34;r-xgboost&#34;</span>
+   <span class="s">&#34;r-tidymodels&#34;</span>
+   <span class="s">&#34;r-tidyverse&#34;</span>
+   <span class="s">&#34;r-survminer&#34;</span>
+   <span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p><strong>Install the list of package(s) in a manifest file</strong></p>
+<p>Note that the <code>-m</code> can be repeated multiple times with different
+manifest files, and the lists will be concatenated and all will
+be installed.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -m pkgs.scm
+</code></pre></td></tr></table>
+</div>
+</div><p>Note that a manifest file by itself only specifies the list of
+packages by name, but not the exact versions. In order to
+reproduce the exact versions of the list of packages, a manifest
+file can be combined with <code>guix time-machine</code> as described below.</p>
+</li>
+</ul>
+<h3 id="using-guix-profiles">Using Guix profiles</h3>
+<p>Default guix actions (install/upgrade/remove) operate on the
+default <em>profile</em> of each user (it is a symbolic link, default
+location is at <code>$HOME/.guix-profile</code>), but each user can create
+multiple profiles, activate the profiles as needed in similar ways
+to Python <em>virtual environments</em>, and specify the profile to
+operate on with each action through the <code>-p</code> (or <code>--profile</code>)
+option (see <a href="https://guix.gnu.org/manual/en/guix.html#Invoking-guix-package">Invoking guix package</a>):</p>
+<ul>
+<li>
+<p><strong>Create profile</strong></p>
+<p>The profile name is basically symbolic link(s) to the real
+contents of the profile, and we can put it basically anywhere,
+e.g. <code>~/my-ds-profile</code>. So it is up to you to organize the
+profiles in a sensible way. It is also up to you to assign the
+roles of different profiles, e.g. one profile for each project;
+or different profiles for different domains of packages (e.g. one
+profile for data analysis, one profile for entertainment, one
+profile for graphics editing, etc).</p>
+<p>A profile will be created when you perform guix package actions
+specifying a profile, e.g. install <code>r</code> and <code>r-xgboost</code> in the
+profile <code>~/my-ds-profile</code>, which need not exist before this
+action:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -i r r-xgboost -p ~/my-ds-profile
+</code></pre></td></tr></table>
+</div>
+</div><p>Note that the created profile is not automatically activated, so
+you retain the maximum flexibility to activate as needed, or
+arrange to activate chosen profiles in each shell, see below.</p>
+</li>
+<li>
+<p><strong>Install or upgrade or remove packages in a profile</strong></p>
+<ul>
+<li>Any usual <code>guix package</code> actions can be performed on a chosen
+profile by using the <code>-p</code> (or <code>--profile</code>) option, e.g. to
+install another package <code>r-yaml</code> to the profile
+<code>~/my-ds-profile</code> just created:</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -i r-yaml -p ~/my-ds-profile
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>E.g. install packages using a manifest file in a profile:</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -m the_manifest_file -p path_to_profile
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>List profiles</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package --list-profiles
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Activate a profile</strong></p>
+<p>Activating a profile amounts to modifying and exporting some
+environment variables (e.g. <code>PATH</code>) in the <em>current shell</em>, which
+is conveniently done by sourcing the <code>etc/profile</code> file under the
+profile. The recommended way to activate a profile,
+e.g. <code>~/my-ds-profile</code>, is to:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">GUIX_PROFILE</span><span class="o">=</span><span class="s2">&#34;~/my-ds-profile&#34;</span> <span class="p">;</span> . <span class="s2">&#34;</span><span class="nv">$GUIX_PROFILE</span><span class="s2">&#34;</span>/etc/profile
+</code></pre></td></tr></table>
+</div>
+</div><p>Note that you can activate multiple profiles in the same shell as
+appropriate. But there is no effective way to <em>deactivate</em> a
+profile in the same shell, other than exiting the shell. The
+upside is that the global environment is not &ldquo;polluted&rdquo;, and you
+can start a new shell to activate a profile, then exit the shell
+afterwards.</p>
+<p>Also, you can automatically activate any profile in each spawn
+shell by adding the activation to your shell initialization,
+e.g. <code>.bash_profile</code> or <code>.bashrc</code>.</p>
+</li>
+<li>
+<p><strong>Delete a profile</strong></p>
+<p>Somehow Guix does not provide a convenient command to delete a
+profile. Deleting a profile involves removing the profile
+symbolic link and its siblings that point to specific
+generations. E.g. to delete the <code>~/my-ds-profile</code> profile created
+above:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">rm ~/my-profile ~/my-profile-*-link
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Export current or chosen profile as a manifest file</strong></p>
+<p>You can export the list of packages of a profile (if not
+specified, will use the default profile) to a manifest
+file. E.g. to export the default profile:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package --export-manifest &gt; pkgs1.scm
+</code></pre></td></tr></table>
+</div>
+</div><p>E.g. to export the above <code>~/my-ds-profile</code> profile:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package --export-manifest -p ~/my-ds-profile &gt; pkgs2.scm
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="using-guix-environment">Using Guix environment</h3>
+<p>The <code>guix environment</code> command allows you to spawn a new shell with
+certain packages (or their dependencies) accessible (by modifying some
+environment variables, e.g. <code>PATH</code>), <em>without</em> changing your other
+profiles; and you can optionally either just spawn such a shell, or
+execute a command inside this shell. Essentially a temporary profile
+is created (for the set of packages wanted), so that you do not
+&ldquo;pollute&rdquo; your other environment. The needed packages will be
+automatically built if they are not yet in the cached store. So <code>guix environment</code> is a very convenient way to reproduce a set of packages
+in a clean way. For example, this can be used to manage per-project
+dependencies, as we will see in a future demo post of this series.</p>
+<p>Note that when in a shell spawn by <code>guix environment</code>, the environment
+variable <code>GUIX_ENVIRONMENT</code> will have the value of the path to the
+temporary profile for the environment, and you can detect it to change
+the shell prompt, e.g. add this to your .bashrc:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$GUIX_ENVIRONMENT</span><span class="s2">&#34;</span> <span class="o">]</span>
+<span class="k">then</span>
+  <span class="nb">export</span> <span class="nv">PS1</span><span class="o">=</span><span class="s2">&#34;\u@\h \w [dev]\$ &#34;</span>
+<span class="k">fi</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p><strong>Spawn a shell with dependencies of some packages</strong>
+E.g. to get the dependencies of <code>emacs</code> and <code>vim</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># guix environment pkg1 pkg2 ...</span>
+guix environment emacs vim
+</code></pre></td></tr></table>
+</div>
+</div><p>Can also use <code>-m</code> (possibly multiple times) to specify manifest file(s):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># guix environment pkg1 pkg2 ... -m pkgs1.scm -m pkgs2.scm ...</span>
+guix environment kmahjongg -m pkgs.scm
+</code></pre></td></tr></table>
+</div>
+</div><p>Also check out the <code>--load</code> option for loading a file for package.</p>
+</li>
+<li>
+<p><strong>Spawn a shell with some packages themselves</strong></p>
+<p>Use the <code>--ad-hoc</code> option to get the packages themselves.
+E.g. to get the game <code>kmahjongg</code> itself:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># guix environment --ad-hoc pkg1 pkg2 ...</span>
+guix environment --ad-hoc kmahjongg
+</code></pre></td></tr></table>
+</div>
+</div><p>Can also use <code>-m</code> (possibly multiple times) to specify manifest file(s):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># guix environment --ad-hoc pkg1 pkg2 ... -m pkgs1.scm -m pkgs2.scm ...</span>
+guix environment --ad-hoc kmahjongg -m pkgs.scm
+</code></pre></td></tr></table>
+</div>
+</div><p>Also check out the <code>--load</code> option for loading a file for package.</p>
+</li>
+<li>
+<p><strong>Spawn a shell and directly execute some commands in it</strong></p>
+<p>To run commands in the spawn shell, put the command after <code>--</code> at the end.
+E.g. to get <code>R</code> and start it</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># guix environment --ad-hoc pkg1 ... -- pkg1</span>
+guix environment --ad-hoc r -- R
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Spawn a shell where original environment variables are unset</strong></p>
+<p>Use the <code>--pure</code> option, e.g. to get R</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># show all environment variables currently defined</span>
+env
+<span class="c1"># guix environment --pure --ad-hoc pkg1 ... -- pkg1</span>
+guix environment --pure --ad-hoc r
+<span class="c1"># then in the new shell, the PATH is reduced to only those for the</span>
+<span class="c1"># package, and even basic shell utilities are not in the PATH unless</span>
+<span class="c1"># they are added as one of the packages.</span>
+<span class="nb">echo</span> <span class="nv">$PATH</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>You may use the <code>--preserve</code> to control the environment variables
+to keep, check <code>guix environment --help</code> for more details.</p>
+</li>
+<li>
+<p><strong>Spawn a shell to run things in an isolated environment</strong></p>
+<p>For further isolation, you can use the <code>--container</code> option to run in
+a container where only the <code>/gnu/store</code> and (by default) the current
+directory are mounted. You may check <code>guix environment --help</code> for
+other relevant options, e.g. <code>--expose</code>, <code>--network</code>, <code>--share</code>,
+<code>--no-cwd</code>, <code>--user</code>.</p>
+<p>E.g. to run R in a container:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># guix environment --ad-hoc pkg1 ... -- pkg1</span>
+guix environment --container --ad-hoc r -- R
+</code></pre></td></tr></table>
+</div>
+</div><p>But seems this feature is not very mature yet. When I tried the
+above command (on guix (GNU Guix)
+510e24f973a918391d8122fd6ad515c0567bf23e),  it gave this error:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">guix environment: error: mount: mount &#34;/home/peter&#34; on &#34;/tmp/guix-directory.QDXQmx//home/peter&#34;: Invalid argument
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="using-guix-time-machine">Using Guix time-machine</h3>
+<p>The <code>guix time-machine</code> can be used to execute other Guix commands (e.g. <code>guix package</code>, or <code>guix environment</code>) at specified Guix revisions (exact commits of the channels, which can be produced by <code>guix describe</code>)</p>
+<ul>
+<li>
+<p><strong>Install package in a particular revision</strong></p>
+<p>E.g. to install <code>emacs</code> at the revision in the file <code>channels.scm</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix time-machine -C channels.scm -- package -i emacs
+</code></pre></td></tr></table>
+</div>
+</div><p>The <code>channels.scm</code> could be obtained with <code>guix describe</code>, e.g.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix describe -f channels &gt; channels.scm
+</code></pre></td></tr></table>
+</div>
+</div><p>The <code>channels.scm</code> will look something like (exact content of course depends on your channels) this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">list </span><span class="p">(</span><span class="nf">channel</span>
+        <span class="p">(</span><span class="nf">name</span> <span class="ss">&#39;nonguix</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">url</span> <span class="s">&#34;https://gitlab.com/nonguix/nonguix&#34;</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">commit</span>
+          <span class="s">&#34;05fad6e54d497b7427ab7ea488210c7d43c3f676&#34;</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">introduction</span>
+          <span class="p">(</span><span class="nf">make-channel-introduction</span>
+            <span class="s">&#34;897c1a470da759236cc11798f4e0a5f7d4d59fbc&#34;</span>
+            <span class="p">(</span><span class="nf">openpgp-fingerprint</span>
+              <span class="s">&#34;2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5&#34;</span><span class="p">))))</span>
+      <span class="p">(</span><span class="nf">channel</span>
+        <span class="p">(</span><span class="nf">name</span> <span class="ss">&#39;guix</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">url</span> <span class="s">&#34;https://git.sjtu.edu.cn/sjtug/guix.git&#34;</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">commit</span>
+          <span class="s">&#34;8a452e156e37568fdd59df169acb4f2092aeb3ac&#34;</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">introduction</span>
+          <span class="p">(</span><span class="nf">make-channel-introduction</span>
+            <span class="s">&#34;9edb3f66fd807b096b48283debdcddccfea34bad&#34;</span>
+            <span class="p">(</span><span class="nf">openpgp-fingerprint</span>
+              <span class="s">&#34;BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA&#34;</span><span class="p">)))))</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Note that it is possible to hand-edit the file to the commit desired.</p>
+</li>
+<li>
+<p><strong>Use time-machine with guix environment</strong></p>
+<p>Assuming there is a manifest file <code>pkgs.scm</code> containing the needed packages, e.g.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">specifications-&gt;manifest</span>
+ <span class="o">&#39;</span><span class="p">(</span>
+   <span class="c1">;; R</span>
+   <span class="s">&#34;r&#34;</span>
+   <span class="s">&#34;r-yaml&#34;</span>
+   <span class="s">&#34;r-xgboost&#34;</span>
+   <span class="s">&#34;r-tidymodels&#34;</span>
+   <span class="s">&#34;r-tidyverse&#34;</span>
+   <span class="s">&#34;r-survminer&#34;</span>
+   <span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Then you can open a shell with these packages at the revisions specified in a <code>channels.scm</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix time-machine -C channels.scm -- environment --ad-hoc -m pkgs.scm
+<span class="c1"># in this new shell where the packages are visible, you can run anything as needed</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>And you can directly run things in the new shell, e.g. to run R:</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix time-machine -C channels.scm -- environment --ad-hoc -m pkgs.scm -- R
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="use-guix-to-create-docker-image">Use Guix to create docker image</h3>
+<p>Guix can produce a docker image of a set of packages through the <code>guix pack</code> command, see <a href="https://guix.gnu.org/manual/en/html%5Fnode/Invoking-guix-pack.html#Invoking-guix-pack">Invoking guix pack</a> and <code>guix pack --help</code> for more
+description. In fact, <code>guix pack</code> can produce other formats, see <code>guix pack --list-formats</code> for the possible formats.</p>
+<ul>
+<li>
+<p><strong>Produce a docker image of a list of packages</strong></p>
+<p>The set of packages can be specified as a list when calling <code>guix pack</code>.
+E.g. to get <code>R</code> and <code>xgboost</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># guix pack -f docker -S /bin=bin pkg1 pkg2 ...</span>
+guix pack -f docker -S /bin<span class="o">=</span>bin r r-xgboost
+</code></pre></td></tr></table>
+</div>
+</div><p>The <code>-S</code> option creates a symbolic link to file or directory
+under the profile (which is otherwise a path with long hash),
+provided for convenience. In the above example, a symbolic link will
+be created at <code>/bin</code> pointing to the <code>bin</code> directory in the
+profile (which will be something like
+<code>/gnu/store/...-profile/bin</code>), then the user can start <code>R</code> with
+<code>/bin/R</code>.</p>
+<p>The path to the created tar.gz (something like
+<code>/gnu/store/...-docker-pack.tar.gz</code> with a long hash) file is
+output to stdout of the <code>guix pack</code> call, so we can get it like:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">PACKLOC</span><span class="o">=</span><span class="k">$(</span>guix pack -f docker -S /bin<span class="o">=</span>bin r r-xgboost<span class="k">)</span>
+<span class="c1"># then can easily copy it elsewhere</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Then the file produced is a docker image that can be loaded into
+docker:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># assume the file name is shortened to docker-pack.tar.gz</span>
+docker load &lt; docker-pack.tar.gz
+<span class="c1"># docker will show the image tag after loading</span>
+<span class="c1"># the tag of the image is generated from the set of packages</span>
+docker run -ti r-r-xgboost /bin/R
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Produce a docker image of packages from a manifest file</strong></p>
+<p>The set of packages can also be specified by a manifest file,
+similar to <code>guix package</code>, e.g. if we have a manifest file
+<code>pkgs.scm</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix pack -f docker -S /bin<span class="o">=</span>bin -m pkgs.scm
+</code></pre></td></tr></table>
+</div>
+</div><p>NOTE: the documentation specifically mention that the set of
+packages can be specified by either a list of package names as
+arguments to <code>guix pack</code>, or through a manifest file, but NOT
+BOTH. It is strange that there is such a limitation, hopefully it
+will be changed in the future.</p>
+</li>
+<li>
+<p><strong>Also specify an entry point command</strong></p>
+<p>The <code>--entry-point</code> option can specify a command to run when the
+docker image is started, e.g. to run guile:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># seems the command is relative to the profile path</span>
+guix pack -f docker --entry-point<span class="o">=</span>bin/guile guile
+</code></pre></td></tr></table>
+</div>
+</div><p>Then the produced image (say renamed to <code>pack.tar.gz</code>), can be
+loaded into docker and run as follows and <code>guile</code> will start
+automatically:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">docker load -i pack.tar.gz
+<span class="c1">#docker run image-id</span>
+<span class="c1"># assume the image id is &#34;guile&#34;</span>
+docker run guile
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Also use time-machine to pin package versions</strong></p>
+<p>The <code>guix time-machine</code> can be used, together with a manifest
+file, to easily produce a docker image with the set of desired
+packages pinned to versions at a certain time point.</p>
+<p>E.g. suppose we have the channel file <code>channels.scm</code>, and
+manifest file <code>pkgs.scm</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix time-machine -C channels.scm -- pack -f docker -S /bin<span class="o">=</span>bin -m pkgs.scm
+</code></pre></td></tr></table>
+</div>
+</div><p>The above have been tested with <code>guix (GNU Guix) ff1c7e40252337cb2c992c2d41e0ed4cefe56df0</code> (installed on top of
+Debian 10 in a qemu VM), and the produced docker images have been
+tested on MacOS with Docker version 19.03.8, build afacb8b.</p>
+</li>
+</ul>
+<h2 id="what-s-next">What&rsquo;s next?</h2>
+<p>In this part we looked at various ways of installing Guix to try it
+out, and showed some commonly used Guix commands. Next time we show a
+little demo of managing per-project dependency with Guix, through the
+<code>guix time-machine</code> and <code>guix environment</code> commands.</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Peter Lo</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-05-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/guix/">Guix</a>
+          <a href="/tags/functional-package-manager/">Functional Package Manager</a>
+          <a href="/tags/reproducibility/">Reproducibility</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/guix_intro_3_why/">
+            <span class="next-text nav-default">Guix Introduction Part 3: Why Guix?</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'https-peterloleungyau-github-io';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:peterloleungyau@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.linkedin.com/in/leung-yau-lo-7a3274167/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/peterloleungyau" class="iconfont icon-github" title="github"></a>
+  <a href="https://peterloleungyau.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Peter Lo</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-139262854-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

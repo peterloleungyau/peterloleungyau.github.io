@@ -5,10 +5,20 @@
     <description>Recent content in Posts on Peter&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 11 May 2021 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 12 May 2021 00:00:00 +0800</lastBuildDate>
     
         <atom:link href="https://peterloleungyau.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Guix Introduction Part 4: Try Guix</title>
+      <link>https://peterloleungyau.github.io/post/guix_intro_4_try/</link>
+      <pubDate>Wed, 12 May 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://peterloleungyau.github.io/post/guix_intro_4_try/</guid>
+      <description>This is the fourth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we look at how to install Guix, either in a physical or virtual machine, either as a complete GNU/Linux distribution, or just as a package manager on top of another Linux distribution.</description>
+    </item>
     
     <item>
       <title>Guix Introduction Part 3: Why Guix?</title>
