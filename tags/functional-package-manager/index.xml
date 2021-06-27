@@ -5,10 +5,20 @@
     <description>Recent content in Functional Package Manager on Peter&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 May 2021 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 27 Jun 2021 00:00:00 +0800</lastBuildDate>
     
         <atom:link href="https://peterloleungyau.github.io/tags/functional-package-manager/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Guix Introduction Part 6: R Development with Guix</title>
+      <link>https://peterloleungyau.github.io/post/guix_intro_6_dev/</link>
+      <pubDate>Sun, 27 Jun 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://peterloleungyau.github.io/post/guix_intro_6_dev/</guid>
+      <description>This is the sixth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we explore some ways to use Guix for per-project dependency management, for R development using Emacs, Jupyter lab, VSCode, and Sublime Text 3. Here we demonstrate with Guix running inside qemu VM in MacOS.</description>
+    </item>
     
     <item>
       <title>Guix Introduction Part 5: Per-Project Depedency Management</title>

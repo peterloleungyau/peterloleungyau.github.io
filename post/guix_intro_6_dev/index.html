@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Guix Introduction Part 6: R Development with Guix - Peter&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Peter Lo" /><meta name="description" content="This is the sixth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we explore some ways to use Guix for per-project dependency management, for R development using Emacs, Jupyter lab, VSCode, and Sublime Text 3. Here we demonstrate with Guix running inside qemu VM in MacOS." />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://peterloleungyau.github.io/post/guix_intro_6_dev/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Guix Introduction Part 6: R Development with Guix" />
+<meta property="og:description" content="This is the sixth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we explore some ways to use Guix for per-project dependency management, for R development using Emacs, Jupyter lab, VSCode, and Sublime Text 3. Here we demonstrate with Guix running inside qemu VM in MacOS." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://peterloleungyau.github.io/post/guix_intro_6_dev/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-27T00:00:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-06-27T00:00:00&#43;08:00" />
+
+<meta itemprop="name" content="Guix Introduction Part 6: R Development with Guix">
+<meta itemprop="description" content="This is the sixth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we explore some ways to use Guix for per-project dependency management, for R development using Emacs, Jupyter lab, VSCode, and Sublime Text 3. Here we demonstrate with Guix running inside qemu VM in MacOS."><meta itemprop="datePublished" content="2021-06-27T00:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2021-06-27T00:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="5329">
+<meta itemprop="keywords" content="Guix,Functional Package Manager,Reproducibility," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Guix Introduction Part 6: R Development with Guix"/>
+<meta name="twitter:description" content="This is the sixth part of a brief introduction to the Guix functional package manager, and how it could be used to manage dependencies of projects, much like virtual environments for Python, but with much larger scope.
+This time we explore some ways to use Guix for per-project dependency management, for R development using Emacs, Jupyter lab, VSCode, and Sublime Text 3. Here we demonstrate with Guix running inside qemu VM in MacOS."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Peter&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Peter&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Guix Introduction Part 6: R Development with Guix</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-27 </span>
+        <div class="post-category">
+            <a href="/categories/guix/"> Guix </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#basic-idea">Basic Idea</a></li>
+    <li><a href="#setup-guix">Setup Guix</a>
+      <ul>
+        <li><a href="#install-debian-vm">Install Debian VM</a></li>
+        <li><a href="#install-guix-package-manager">Install Guix package manager</a></li>
+      </ul>
+    </li>
+    <li><a href="#setup-for-different-tools">Setup for different tools</a>
+      <ul>
+        <li><a href="#common-things-for-convenience">Common things for convenience</a></li>
+        <li><a href="#jupyter-lab">Jupyter lab</a></li>
+        <li><a href="#vscode">VSCode</a></li>
+        <li><a href="#sublime-text-3">Sublime Text 3</a></li>
+        <li><a href="#emacs">Emacs</a></li>
+      </ul>
+    </li>
+    <li><a href="#un-explored-tools">Un-explored tools</a>
+      <ul>
+        <li><a href="#rstudio-desktop">RStudio Desktop</a></li>
+        <li><a href="#rstudio-server">RStudio Server</a></li>
+        <li><a href="#vim-or-neovim">Vim or Neovim</a></li>
+      </ul>
+    </li>
+    <li><a href="#what-s-next">What&rsquo;s next?</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>This is the sixth part of a brief introduction to the Guix functional
+package manager, and how it could be used to manage dependencies of
+projects, much like virtual environments for Python, but with much
+larger scope.</p>
+<p>This time we explore some ways to use Guix for per-project dependency
+management, for R development using Emacs, Jupyter lab, VSCode, and
+Sublime Text 3. Here we demonstrate with Guix running inside qemu VM
+in MacOS. This setup should work for either local development with
+Linux host running Guix package manager, or when connecting to a
+remote server running Guix package manager. Although we focus on R
+development for data science projects, similar setup should also work
+for Python or other languages.</p>
+<h2 id="basic-idea">Basic Idea</h2>
+<p>In previous posts (e.g. <a href="/post/guix_intro_5_per_proj_dep/">Guix Introduction Part 5: Per-Project
+Dependency Management</a>), we introduced <code>guix environment</code> together with
+<code>guix time-machine</code> to use a manifest file (<code>pkgs.scm</code>) for packages
+and a channel file (<code>channels.scm</code>) for exact package versions, to
+create a shell with per-project dependencies. It is intuitive that if
+we somehow spawn a shell with the needed R version and other
+dependencies, and point the development tool (IDE or text editors) to
+the proper R, then things should work as usual.</p>
+<p>Depending on the way that the development tool connects to R, there
+are two ways that this can work interactively and one way for batch
+jobs:</p>
+<ol>
+<li>
+<p>Interactive: First spawn a shell with needed dependencies, then start the tool</p>
+<ul>
+<li>Some development tools (by default) simply look up the R
+executable or R kernel from <code>PATH</code>, e.g. Emacs, Vim or Neovim, RStudio
+desktop version, Jupyter lab etc. Therefore one way is to first spawn the
+shell using <code>guix time-machine</code> and <code>guix environment</code> (or the
+prepared alias or helper script, as we show below), then start
+the tool inside this shell.</li>
+<li>The downside is that you would need to restart your development
+tool if the dependencies is changed in the middle of development,
+e.g. while your are writing some code, then realize that you need
+to use another R package not listed in the manifest file, then
+you would need to:
+<ul>
+<li>exit the development tool and the spawn shell</li>
+<li>edit the manifest file <code>pkgs.scm</code> to add the R package</li>
+<li>respawn the shell</li>
+<li>restart the development tool</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Interactive: First start the development tool, then start R through a wrapper
+script to first spawn the shell with needed dependencies, possibly
+manually in a terminal.</p>
+<ul>
+<li>Some tools such as VSCode or Sublime Text have plugins that can start a
+terminal, and send code from the editor to the terminal
+through hotkey. Therefore, we can start a terminal from within
+the tool, then spawn a shell with needed dependencies within the
+terminal and start R, and after that we should be able to code as
+usual, but with the needed dependencies.</li>
+<li>In tools such as VSCode and Sublime Text, this is easier than
+pointing the R executable to be calling a wrapper script that
+starts R inside a <code>guix environment</code>.</li>
+<li>However, in Emacs, we could just as easily point the R
+executable to a wrapper script to start R inside a <code>guix environment</code>, and then can operate just as usual.</li>
+<li>The downside (not applicable to the Emacs case) of starting R in
+the terminal is that there is less integration with the editor in
+terms of auto-completion. E.g. if you create some variables in the
+R session, then back in the editor, the newly created variable is
+not available for completion. For better integration, we may need
+to use LSP (<code>languageserver</code> package in R), but so far I have not
+completely figured it out yet.</li>
+</ul>
+</li>
+<li>
+<p>Batch job: The way for batch job is to simply run R script inside the spawn
+Guix environment using <code>guix environment</code> and <code>guix time-machine</code>.</p>
+<ul>
+<li>The downside is that this is not interactive development, which
+is very different from the usual R practice of using
+REPL. Therefore this is more suitable for running always tested R
+scripts.</li>
+</ul>
+</li>
+</ol>
+<h2 id="setup-guix">Setup Guix</h2>
+<p>For completeness, we describe the setup of the Guix package manager
+on a foreign distribution, in particular, on Debian in a VM. The same
+should work on Guix system (i.e. the Guix Linux distribution).</p>
+<h3 id="install-debian-vm">Install Debian VM</h3>
+<ol>
+<li>
+<p>Download Debian 10 from <a href="https://www.debian.org/">https://www.debian.org/</a></p>
+</li>
+<li>
+<p>Follow <a href="/post/guix_intro_4_try/">Guix Introduction Part 4: Try Guix</a> to use the
+debian-10.8.0-amd64-netinst.iso to install on a 50G qcow2 disk
+using qemu, but you can also choose to install Debian using other
+virtual machine (such as virtualbox), or install on physical
+machine. E.g. we create an image file <code>debian-10.8.0-guix.img</code>,
+using the qcow2 format with a capacity of 50G by:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">qemu-img create -f qcow2 debian-10.8.0-guix.img 50G
+</code></pre></td></tr></table>
+</div>
+</div><p>Then start qemu and proceed with normal Debian installation.</p>
+</li>
+<li>
+<p>Here we use the user name <code>guest</code> for the VM, you may choose your
+own user name, but make sure you change the subsequent commands
+accordingly.</p>
+</li>
+<li>
+<p>It suffices to have a minimal install without desktop environment,
+but with ssh server. You may optionally choose to install a
+desktop environment.</p>
+</li>
+<li>
+<p>Install ssh server and <code>git</code>, also add the user to sudoer:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">apt-get update
+apt-get install git
+apt-get sudo
+<span class="c1"># add to sudoer</span>
+usermod -a -G sudo guest
+<span class="c1"># ssh server</span>
+apt-get install openssh-server
+sudo systemctl <span class="nb">enable</span> ssh
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Config ssh</p>
+<ul>
+<li>
+<p>Reference: <a href="https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/">https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/</a></p>
+</li>
+<li>
+<p>Add <code>PermitRootLogin no</code> to <code>/etc/ssh/sshd_config</code></p>
+</li>
+<li>
+<p>Forward port 10022 (you can choose a different port, and adjust
+the following accordingly) to 22 in qemu by adding <code>-net user,hostfwd=tcp::10022-:22</code> to the qemu invocation command, e.g.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 <span class="se">\
+</span><span class="se"></span>   -nic user,model<span class="o">=</span>virtio-net-pci <span class="se">\
+</span><span class="se"></span>   -enable-kvm -m <span class="m">1024</span> <span class="se">\
+</span><span class="se"></span>   -net user,hostfwd<span class="o">=</span>tcp::10022-:22 <span class="se">\
+</span><span class="se"></span>   -device virtio-blk,drive<span class="o">=</span>myhd <span class="se">\
+</span><span class="se"></span>   -drive <span class="k">if</span><span class="o">=</span>none,file<span class="o">=</span>./debian-10.8.0-guix.img,id<span class="o">=</span>myhd
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Generate ssh key to conveniently login to the VM</p>
+<ul>
+<li>
+<p>Reference: <a href="https://devconnected.com/how-to-set-up-ssh-keys-on-debian-10-buster/">https://devconnected.com/how-to-set-up-ssh-keys-on-debian-10-buster/</a></p>
+</li>
+<li>
+<p>In the VM</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># generate ssh key, save to id_vm_rsa</span>
+ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">&#34;guest@debianguix.org&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>In the host, follow the above reference to copy the ssh key to the host</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Add to <code>~/.ssh/config</code> in the host for convenience, so that we can ssh into the VM with just <code>ssh vm</code></p>
+<ul>
+<li>Reference <a href="https://www.xmodulo.com/how-to-speed-up-x11-forwarding-in-ssh.html?format=pdf">https://www.xmodulo.com/how-to-speed-up-x11-forwarding-in-ssh.html?format=pdf</a></li>
+<li>Add to <code>~/.ssh/config</code> (adjust the <code>Port</code> to be the same as
+the forward port in qemu, and the <code>User</code> to be your chosen
+user name):</li>
+</ul>
+<!-- raw HTML omitted -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Host vm
+  HostName localhost
+  Port 10022
+  AddKeysToAgent yes
+  UseKeychain yes
+  User guest
+  ForwardX11 yes
+  Compression yes
+  # Ciphers blowfish-cbc,arcfour # your ssh client may not support the particular cipher, check with &#34;ssh -Q cipher&#34;
+  ConnectTimeout 20
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+  IdentityFile ~/.ssh/id_rsa
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>This should finish the setup of a Debian 10 VM with ssh, test
+that you can ssh into the VM without typing password by:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ssh vm
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="install-guix-package-manager">Install Guix package manager</h3>
+<p>We use the installation script to install Guix package manager:</p>
+<ul>
+<li>Reference: <a href="https://guix.gnu.org/manual/en/guix.html#Binary-Installation">https://guix.gnu.org/manual/en/guix.html#Binary-Installation</a></li>
+<li>Steps:
+<ol>
+<li>
+<p>Run as root:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">apt-get install gpg
+<span class="nb">cd</span> /tmp
+wget https://git.savannah.gnu.org/cgit/guix.git/plain/etc/guix-install.sh
+chmod +x guix-install.sh
+./guix-install.sh
+<span class="c1"># import the gpg key as instructed, then run the script again</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Change Debian locale to <code>en_US.utf8</code>, but select &ldquo;None&rdquo; as the default</p>
+<ul>
+<li>Follow instructions in <a href="https://wiki.debian.org/Locale">https://wiki.debian.org/Locale</a></li>
+</ul>
+</li>
+<li>
+<p>Install Guix locale as user</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix install glibc-locales
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>(Optional) Add to <code>~/.bashrc</code> for a different prompt when in a Guix environment:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$GUIX_ENVIRONMENT</span><span class="s2">&#34;</span> <span class="o">]</span>
+<span class="k">then</span>
+    <span class="nb">export</span> <span class="nv">PS1</span><span class="o">=</span><span class="s2">&#34;\u@\h \w [dev]\$ &#34;</span>
+<span class="k">fi</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Add to <code>~/.profile</code> (or <code>~/.bash_profile</code>)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">GUIX_LOCPATH</span><span class="o">=</span><span class="nv">$HOME</span>/.guix-profile/lib/locale
+<span class="nv">GUIX_PROFILE</span><span class="o">=</span><span class="s2">&#34;/home/guest/.guix-profile&#34;</span>
+. <span class="s2">&#34;</span><span class="nv">$GUIX_PROFILE</span><span class="s2">/etc/profile&#34;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+</li>
+</ul>
+<h2 id="setup-for-different-tools">Setup for different tools</h2>
+<h3 id="common-things-for-convenience">Common things for convenience</h3>
+<h4 id="script-to-start-environment">Script to start environment</h4>
+<p>A convenient way to start the <code>guix environment</code> using <code>guix time-machine</code> is useful.</p>
+<ul>
+<li>the simplest way:
+<ul>
+<li>
+<p>add a shell alias, assuming we always place the channels file
+<code>channels.scm</code> and manifest file <code>pkgs.scm</code> at project root,
+we may use an alias such as:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">alias</span> <span class="nv">work</span><span class="o">=</span><span class="s2">&#34;guix time-machine -C channels.scm -- environment --ad-hoc -m pkgs.scm&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>this method is simple but assumes the locations of the channels and manifest file.</p>
+</li>
+</ul>
+</li>
+<li>a more flexible way:
+<ul>
+<li>prepare a command (call it <code>work</code>) in the VM as an executable shell script
+<ul>
+<li>
+<p>purpose:</p>
+<ul>
+<li>find <code>channels.scm</code> and <code>pkgs.scm</code> from the current directory up to root</li>
+<li>spawn Guix environment</li>
+<li>the command also allows extra arguments to be passed, e.g. to execute vim</li>
+</ul>
+</li>
+<li>
+<p>put at <code>/usr/local/bin/work</code> the following file</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="c1"># adapted from https://unix.stackexchange.com/a/22215</span>
+findup <span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">[</span> -e <span class="s2">&#34;./</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">]</span>
+    <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&#34;.&#34;</span>
+    <span class="k">else</span>
+        <span class="nv">path</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+        <span class="k">while</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$path</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">&amp;&amp;</span> ! -e <span class="s2">&#34;</span><span class="nv">$path</span><span class="s2">/</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">do</span>
+            <span class="nv">path</span><span class="o">=</span><span class="si">${</span><span class="nv">path</span><span class="p">%/*</span><span class="si">}</span>
+        <span class="k">done</span>
+        <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$path</span><span class="s2">&#34;</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="nv">cfpath</span><span class="o">=</span><span class="k">$(</span>findup channels.scm<span class="k">)</span>
+<span class="nv">pfpath</span><span class="o">=</span><span class="k">$(</span>findup pkgs.scm<span class="k">)</span>
+
+<span class="c1"># https://unix.stackexchange.com/a/415028</span>
+<span class="nv">channel_file</span><span class="o">=</span><span class="si">${</span><span class="nv">cfpath</span><span class="p">:+</span><span class="si">${</span><span class="nv">cfpath</span><span class="si">}</span><span class="p">/</span><span class="si">}</span>channels.scm
+<span class="nv">pkgs_file</span><span class="o">=</span><span class="si">${</span><span class="nv">pfpath</span><span class="p">:+</span><span class="si">${</span><span class="nv">pfpath</span><span class="si">}</span><span class="p">/</span><span class="si">}</span>pkgs.scm
+
+<span class="nb">exec</span> guix time-machine -C <span class="s2">&#34;</span><span class="si">${</span><span class="nv">channel_file</span><span class="si">}</span><span class="s2">&#34;</span> -- environment --ad-hoc -m <span class="s2">&#34;</span><span class="si">${</span><span class="nv">pkgs_file</span><span class="si">}</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>make it executable:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">chmod +x /usr/local/bin/work
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>advantage: can easily allow different manifest files or
+channels files at different subdirectores, should that be
+needed.</li>
+</ul>
+</li>
+</ul>
+<h4 id="script-to-start-r--optional">Script to start R (optional)</h4>
+<ul>
+<li>optionally prepare a command (call it <code>rwork</code>) in the VM to call R in the spawn environment
+<ul>
+<li>
+<p>useful for starting R in <code>ESS</code> within <code>emacs</code></p>
+</li>
+<li>
+<p>put at <code>/usr/local/bin/rwork</code>, and make it executable</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="c1"># add r-dt for DT to be loadable</span>
+<span class="nb">exec</span> work r-dt -- R --no-save <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+<h4 id="script-to-start-radian--optional">Script to start radian (optional)</h4>
+<p>Some may prefer <a href="https://github.com/randy3k/radian">radian</a> to plain R console, especially when explicitly starting R in terminal, e.g. for use in Sublime Text and VSCode.</p>
+<ul>
+<li>prepare radian in VM
+<ul>
+<li>tried but encountered problems in Debian 10 VM:
+<ul>
+<li>tried installing <code>radian</code> from pypi, but encountered glibc version mismatch when in different Guix environment</li>
+<li>so also tried installing radian in guix, but seems still may have glibc version mismatch unless we build the radian together with the environment</li>
+</ul>
+</li>
+<li>one tried method that works: add <code>radian</code> to Guix and add it to the package list in the <code>guix environment</code>:
+<ul>
+<li>
+<p><code>radian</code> is not currently (at the time of writing) in the official Guix repository, so we import it with <code>guix import pypi -r radian</code> to get a skeleton, but need some fiddling to get it to build:</p>
+<ul>
+<li>need to add importing of gnu modules at the top</li>
+<li>need to disable the tests in the few packages including <code>radian</code>, <code>rchitect</code>, <code>lineedit</code> to build without error</li>
+<li>need to fix some inputs, especially <code>python-pytest-runner</code></li>
+<li>need to use newer version of <code>python-pyte</code> (at least 0.8.0), so included a modified definition of <code>python-pyte</code></li>
+</ul>
+</li>
+<li>
+<p>the resulting file: to be put in the VM as <code>~/extra/radian.scm</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">use-modules</span> <span class="p">(</span><span class="nf">guix</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">licenses</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">download</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">git-download</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">statistics</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">python</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">python-science</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">python-xyz</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">libffi</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">check</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">terminals</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">build-system</span> <span class="nv">python</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">define-public</span> <span class="nv">python-lineedit</span>
+  <span class="p">(</span><span class="nf">package</span>
+    <span class="p">(</span><span class="nf">name</span> <span class="s">&#34;python-lineedit&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">version</span> <span class="s">&#34;0.1.6&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">source</span>
+      <span class="p">(</span><span class="nf">origin</span>
+        <span class="p">(</span><span class="nf">method</span> <span class="nv">url-fetch</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">uri</span> <span class="p">(</span><span class="nf">pypi-uri</span> <span class="s">&#34;lineedit&#34;</span> <span class="nv">version</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">sha256</span>
+          <span class="p">(</span><span class="nf">base32</span>
+            <span class="s">&#34;0gvggy22s3qlz3r5lrwr5f4hzwbq7anyd2vfrzchldaf2mwm8ygl&#34;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">build-system</span> <span class="nv">python-build-system</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">arguments</span> <span class="o">`</span><span class="p">(</span><span class="o">#</span><span class="nv">:tests?</span> <span class="no">#f</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">propagated-inputs</span>
+      <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-pygments&#34;</span> <span class="o">,</span><span class="nv">python-pygments</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-six&#34;</span> <span class="o">,</span><span class="nv">python-six</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-wcwidth&#34;</span> <span class="o">,</span><span class="nv">python-wcwidth</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">native-inputs</span>
+      <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-pexpect&#34;</span> <span class="o">,</span><span class="nv">python-pexpect</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-ptyprocess&#34;</span> <span class="o">,</span><span class="nv">python-ptyprocess</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pyte&#34;</span> <span class="o">,</span><span class="nv">python-pyte</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pytest&#34;</span> <span class="o">,</span><span class="nv">python-pytest</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pytest-cov&#34;</span> <span class="o">,</span><span class="nv">python-pytest-cov</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">home-page</span> <span class="s">&#34;https://github.com/randy3k/lineedit&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">synopsis</span>
+      <span class="s">&#34;An readline library based on prompt_toolkit which supports multiple modes&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">description</span>
+      <span class="s">&#34;An readline library based on prompt_toolkit which supports multiple modes&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">license</span> <span class="no">#f</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">define-public</span> <span class="nv">python-rchitect</span>
+  <span class="p">(</span><span class="nf">package</span>
+    <span class="p">(</span><span class="nf">name</span> <span class="s">&#34;python-rchitect&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">version</span> <span class="s">&#34;0.3.30&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">source</span>
+      <span class="p">(</span><span class="nf">origin</span>
+        <span class="p">(</span><span class="nf">method</span> <span class="nv">url-fetch</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">uri</span> <span class="p">(</span><span class="nf">pypi-uri</span> <span class="s">&#34;rchitect&#34;</span> <span class="nv">version</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">sha256</span>
+          <span class="p">(</span><span class="nf">base32</span>
+            <span class="s">&#34;1bg5vrgp447czgmjjky84yqqk2mfzwwgnf0m99lqzs7jq15q8ziv&#34;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">build-system</span> <span class="nv">python-build-system</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">arguments</span> <span class="o">`</span><span class="p">(</span><span class="o">#</span><span class="nv">:tests?</span> <span class="no">#f</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">propagated-inputs</span>
+      <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-cffi&#34;</span> <span class="o">,</span><span class="nv">python-cffi</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-six&#34;</span> <span class="o">,</span><span class="nv">python-six</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">native-inputs</span>
+      <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-pytest&#34;</span> <span class="o">,</span><span class="nv">python-pytest</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pytest-runner&#34;</span> <span class="o">,</span><span class="nv">python-pytest-runner</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pytest-cov&#34;</span> <span class="o">,</span><span class="nv">python-pytest-cov</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pytest-mock&#34;</span> <span class="o">,</span><span class="nv">python-pytest-mock</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">home-page</span> <span class="s">&#34;https://github.com/randy3k/rchitect&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">synopsis</span> <span class="s">&#34;Mapping R API to Python&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">description</span> <span class="s">&#34;Mapping R API to Python&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">license</span> <span class="no">#f</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">define-public</span> <span class="nv">python-pyte</span>
+  <span class="p">(</span><span class="nf">package</span>
+    <span class="p">(</span><span class="nf">name</span> <span class="s">&#34;python-pyte&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">version</span> <span class="s">&#34;0.8.0&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">source</span>
+     <span class="p">(</span><span class="nf">origin</span>
+       <span class="p">(</span><span class="nf">method</span> <span class="nv">url-fetch</span><span class="p">)</span>
+       <span class="p">(</span><span class="nf">uri</span> <span class="p">(</span><span class="nf">pypi-uri</span> <span class="s">&#34;pyte&#34;</span> <span class="nv">version</span><span class="p">))</span>
+       <span class="p">(</span><span class="nf">sha256</span>
+        <span class="p">(</span><span class="nf">base32</span>
+         <span class="s">&#34;1ic8b9xrg76z55qrvbgpwrgg0mcq0dqgy147pqn2cvrdjwzd0wby&#34;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">build-system</span> <span class="nv">python-build-system</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">arguments</span>
+     <span class="o">&#39;</span><span class="p">(</span><span class="o">#</span><span class="nv">:phases</span>
+       <span class="p">(</span><span class="nf">modify-phases</span> <span class="nv">%standard-phases</span>
+         <span class="p">(</span><span class="nf">add-after</span> <span class="ss">&#39;unpack</span> <span class="ss">&#39;remove-failing-test</span>
+           <span class="c1">;; TODO: Reenable when the `captured` files required by this test</span>
+           <span class="c1">;; are included in the archive.</span>
+           <span class="p">(</span><span class="k">lambda </span><span class="nv">_</span>
+             <span class="p">(</span><span class="nf">delete-file</span> <span class="s">&#34;tests/test_input_output.py&#34;</span><span class="p">)</span>
+             <span class="no">#t</span><span class="p">)))))</span>
+    <span class="p">(</span><span class="nf">propagated-inputs</span>
+     <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-wcwidth&#34;</span> <span class="o">,</span><span class="nv">python-wcwidth</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">native-inputs</span>
+     <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-pytest-runner&#34;</span> <span class="o">,</span><span class="nv">python-pytest-runner</span><span class="p">)</span>
+       <span class="p">(</span><span class="s">&#34;python-pytest&#34;</span> <span class="o">,</span><span class="nv">python-pytest</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">home-page</span> <span class="s">&#34;https://pyte.readthedocs.io/&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">synopsis</span> <span class="s">&#34;Simple VTXXX-compatible terminal emulator&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">description</span> <span class="s">&#34;@code{pyte} is an in-memory VTxxx-compatible terminal
+</span><span class="s">emulator.  @var{VTxxx} stands for a series of video terminals, developed by
+</span><span class="s">DEC between 1970 and 1995.  The first and probably most famous one was the
+</span><span class="s">VT100 terminal, which is now a de-facto standard for all virtual terminal
+</span><span class="s">emulators.
+</span><span class="s">
+</span><span class="s">pyte is a fork of vt102, which was an incomplete pure Python implementation
+</span><span class="s">of VT100 terminal.&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">license</span> <span class="nv">lgpl3+</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">define-public</span> <span class="nv">python-radian</span>
+  <span class="p">(</span><span class="nf">package</span>
+    <span class="p">(</span><span class="nf">name</span> <span class="s">&#34;python-radian&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">version</span> <span class="s">&#34;0.5.10&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">source</span>
+      <span class="p">(</span><span class="nf">origin</span>
+        <span class="p">(</span><span class="nf">method</span> <span class="nv">url-fetch</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">uri</span> <span class="p">(</span><span class="nf">pypi-uri</span> <span class="s">&#34;radian&#34;</span> <span class="nv">version</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">sha256</span>
+          <span class="p">(</span><span class="nf">base32</span>
+            <span class="s">&#34;0plkv3qdgfxyrmg2k6c866q5p7iirm46ivhq2ixs63zc05xdbg8s&#34;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">build-system</span> <span class="nv">python-build-system</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">arguments</span> <span class="o">`</span><span class="p">(</span><span class="o">#</span><span class="nv">:tests?</span> <span class="no">#f</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">propagated-inputs</span>
+      <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-lineedit&#34;</span> <span class="o">,</span><span class="nv">python-lineedit</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pygments&#34;</span> <span class="o">,</span><span class="nv">python-pygments</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-rchitect&#34;</span> <span class="o">,</span><span class="nv">python-rchitect</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-six&#34;</span> <span class="o">,</span><span class="nv">python-six</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">native-inputs</span>
+      <span class="o">`</span><span class="p">((</span><span class="s">&#34;python-coverage&#34;</span> <span class="o">,</span><span class="nv">python-coverage</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pexpect&#34;</span> <span class="o">,</span><span class="nv">python-pexpect</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-ptyprocess&#34;</span> <span class="o">,</span><span class="nv">python-ptyprocess</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pytest-runner&#34;</span> <span class="o">,</span><span class="nv">python-pytest-runner</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pyte&#34;</span> <span class="o">,</span><span class="nv">python-pyte</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;python-pytest&#34;</span> <span class="o">,</span><span class="nv">python-pytest</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">home-page</span> <span class="s">&#34;https://github.com/randy3k/radian&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">synopsis</span> <span class="s">&#34;A 21 century R console&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">description</span> <span class="s">&#34;A 21 century R console&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">license</span> <span class="no">#f</span><span class="p">)))</span>
+
+<span class="c1">;;</span>
+<span class="nv">python-radian</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>this file can be added to <code>guix environment</code> call with the <code>-l</code> option, so that radian is built together with other packages for the project</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>prepare an executable shell script (call it <code>rdwork</code>) in the VM to call <code>radian</code> in the spawn environment
+<ul>
+<li>
+<p>put at <code>/usr/local/bin/rdwork</code> the following file, and make it executable:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="c1"># add r-dt for DT to be loadable</span>
+<span class="nb">exec</span> work r-dt -l ~/extra/radian.scm -- radian <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+<h4 id="x-forwarding-settings--optional">X forwarding settings (optional)</h4>
+<p>X forwarding may come into handy for viewing plots, or viewing data frames through R <code>DT</code>.</p>
+<ul>
+<li>on Mac host, install XQuartz
+<ul>
+<li>refer to <a href="https://www.xquartz.org/">https://www.xquartz.org/</a></li>
+</ul>
+</li>
+<li>add <code>xhost + 127.0.0.1</code> to the qemu starting script, before starting the VM</li>
+<li>use X forwarding in ssh
+<ul>
+<li>either use <code>ssh +XC vm</code> to connect, or</li>
+<li>add <code>ForwardX11 yes</code> to <code>~/.ssh/config</code> as shown above</li>
+</ul>
+</li>
+<li>(optional) for R <code>DT</code> to work inside VM, do these <strong>inside the VM</strong>
+<ul>
+<li>
+<p>install a web browser:</p>
+<ul>
+<li>
+<p>e.g. Firefox</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">sudo apt-get install firefox-esr
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>or you may choose a more light-weight browser such as
+<a href="https://astian.org/en/midori-browser/">midori</a>, which can and should be installed through Guix (to
+avoid dynamic library problem in different Guix
+environment):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix package -i midori
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>DT needs the &ldquo;browser&rdquo; option to point to a browser,
+e.g. firefox. You may add the following to <code>~/.Rprofile</code>,
+create the file <code>~/.Rprofile</code> if it does not exist:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="c1"># for DT::datatable to work, you may use other browser you like, if it is installed in the system</span>
+<span class="nf">options</span><span class="p">(</span><span class="n">browser</span> <span class="o">=</span> <span class="s">&#34;midori&#34;</span><span class="p">)</span> <span class="c1"># alternative</span>
+<span class="c1"># options(browser = &#34;firefox&#34;) # alternative</span>
+
+<span class="c1"># (optional) can consider overriding View as DT::datatable for convenience, as the default View is not very good in X forwarding</span>
+<span class="nf">if</span><span class="p">(</span><span class="nf">requireNamespace</span><span class="p">(</span><span class="s">&#34;DT&#34;</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">))</span> <span class="p">{</span><span class="n">View</span> <span class="o">&lt;-</span> <span class="n">DT</span><span class="o">::</span><span class="n">datatable</span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+<h3 id="jupyter-lab">Jupyter lab</h3>
+<h4 id="idea">Idea</h4>
+<ul>
+<li>to install Jupyter lab in the VM, to use with R kernel</li>
+<li>then use <code>work</code> to get the Guix environment we want, to start
+Jupyter</li>
+<li>then connect from browser with port forwarding, then we have
+nice graphics, just as with any Jupyter notebook</li>
+</ul>
+<h4 id="setup">Setup</h4>
+<ul>
+<li><strong>side note</strong>: one way is to use <code>guix-jupyter</code>
+<ul>
+<li>reference: <a href="https://hpc.guix.info/blog/2019/10/towards-reproducible-jupyter-notebooks/">https://hpc.guix.info/blog/2019/10/towards-reproducible-jupyter-notebooks/</a></li>
+<li>it allows specifying Guix environment within the notebook
+itself</li>
+<li>so can pin the versions of the needed packages</li>
+<li>but this will then be different from using other approaches
+here</li>
+<li>so this method is for reference, and left for the reader to
+explore</li>
+</ul>
+</li>
+<li>for consistency, the Jupyter and R kernels should be
+installed in the same Guix environment along with other
+project packages
+<ul>
+<li>
+<p>basically we need</p>
+<ul>
+<li><code>jupyter</code></li>
+<li><code>r-irkernel</code> for the R kernel</li>
+<li><code>r-irdisplay</code> for rich display capabilities</li>
+<li>Optionally, <code>python-ipykernel</code> for python kernel</li>
+</ul>
+</li>
+<li>
+<p>so prepare an executable shell script at
+<code>/usr/local/bin/jrwork</code> with the following:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="c1"># add those for jupyter</span>
+<span class="nb">exec</span> work jupyter r-irkernel r-irdisplay -- jupyter notebook <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+<h4 id="usage">Usage</h4>
+<ol>
+<li>
+<p>start the VM</p>
+</li>
+<li>
+<p>ssh into the VM, e.g. with the above convenient setup</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ssh vm
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>go to the project directory</p>
+</li>
+<li>
+<p>start jupyter with dependencies using <code>jrwork</code></p>
+<figure><img src="/ox-hugo/guix_intro_6_jupyter_1_jrwork.png"
+         alt="Figure 1: Start Jupyter in Guix environment"/><figcaption>
+            <p>Figure 1: Start Jupyter in Guix environment</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>once jupyter is started, note the port number of the url,
+which may be different in different invocations e.g. if the
+link is
+&ldquo;<a href="http://localhost:8888/?token=05d71e9d8a6a687be01e307aba974f88b4834cf9f7ca1ba9">http://localhost:8888/?token=05d71e9d8a6a687be01e307aba974f88b4834cf9f7ca1ba9</a>
+the port <strong>inside VM</strong> is 8888</p>
+</li>
+<li>
+<p>do ssh port forwarding</p>
+<ul>
+<li>
+<p>reference: <a href="https://www.ssh.com/ssh/tunneling/example">https://www.ssh.com/ssh/tunneling/example</a></p>
+</li>
+<li>
+<p>the easiest way is to map the same port number in your
+local machine to the port number inside VM, but you may
+choose a different port number (don&rsquo;t choose a too small
+number, or it may be restricted by your OS)</p>
+</li>
+<li>
+<p>in another terminal in you local machine, ssh with port
+forwarding</p>
+</li>
+<li>
+<p>the general syntax of ssh port forwarding into the VM is
+<code>ssh -L xxx:localhost:yyy vm</code>, where <code>xxx</code> is the local
+port number you like, and <code>yyy</code> is the port number inside
+the VM, so for the above example of port 8888 and map to
+the same port, we would type <em>in a new terminal</em> and leave
+it open while working in Jupyter:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ssh -L 8888:localhost:8888 vm
+</code></pre></td></tr></table>
+</div>
+</div><figure><img src="/ox-hugo/guix_intro_6_jupyter_2_port_forwarding.png"
+         alt="Figure 2: Port forwarding in ssh"/><figcaption>
+            <p>Figure 2: Port forwarding in ssh</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+<li>
+<p>browse the url for Jupyter</p>
+<ul>
+<li>
+<p>in your local browser, paste the link printed by Jupyter
+in the VM, but remember to change the port number to be
+your chosen local port number (if you choose a different
+port number)</p>
+<figure><img src="/ox-hugo/guix_intro_6_jupyter_3_browser_connect.png"
+         alt="Figure 3: Browse URL of Jupyter"/><figcaption>
+            <p>Figure 3: Browse URL of Jupyter</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+<li>
+<p>then start using Jupyter</p>
+<figure><img src="/ox-hugo/guix_intro_6_jupyter_4_open_jupyter.png"
+         alt="Figure 4: Open Jupyter"/><figcaption>
+            <p>Figure 4: Open Jupyter</p>
+        </figcaption>
+</figure>
+
+<figure><img src="/ox-hugo/guix_intro_6_jupyter_5_open_notebook.png"
+         alt="Figure 5: Open notebook and work"/><figcaption>
+            <p>Figure 5: Open notebook and work</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>when done</p>
+<ul>
+<li>in the browser, press quit and logout</li>
+<li>close connection of the ssh for port forwarding</li>
+<li>exit the shell of Guix environment by pressing Ctrl+c</li>
+<li>close the original connection to the VM and exit if appropriate</li>
+</ul>
+</li>
+</ol>
+<h3 id="vscode">VSCode</h3>
+<h4 id="idea">Idea</h4>
+<ul>
+<li>can use <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh">Remote-SSH</a> plugin
+<ul>
+<li>which essentially will install a VSCode in the VM</li>
+<li>then allows us to use VSCode as if it is local</li>
+</ul>
+</li>
+<li>then configure the remote one for R programming
+<ul>
+<li>change the R executable name to be <code>rwork</code> to use the
+proper dependencies using Guix</li>
+</ul>
+</li>
+</ul>
+<h4 id="setup">Setup</h4>
+<ol>
+<li>
+<p>prepare for R <code>languageserver</code> needed for VSCode&rsquo;s R LSP Client extension</p>
+<ul>
+<li>
+<p>at the time of writing, R <code>languageserver</code> is not in Guix&rsquo;s
+official repository, so we import it from CRAN</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">guix import cran -r languageserver &gt; r_languageserver.scm
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>then need to add something at the top to use modules
+needed, and at the bottom to return the <code>r-languageserver</code>
+package, to get a file that can be used in <code>guix environment</code> to get <code>languageserver</code>, together with other
+project packages</p>
+<ul>
+<li>
+<p>the modified file is put in the VM at <code>~/extra/r_languagerserver.scm</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">use-modules</span> <span class="p">(</span><span class="nf">guix</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">licenses</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">download</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">git-download</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">cran</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">gnu</span> <span class="nv">packages</span> <span class="nv">statistics</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">guix</span> <span class="nv">build-system</span> <span class="nv">r</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">define-public</span> <span class="nv">r-collections</span>
+  <span class="p">(</span><span class="nf">package</span>
+    <span class="p">(</span><span class="nf">name</span> <span class="s">&#34;r-collections&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">version</span> <span class="s">&#34;0.3.5&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">source</span>
+      <span class="p">(</span><span class="nf">origin</span>
+        <span class="p">(</span><span class="nf">method</span> <span class="nv">url-fetch</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">uri</span> <span class="p">(</span><span class="nf">cran-uri</span> <span class="s">&#34;collections&#34;</span> <span class="nv">version</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">sha256</span>
+          <span class="p">(</span><span class="nf">base32</span>
+            <span class="s">&#34;053ig88pva78wxxwya3v7cz853k563dkpgxrf2xvd0l0d9fanxmz&#34;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">properties</span> <span class="o">`</span><span class="p">((</span><span class="nf">upstream-name</span> <span class="o">.</span> <span class="s">&#34;collections&#34;</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">build-system</span> <span class="nv">r-build-system</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">home-page</span>
+      <span class="s">&#34;https://github.com/randy3k/collections&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">synopsis</span>
+      <span class="s">&#34;High Performance Container Data Types&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">description</span>
+      <span class="s">&#34;This package provides high performance container data types such as queues, stacks, deques, dicts and ordered dicts.  Benchmarks &lt;https://randy3k.github.io/collections/articles/benchmark.html&gt; have shown that these containers are asymptotically more efficient than those offered by other packages.&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">license</span> <span class="nv">expat</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">define-public</span> <span class="nv">r-languageserver</span>
+  <span class="p">(</span><span class="nf">package</span>
+    <span class="p">(</span><span class="nf">name</span> <span class="s">&#34;r-languageserver&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">version</span> <span class="s">&#34;0.3.9&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">source</span>
+      <span class="p">(</span><span class="nf">origin</span>
+        <span class="p">(</span><span class="nf">method</span> <span class="nv">url-fetch</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">uri</span> <span class="p">(</span><span class="nf">cran-uri</span> <span class="s">&#34;languageserver&#34;</span> <span class="nv">version</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">sha256</span>
+          <span class="p">(</span><span class="nf">base32</span>
+            <span class="s">&#34;1acjzc8ar3y0g8prwnsp7k3mgvg01h73mnyb4q2s3r7wkb4aqhrv&#34;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">properties</span>
+      <span class="o">`</span><span class="p">((</span><span class="nf">upstream-name</span> <span class="o">.</span> <span class="s">&#34;languageserver&#34;</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">build-system</span> <span class="nv">r-build-system</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">propagated-inputs</span>
+      <span class="o">`</span><span class="p">((</span><span class="s">&#34;r-callr&#34;</span> <span class="o">,</span><span class="nv">r-callr</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-collections&#34;</span> <span class="o">,</span><span class="nv">r-collections</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-desc&#34;</span> <span class="o">,</span><span class="nv">r-desc</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-fs&#34;</span> <span class="o">,</span><span class="nv">r-fs</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-jsonlite&#34;</span> <span class="o">,</span><span class="nv">r-jsonlite</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-lintr&#34;</span> <span class="o">,</span><span class="nv">r-lintr</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-r6&#34;</span> <span class="o">,</span><span class="nv">r-r6</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-repr&#34;</span> <span class="o">,</span><span class="nv">r-repr</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-roxygen2&#34;</span> <span class="o">,</span><span class="nv">r-roxygen2</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-stringi&#34;</span> <span class="o">,</span><span class="nv">r-stringi</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-styler&#34;</span> <span class="o">,</span><span class="nv">r-styler</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-xml2&#34;</span> <span class="o">,</span><span class="nv">r-xml2</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&#34;r-xmlparsedata&#34;</span> <span class="o">,</span><span class="nv">r-xmlparsedata</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">home-page</span>
+      <span class="s">&#34;https://github.com/REditorSupport/languageserver/&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">synopsis</span> <span class="s">&#34;Language Server Protocol&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">description</span>
+      <span class="s">&#34;An implementation of the Language Server Protocol for R.  The Language Server protocol is used by an editor client to integrate features like auto completion.  See &lt;https://microsoft.github.io/language-server-protocol/&gt; for details.&#34;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">license</span> <span class="nv">expat</span><span class="p">)))</span>
+
+<span class="c1">;;</span>
+<span class="nv">r-languageserver</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>create an executable shell script at <code>/usr/local/bin/rcwork</code>, to add loading of <code>languageserver</code> with R:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nb">exec</span> work r-dt -l ~/extra/r_languageserver.scm -- R --no-save <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>(Optional) create an executable shell script at <code>/usr/local/bin/rcdwork</code>, to add loading <code>languageserver</code> and <code>radian</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nb">exec</span> work r-dt -l ~/extra/r_languageserver.scm -l ~/extra/radian.scm -- radian <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>you are advised to run <code>rcwork</code> and <code>rcdwork</code> at least once
+in the project directory before proceeding, because
+building or downloading the packages needed for
+<code>languageserver</code> can take a while</p>
+</li>
+</ul>
+</li>
+<li>
+<p>install VSCode</p>
+<ul>
+<li>reference: <a href="https://code.visualstudio.com/Download">https://code.visualstudio.com/Download</a></li>
+</ul>
+</li>
+<li>
+<p>install <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh">Remote-SSH</a> extension in VSCode</p>
+<ul>
+<li>
+<p>search &ldquo;Remote-SSH&rdquo; in the extension icon in the left bar</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_1_extensions.png"
+         alt="Figure 6: Install extension in VSCode"/><figcaption>
+            <p>Figure 6: Install extension in VSCode</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>then click &ldquo;install&rdquo;</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_2_extension_remote_ssh.png"
+         alt="Figure 7: Install Remote-SSH extension"/><figcaption>
+            <p>Figure 7: Install Remote-SSH extension</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>then click the green &ldquo;Open a Remote Window&rdquo; icon at the
+bottom left corner to switch to the remote instance</p>
+<ul>
+<li>
+<p>select &ldquo;Connect to Host&rdquo; or &ldquo;Connect Current Window to Host&rdquo;</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_3_connect.png"
+         alt="Figure 8: Connect to remote through SSH inside VSCode"/><figcaption>
+            <p>Figure 8: Connect to remote through SSH inside VSCode</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>then select &ldquo;vm&rdquo; if you have already configured
+<code>.ssh/config</code> as above; otherwise you may configure it
+here</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_4_connect.png"
+         alt="Figure 9: Connect to VM"/><figcaption>
+            <p>Figure 9: Connect to VM</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>if the bottom left green icon shows something like &ldquo;SSH:
+vm&rdquo;, then you have successfully connected to the remote
+instance</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>setup the remote VSCode environment for R</p>
+<ul>
+<li>
+<p>reference: <a href="https://www.r-bloggers.com/2021/01/setup-visual-studio-code-to-run-r-on-vscode-2021/">https://www.r-bloggers.com/2021/01/setup-visual-studio-code-to-run-r-on-vscode-2021/</a></p>
+</li>
+<li>
+<p>install <a href="https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r">VSCode R</a> extension</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_10_extension_r.png"
+         alt="Figure 10: Install VSCode R extension"/><figcaption>
+            <p>Figure 10: Install VSCode R extension</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>install <a href="https://marketplace.visualstudio.com/items?itemName=REditorSupport.r-lsp">R LSP Client</a> extension</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_11_extension_r_lsp.png"
+         alt="Figure 11: Install R LSP Client extension"/><figcaption>
+            <p>Figure 11: Install R LSP Client extension</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>install <code>languageserver</code> in R (needed for R LSP Client)</p>
+<ul>
+<li>should have been setup above</li>
+</ul>
+</li>
+<li>
+<p>install <code>radian</code></p>
+<ul>
+<li>should have been setup above</li>
+</ul>
+</li>
+<li>
+<p>enable <code>r.bracketedPaste</code> for using Radian</p>
+<ul>
+<li>
+<p>goto settings: menu &ldquo;Code&rdquo; -&gt; &ldquo;Preferences&rdquo; -&gt;
+&ldquo;Settings&rdquo;, or use the shortcut</p>
+</li>
+<li>
+<p>search <code>r.bracketedPaste</code>, and make sure it is enabled
+(ticked)</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_12_settings.png"
+         alt="Figure 12: Extension settings"/><figcaption>
+            <p>Figure 12: Extension settings</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+<li>
+<p>enable <code>r.alwaysUseActiveTerminal</code> if we were to manually
+start R in the terminal</p>
+<ul>
+<li>goto settings</li>
+<li>search <code>r.alwaysUseActiveTerminal</code>, tick the box to set
+it to <code>True</code></li>
+</ul>
+</li>
+<li>
+<p>Set up <code>r.rpath.windows</code>, <code>r.rpath.mac</code>, <code>r.rpath.linux</code>: Path to R or <code>radian</code></p>
+<ul>
+<li>go to settings</li>
+<li>search <code>r.rpath.linux</code>, change it to
+<code>/usr/local/bin/rcwork</code> or plain R, the path to our R
+wrapper script. Note that using <code>radian</code> here does not
+seem to work.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="usage">Usage</h4>
+<ol>
+<li>
+<p>start the VM</p>
+</li>
+<li>
+<p>connect to VM in VSCode</p>
+<ul>
+<li>click the green &ldquo;Open a Remote Window&rdquo; icon at the
+bottom left corner to switch to the remote instance</li>
+<li>select &ldquo;Connect to Host&rdquo; or &ldquo;Connect Current Window to
+Host&rdquo;</li>
+<li>then select &ldquo;vm&rdquo;</li>
+</ul>
+</li>
+<li>
+<p>open folder of the project</p>
+<ul>
+<li>
+<p>click &ldquo;Open Folder&rdquo; in Explorer</p>
+</li>
+<li>
+<p>find the project folder and click &ldquo;Ok&rdquo;</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_5_open_folder.png"
+         alt="Figure 13: Open project folder"/><figcaption>
+            <p>Figure 13: Open project folder</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+<li>
+<p>open R in terminal</p>
+<ul>
+<li>
+<p>if terminal is not ok yet, open one with menu &ldquo;Terminal&rdquo;
+-&gt; &ldquo;New Terminal&rdquo;</p>
+</li>
+<li>
+<p>in the terminal (which should already be in the project
+directory), type <code>rcwork</code> (for plain R) or <code>rcdwork</code> (for
+<code>radian</code>)</p>
+</li>
+<li>
+<p>then wait until R prompt appears</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_6_rcwork.png"
+         alt="Figure 14: Start R in terminal of VSCode"/><figcaption>
+            <p>Figure 14: Start R in terminal of VSCode</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+<li>
+<p>then can open any R file that you want to edit, and send
+code (default key Command+Enter in Mac) to the terminal as
+needed</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_7_run_code.png"
+         alt="Figure 15: Run R code in VSCode"/><figcaption>
+            <p>Figure 15: Run R code in VSCode</p>
+        </figcaption>
+</figure>
+
+<figure><img src="/ox-hugo/guix_intro_6_vscode_8_auto_complete.png"
+         alt="Figure 16: Auto-completion (partial) by LSP in VSCode"/><figcaption>
+            <p>Figure 16: Auto-completion (partial) by LSP in VSCode</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>when done, close connection</p>
+<ul>
+<li>
+<p>click the green icon in the bottom left corner</p>
+</li>
+<li>
+<p>choose &ldquo;Close Connection&rdquo;</p>
+<figure><img src="/ox-hugo/guix_intro_6_vscode_9_close_connection.png"
+         alt="Figure 17: Close remote connection in VSCode"/><figcaption>
+            <p>Figure 17: Close remote connection in VSCode</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="sublime-text-3">Sublime Text 3</h3>
+<h4 id="idea">Idea</h4>
+<ul>
+<li>use sftp extension for editing files in the VM</li>
+<li>open terminal into the vm</li>
+<li>in the ssh session, get to desired directory</li>
+<li>call the command and open R or radian in Guix environment</li>
+<li>use SendCode extension to send part of source file to the
+terminal (where R is started) to evaluate</li>
+</ul>
+<h4 id="setup">Setup</h4>
+<ul>
+<li>install <a href="https://www.sublimetext.com/3">Sublime Text 3</a></li>
+<li>install sftp plugin
+<ul>
+<li>
+<p>references:</p>
+<ul>
+<li><a href="https://morannachum.wordpress.com/2015/04/05/how-to-configure-a-sftp-folder-in-sublime/">https://morannachum.wordpress.com/2015/04/05/how-to-configure-a-sftp-folder-in-sublime/</a></li>
+<li><a href="https://notepadhelper.com/sublime-text/ftp-connection-sftp-plugin/">https://notepadhelper.com/sublime-text/ftp-connection-sftp-plugin/</a></li>
+</ul>
+</li>
+<li>
+<p>first install &ldquo;Package Control&rdquo; under &ldquo;Tools&rdquo;</p>
+<ul>
+<li>
+<p><a href="https://notepadhelper.com/sublime-text/installation-of-package-control/">https://notepadhelper.com/sublime-text/installation-of-package-control/</a></p>
+<figure><img src="/ox-hugo/guix_intro_6_sublime_text3_1_package_control.png"
+         alt="Figure 18: Package Control in Sublime Text 3"/><figcaption>
+            <p>Figure 18: Package Control in Sublime Text 3</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+<li>
+<p>then under &ldquo;Sublime Text&rdquo; -&gt; &ldquo;Preferences&rdquo; -&gt; &ldquo;Package Control&rdquo;, choose &ldquo;Install package&rdquo;</p>
+</li>
+<li>
+<p>then type &ldquo;SFTP&rdquo;, then it will install</p>
+</li>
+<li>
+<p>setup ssh into the server</p>
+<ul>
+<li>reference: <a href="https://codexns.io/products/sftp%5Ffor%5Fsublime/usage">https://codexns.io/products/sftp%5Ffor%5Fsublime/usage</a></li>
+<li>under &ldquo;Sublime Text&rdquo; -&gt; &ldquo;Preferences&rdquo; -&gt; &ldquo;Package Settings&rdquo; -&gt; &ldquo;SFTP&rdquo; -&gt; &ldquo;Settings&rdquo;</li>
+<li>under &ldquo;File&rdquo; -&gt; &ldquo;SFTP/FTP&rdquo; -&gt; &ldquo;Setup Server&rdquo;
+<ul>
+<li>
+<p>change the &ldquo;host&rdquo;, &ldquo;user&rdquo;, &ldquo;port&rdquo;, &ldquo;remote_path&rdquo;, &ldquo;ssh_key_file&rdquo; to match the ssh settings</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">{
+    // The tab key will cycle through the settings when first created
+    // Visit https://codexns.io/products/sftp_for_subime/settings for help
+
+    // sftp, ftp or ftps
+    &#34;type&#34;: &#34;sftp&#34;,
+
+    &#34;sync_down_on_open&#34;: true,
+    &#34;sync_same_age&#34;: true,
+
+    &#34;host&#34;: &#34;localhost&#34;,
+    &#34;user&#34;: &#34;guest&#34;,
+    //&#34;password&#34;: &#34;password&#34;,
+    &#34;port&#34;: &#34;10022&#34;,
+
+    &#34;remote_path&#34;: &#34;/home/guest&#34;,
+    //&#34;file_permissions&#34;: &#34;664&#34;,
+    //&#34;dir_permissions&#34;: &#34;775&#34;,
+
+    //&#34;extra_list_connections&#34;: 0,
+
+    //&#34;keepalive&#34;: 120,
+    &#34;connect_timeout&#34;: 30,
+    //&#34;ftp_passive_mode&#34;: true,
+    //&#34;ftp_obey_passive_host&#34;: false,
+    &#34;ssh_key_file&#34;: &#34;~/.ssh/id_rsa&#34;,
+    //&#34;sftp_flags&#34;: [&#34;-F&#34;, &#34;/path/to/ssh_config&#34;],
+
+    //&#34;preserve_modification_times&#34;: false,
+    //&#34;remote_time_offset_in_hours&#34;: 0,
+    //&#34;remote_encoding&#34;: &#34;utf-8&#34;,
+    //&#34;remote_locale&#34;: &#34;C&#34;,
+    //&#34;allow_config_upload&#34;: false,
+}
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>save to <code>Packages/User/sftp_servers/</code>, e.g. as <code>vm</code>, note it should not have an extension</p>
+</li>
+<li>
+<p>create a local folder</p>
+</li>
+<li>
+<p>then map the folder to the remote vm</p>
+<ul>
+<li>open the folder in Sublime Text</li>
+<li>right click on the folder in side bar, select &ldquo;map to remote&rdquo;</li>
+<li>then edit the config, similar to the above</li>
+<li>now can sync files between local and VM</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>install Terminus in Sublime Text
+<ul>
+<li>settings:
+<ul>
+<li>&ldquo;256color&rdquo; : true</li>
+<li>&ldquo;unix_term&rdquo; : &ldquo;xterm-256color&rdquo;</li>
+</ul>
+</li>
+<li>key bindings:
+<ul>
+<li>
+<p>take only two here for illustration, can customize as you like</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">[
+    // Toggle the default shell in panel
+    { &#34;keys&#34;: [&#34;alt+`&#34;], &#34;command&#34;: &#34;toggle_terminus_panel&#34; },
+
+    // Open a terminal tab at current file directory
+    {
+         &#34;keys&#34;: [&#34;ctrl+alt+t&#34;], &#34;command&#34;: &#34;terminus_open&#34;, &#34;args&#34;: {
+             &#34;cwd&#34;: &#34;${file_path:${folder}}&#34;
+         }
+    }
+]
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>install SendCode in Sublime Text
+<ul>
+<li>
+<p>settings: can customize as you like</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">{
+    &#34;prog&#34;: &#34;terminus&#34;,
+    &#34;auto_expand_line&#34;: true,
+    &#34;auto_advance&#34; : true,
+    &#34;auto_advance_non_empty&#34;: false,
+    &#34;bracketed_paste_mode&#34;: false,
+    &#34;block_start_pattern&#34;: &#34;# ?%%|# ?\\+|# In \\[&#34;,
+    &#34;block_end_pattern&#34;: &#34;# ?%%|# ?\\+|#&#39;|# In \\[&#34;,
+
+    &#34;r&#34; : {
+        &#34;prog&#34;: &#34;terminus&#34;,
+        // turn bracketed_paste_mode on if radian or readline 7.0 is in use
+        &#34;bracketed_paste_mode&#34;: true
+    },
+
+    &#34;rmd&#34; : {
+        &#34;prog&#34;: &#34;terminus&#34;,
+        // turn bracketed_paste_mode on if radian or readline 7.0 is in use
+        &#34;bracketed_paste_mode&#34;: true
+    },
+
+    &#34;python&#34; : {
+        &#34;prog&#34;: &#34;terminus&#34;,
+        &#34;bracketed_paste_mode&#34;: true
+    },
+
+    &#34;julia&#34; : {
+        &#34;prog&#34;: &#34;terminal&#34;,
+        &#34;bracketed_paste_mode&#34;: true
+    }
+
+    // path related settings
+
+    // path to tmux
+    // &#34;tmux&#34;: &#34;tmux&#34;,
+
+    // path to screen
+    // &#34;screen&#34;: &#34;screen&#34;
+}
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>key bindings: add some</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">{
+    &#34;keys&#34;: [&#34;super+enter&#34;], &#34;command&#34;: &#34;send_code&#34;,
+    &#34;context&#34;: [
+        { &#34;key&#34;: &#34;selector&#34;, &#34;operator&#34;: &#34;equal&#34;, &#34;operand&#34;: &#34;source&#34; }
+    ]
+},
+{
+    &#34;keys&#34;: [&#34;super+enter&#34;], &#34;command&#34;: &#34;send_code&#34;,
+    &#34;context&#34;: [
+        { &#34;key&#34;: &#34;selector&#34;, &#34;operator&#34;: &#34;equal&#34;, &#34;operand&#34;: &#34;markup.raw.code-fence.markdown, markup.raw.block.fenced.markdown&#34; }
+    ]
+},
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>install LSP in Sublime Text
+<ul>
+<li>
+<p>settings:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">{
+        &#34;clients&#34;:
+        {
+                &#34;rlang&#34;:
+                {
+                        &#34;enabled&#34;: true
+                }
+        }
+}
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>install R-IDE in Sublime Text</li>
+</ul>
+<h4 id="usage">Usage</h4>
+<ol>
+<li>
+<p>connect sftp to edit files, can sync when saved (if configured so)</p>
+<figure><img src="/ox-hugo/guix_intro_6_sublime_text3_2_sftp_sync.png"
+         alt="Figure 19: SFTP sync in Sublime Text 3"/><figcaption>
+            <p>Figure 19: SFTP sync in Sublime Text 3</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>open terminal <em>inside Sublime Text</em>, e.g. by using Ctrl+Alt+t configured above, then ssh into VM by <code>ssh vm</code></p>
+<figure><img src="/ox-hugo/guix_intro_6_sublime_text3_3_ssh_vm.png"
+         alt="Figure 20: Ssh into VM in Sublime Text 3"/><figcaption>
+            <p>Figure 20: Ssh into VM in Sublime Text 3</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>go to the desired project directory, run <code>rwork</code> (for plain R) or <code>rdwork</code> (for radian)</p>
+<figure><img src="/ox-hugo/guix_intro_6_sublime_text3_4_rwork.png"
+         alt="Figure 21: Start R in Guix environment in Sublime Text 3"/><figcaption>
+            <p>Figure 21: Start R in Guix environment in Sublime Text 3</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>open files to edit, can send text to terminal for evaluation, e.g. with Command+Enter shortcut (for MacOS)</p>
+<figure><img src="/ox-hugo/guix_intro_6_sublime_text3_5_run_code.png"
+         alt="Figure 22: Run R code in Sublime Text 3"/><figcaption>
+            <p>Figure 22: Run R code in Sublime Text 3</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>when done, just exit R with <code>q()</code> and exit ssh in the terminal</p>
+<figure><img src="/ox-hugo/guix_intro_6_sublime_text3_6_close_connection.png"
+         alt="Figure 23: Close remote connection in Sublime Text 3"/><figcaption>
+            <p>Figure 23: Close remote connection in Sublime Text 3</p>
+        </figcaption>
+</figure>
+
+</li>
+</ol>
+<h3 id="emacs">Emacs</h3>
+<h4 id="idea">Idea</h4>
+<ul>
+<li>use <a href="https://www.emacswiki.org/emacs/TrampMode">Tramp mode</a>, which can ssh into the VM transparently</li>
+<li>prepare a command (<code>rwork</code> prepared above) in the VM (an executable shell script) to
+<ul>
+<li>find <code>channels.scm</code> and <code>pkgs.scm</code> from the current directory up to root</li>
+<li>spawn Guix environment</li>
+<li>execute R, so that we are using the intended environment</li>
+</ul>
+</li>
+<li>in emacs, change <code>inferior-R-program-name</code> in <a href="https://ess.r-project.org/">ESS</a> to call the prepared command</li>
+<li>then should be able to use R in emacs as usual using ESS</li>
+</ul>
+<h4 id="setup">Setup</h4>
+<ul>
+<li>
+<p>customize tramp for convenience, add to <code>.emacs</code> in host,
+assuming you alreay use <a href="https://www.emacswiki.org/emacs/UsePackage">use-package</a>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="c1">;; For Emacs Speaks Statistics (ESS) to run R</span>
+<span class="p">(</span><span class="nb">use-package</span> <span class="nv">ess</span>
+  <span class="nb">:ensure</span> <span class="no">t</span>
+  <span class="nb">:init</span> <span class="p">(</span><span class="nb">require</span> <span class="ss">&#39;ess-site</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">setq</span> <span class="nv">ess-fancy-comments</span> <span class="no">nil</span><span class="p">))</span>
+
+<span class="c1">;; For connecting in tramp mode to vm</span>
+<span class="p">(</span><span class="nb">use-package</span> <span class="nv">tramp</span>
+  <span class="nb">:ensure</span> <span class="no">nil</span>
+  <span class="nb">:custom</span>
+  <span class="p">(</span><span class="nv">tramp-default-method</span> <span class="s">&#34;sshx&#34;</span><span class="p">)</span>
+  <span class="p">(</span><span class="nv">tramp-default-user</span> <span class="s">&#34;guest&#34;</span><span class="p">)</span>
+  <span class="p">(</span><span class="nv">tramp-default-host</span> <span class="s">&#34;vm&#34;</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">setq</span> <span class="nv">inferior-R-program-name</span> <span class="s">&#34;rwork&#34;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h4 id="usage">Usage</h4>
+<ol>
+<li>
+<p>use tramp to ssh into the desired directory, e.g. <code>C-x C-f /sshx:vm:guix_demo</code></p>
+<figure><img src="/ox-hugo/guix_intro_6_emacs_1_tramp.png"
+         alt="Figure 24: Ssh to remote using tramp in Emacs"/><figcaption>
+            <p>Figure 24: Ssh to remote using tramp in Emacs</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>then navigate to project directory if needed</p>
+<figure><img src="/ox-hugo/guix_intro_6_emacs_2_to_project.png"
+         alt="Figure 25: Navigate to project directory using dired in Emacs"/><figcaption>
+            <p>Figure 25: Navigate to project directory using dired in Emacs</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>start R with <code>M-x R</code></p>
+<figure><img src="/ox-hugo/guix_intro_6_emacs_3_start_r.png"
+         alt="Figure 26: Start R in Guix environment with ESS in Emacs"/><figcaption>
+            <p>Figure 26: Start R in Guix environment with ESS in Emacs</p>
+        </figcaption>
+</figure>
+
+</li>
+<li>
+<p>use R in emacs through ESS as usual</p>
+<ul>
+<li>
+<p><code>C-c C-c</code> to evaluate block of code</p>
+</li>
+<li>
+<p><code>C-c C-r</code> to evaluate selected region of code</p>
+</li>
+<li>
+<p><code>C-c C-z</code> to switch back and forth between code buffer and R REPL buffer</p>
+<figure><img src="/ox-hugo/guix_intro_6_emacs_4_run_code.png"
+         alt="Figure 27: Run R code in ESS in Emacs"/><figcaption>
+            <p>Figure 27: Run R code in ESS in Emacs</p>
+        </figcaption>
+</figure>
+
+</li>
+</ul>
+</li>
+<li>
+<p>when done, just quit R as usual, e.g. using <code>q()</code> in the R prompt</p>
+<figure><img src="/ox-hugo/guix_intro_6_emacs_5_quit_r.png"
+         alt="Figure 28: Quit R in Emacs"/><figcaption>
+            <p>Figure 28: Quit R in Emacs</p>
+        </figcaption>
+</figure>
+
+</li>
+</ol>
+<h2 id="un-explored-tools">Un-explored tools</h2>
+<p>I originally intended to also include RStudio and Vim or Neovim, but
+did not figure out the details. Nevertheless, I will briefly describe
+the idea to make them work with Guix for per-project dependency
+management, for interested readers to explore.</p>
+<h3 id="rstudio-desktop">RStudio Desktop</h3>
+<p><a href="https://www.rstudio.com/products/rstudio/download/">RStudio desktop</a> is commonly used for R development. Since it by
+default looks for R in <code>PATH</code>, so starting RStudio desktop in a Guix
+environment should just work in getting the needed project
+dependencies, although I have not tried it.</p>
+<ul>
+<li>idea:
+<ul>
+<li>start Guix environment using <code>work</code></li>
+<li>then start RStudio desktop</li>
+<li>work as usual</li>
+</ul>
+</li>
+</ul>
+<h3 id="rstudio-server">RStudio Server</h3>
+<p><a href="https://www.rstudio.com/products/rstudio/download/">RStudio server</a> is an alternative to RStudio desktop version. While
+the commercial version has a lot of useful features for use in a
+team, the open source version is much more limited. RStudio server is
+intended to be run in a shared server allowing access from multiple
+users, but the open source version does not allow easily switching
+between different R versions and dependencies. Also, RStudio server
+has its own wrapper of starting an R session, so it is not
+straight-forward to use it with Guix for per-project dependency
+management. Nevertheless, someone has configured it to use <a href="https://docs.conda.io/en/latest/">conda</a> to
+manage per-project dependencies, see
+<a href="https://github.com/grst/rstudio-server-conda">https://github.com/grst/rstudio-server-conda</a> . Using the same idea
+should allow using Guix for per-project dependencies instead, but I am
+only half-way through the configuration, and not finished yet.</p>
+<ul>
+<li>idea:
+<ul>
+<li>use the same idea as in <a href="https://github.com/grst/rstudio-server-conda">https://github.com/grst/rstudio-server-conda</a></li>
+<li>the idea is to start RStudio server in non-daemon mode, and
+does not start it as a service</li>
+<li>then spawn a Guix environment shell with needed dependencies,
+then start RStudio server</li>
+<li>then can connect in the browser, if we setup port forwarding
+properly</li>
+</ul>
+</li>
+</ul>
+<h3 id="vim-or-neovim">Vim or Neovim</h3>
+<p>Since I do not use R inside Vim, I do not bother getting it to work
+with Guix, but it should be pretty similar to the Sublime Text or
+VSCode setup.</p>
+<ul>
+<li>idea:
+<ul>
+<li>the Vim or Neovim and related plugins can be installed either in the
+base Debian, or installed through Guix to the default profile</li>
+<li>ssh into the VM, then get to desired directory, then start Vim or Neovim</li>
+<li>inside (Neo)Vim, use the usual workflow, e.g. open a terminal</li>
+<li>inside that terminal, start <code>rwork</code> for plain R or <code>rdwork</code>
+for <code>radian</code>.</li>
+<li>edit and send code to the terminal for evaluation</li>
+<li>when done, just exit the terminal and quit (Neo)Vim.</li>
+</ul>
+</li>
+<li>reference:
+<ul>
+<li>My colleague Alfred Sam is enthusiastic in using Vim and
+Neovim for R, Python and Julia development. Interested
+readers may refer to his two blog posts:
+<ul>
+<li><a href="https://alfredfaisam.medium.com/neovim-setups-for-data-science-5ea251e3735f">Neovim Setups for Data Science</a></li>
+<li><a href="https://medium.com/geekculture/environment-setups-for-data-scientists-under-garuda-linux-ed6492a2a1ab">Environment Setups for Data Scientists under Garuda Linux</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="what-s-next">What&rsquo;s next?</h2>
+<p>In this part we showed ways of using Guix for per-project
+dependency for R development, using Emacs, Jupyter lab, VSCode and
+Sublime Text 3, we also discussed ideas of using Guix with RStudio,
+Vim and Neovim. This concludes the introduction to Guix, although we
+still have not covered quite a lot topics. In future posts, we will
+pick some interesting topics to explore.</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Peter Lo</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-06-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/guix/">Guix</a>
+          <a href="/tags/functional-package-manager/">Functional Package Manager</a>
+          <a href="/tags/reproducibility/">Reproducibility</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/guix_intro_5_per_proj_dep/">
+            <span class="next-text nav-default">Guix Introduction Part 5: Per-Project Depedency Management</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'https-peterloleungyau-github-io';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:peterloleungyau@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.linkedin.com/in/leung-yau-lo-7a3274167/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/peterloleungyau" class="iconfont icon-github" title="github"></a>
+  <a href="https://peterloleungyau.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Peter Lo</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-139262854-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
