@@ -11,6 +11,15 @@
     
     
     <item>
+      <title>More Guix: Private Channel and Internal Package</title>
+      <link>https://peterloleungyau.github.io/post/more_guix_private_channel/</link>
+      <pubDate>Thu, 15 Jul 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://peterloleungyau.github.io/post/more_guix_private_channel/</guid>
+      <description>Having introduced the basic ideas of Guix in previous posts, this time we explore setting up a private Guix channel. Guix package definitions are managed with git repositories called channels. There is an official channel at https://git.sjtu.edu.cn/sjtug/guix.git, there are also third party channels such as https://gitlab.com/nonguix/nonguix (for some software which cannot be included in the official distribution for ethical or policy-related reasons) and https://github.com/guix-science/guix-science.git (for scientific software, which cannot be included upstream).</description>
+    </item>
+    
+    <item>
       <title>Guix Introduction Part 6: R Development with Guix</title>
       <link>https://peterloleungyau.github.io/post/guix_intro_6_dev/</link>
       <pubDate>Sun, 27 Jun 2021 00:00:00 +0800</pubDate>
